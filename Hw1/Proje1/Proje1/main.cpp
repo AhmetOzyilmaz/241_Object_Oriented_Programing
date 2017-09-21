@@ -4,36 +4,159 @@
 //TODO
 /***/
 
-int CheckLeftUpCross() {
+
+int CheckCounter(const int& CurComp, const int& OtherComp , int count,const int& i,const int& j) {
+
+	if (GameBoard[i][j] == CurComp)
+		++count;
+	if (GameBoard[i][j] == OtherComp)
+		count = 0;
+	return count;
+}
+int CheckLeftUpCross(const int& posX,const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
+	for ( i = posX , j = posY; i >= 0 , j >= 0; --i , --j)
+	{
+		if (i < 0 || j < 0)
+			return 0;
+
+			counter = CheckCounter(CurrentComparor,OtherComparor,counter,i,j);
+
+			if (counter == 4) {
+				cout << "\n  sol yukarý hamle kazandý\n";
+
+				return 1;
+			}
+	}
 	return 0;
 }
-int CheckLeftDownCross() {
-	return 0;
+int CheckLeftDownCross(const int& posX, const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
 
+	for (i = posX, j = posY; i < SizeOfGame, j >= 0; ++i, --j)
+	{
+		if (i >= SizeOfGame || j < 0)
+			return 0;
+
+		counter = CheckCounter(CurrentComparor, OtherComparor, counter,i,j);
+
+		if (counter == 4) {
+			cout << "\n  sol aþaðý hamle kazandý\n";
+
+			return 1;
+		}
+	}
+	return 0;
 }
-int CheckRightUpCross() {
-	return 0;
+int CheckRightUpCross(const int& posX, const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
+	for (i = posX, j = posY; i >= 0, j < SizeOfGame; --i, ++j)
+	{
+		if (i < 0 || j >= SizeOfGame)
+			return 0;
 
+		counter = CheckCounter(CurrentComparor, OtherComparor, counter, i, j);
+
+		if (counter == 4) {
+			cout << "\n  aþaðý up kazandý\n";
+
+			return 1;
+		}
+	}
+	return 0;
 }
-int CheckRightDownCross() {
-	return 0;
+int CheckRightDownCross(const int& posX, const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
+	for (i = posX, j = posY; i < SizeOfGame , j < SizeOfGame; ++i, ++j)
+	{
+		if (i >= SizeOfGame || j >= SizeOfGame)
+			return 0;
 
+		counter = CheckCounter(CurrentComparor, OtherComparor, counter, i, j);
+
+		if (counter == 4) {
+			cout << "\n  saðaþaðý hamle kazandý\n";
+
+			return 1;
+		}
+	}
+	return 0;
 }
-int CheckLeft() {
-	return 0;
+int CheckUp(const int& posX, const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
+	for (i = posX , j = posY; i >= 0; --i)
+	{
+		if (i < 0 )
+			return 0;
 
+		counter = CheckCounter(CurrentComparor, OtherComparor, counter, i, j);
+
+		if (counter == 4) {
+			cout << "\n  yukarý hamle kazandý\n";
+
+			return 1;
+		}
+	}
+	return 0;
 }
-int CheckRight() {
-	return 0;
 
+int CheckDown(const int& posX, const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
+	for (i = posX, j = posY; i < SizeOfGame; ++i)
+	{
+		if (i <= SizeOfGame)
+			return 0;
+
+		counter = CheckCounter(CurrentComparor, OtherComparor, counter, i, j);
+
+		if (counter == 4) {
+			cout << "\n  aþaðý hamle kazandý\n";
+
+			return 1;
+		}
+	}
+	return 0;
 }
-int CheckUp() {
-	return 0;
+int CheckLeft(const int& posX, const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
+	for (i = posX, j = posY; j >= 0; --j)
+	{
+		if (j < 0 )
+			return 0;
 
+		counter = CheckCounter(CurrentComparor, OtherComparor, counter, i, j);
+
+		if (counter == 4) {
+			cout << "\n  sola hamle kazandý\n";
+
+			return 1;
+		}
+	}
+	return 0;
 }
-int CheckDown() {
-	return 0;
+int CheckRight(const int& posX, const int& posY) {
+	int counter = 0;
+	int i = 0, j = 0;
+	for (i = posX, j = posY; j < SizeOfGame; ++j)
+	{
+		if (j >= SizeOfGame)
+			return 0;
 
+		counter = CheckCounter(CurrentComparor, OtherComparor, counter, i, j);
+
+		if (counter == 4) {
+			cout << "\n  aþaðý hamle kazandý\n";
+			return 1;
+		}
+	}
+	return 0;
 }
 
 /*
@@ -47,20 +170,42 @@ int CheckDown() {
 */
 
 void Play() {
-
+	int control = 0;
+	int check = 0;
 	while (1) {
-
 		if (ONE_PLAYER_VERSUS_COMPUTER == GameMode) {
 			//first move  player 1
 			AllMoveOperation(1);
+			PrintGameBoard();
+			check = IsGameOver();
+
+			if (check == -1)
+				break;
+
+			if(control == 1)
 			//second player 2
 			AllMoveOperation(3);
+			PrintGameBoard();
+			 check = IsGameOver();
+			 if (check == -1)
+				 break;
+
 		}
 		else if (TWO_PLAYER == GameMode) {
 			// first play player 1 
 			AllMoveOperation(1);
+			PrintGameBoard();
+			check = IsGameOver();
+			 if (check == -1)
+				 break;
+
 			//second play player 2
 			AllMoveOperation(2);
+			PrintGameBoard();
+			check = IsGameOver();
+			 if (check == -1)
+				 break;
+
 		}
 	}
 	
@@ -81,16 +226,23 @@ bool AllMoveOperation(int PlayerID){
 	CurrentMove = TakeMove();
 	flag = MoveInputCheck();
 	if (flag) {
+		cout << "MoveInputCheck is correct\n";
 		//if flag true this can true input i will checking position is playable
 		if (IsPositionPlayable()) {
 			// play move
+			cout << "is position playable " << CurrentMove << "\n";
+
 			MovePlayer();
 		}
 		else {
 			return false;
 		}
 	}
-	
+	else
+		cout << "MoveInputCheck func return false\n";
+
+	//cout << "AllMoveOperation func return false\n";
+
 	return false;
 }
 /*
@@ -105,19 +257,24 @@ bool AllMoveOperation(int PlayerID){
 void MovePlayer() {
 
 	int player_id = CurrentPlayerId;
-	if (CurrentPlayerId == 1)
+	if (CurrentPlayerId == 1) {
 		CurrentComparor = USER1;
-	else if (CurrentPlayerId == 1)
+		OtherComparor   = USER2;
+	}
+
+	else if (CurrentPlayerId == 1) {
 		CurrentComparor = USER2;
+		OtherComparor   = USER1;
+	}
+
 
 	int column = static_cast<int> (CurrentMove - 'A');
 
 	
-	for (auto j = SizeOfGame; j > 0; --j)
+	for (auto j = SizeOfGame-1; j >= 0; --j)
 	{
-		if (GameBoard[column][j] == EMTHY) {
-			GameBoard[column][j] = CurrentComparor;
-			IsGameOver();
+		if (GameBoard[j][column] == EMTHY) {
+			GameBoard[j][column] = CurrentComparor;
 			break;
 		}
 		else {
@@ -157,7 +314,7 @@ void MoveComputer() {
 bool IsPositionPlayable() {
 	//TODO
 
-	return false;
+	return true;
 }
 /*
 *	Desciription : This function checking is game ended or not 
@@ -170,12 +327,17 @@ bool IsPositionPlayable() {
 int IsGameOver() {
 
 	if (IsGameOverOneSide(USER1)){
-		return 1;
+		cout << "USER1 WON " << endl;
+		return -1;
 	}
 	else if (IsGameOverOneSide(USER2)) {
-		return 2;
+		cout << "USER2 WON " << endl;
+		return -1;
+
 	}
-	return -1;
+	cout << "Game is not ended " << endl;
+	return 0;
+
 }
 
 /*
@@ -188,15 +350,31 @@ int IsGameOver() {
 */
 bool IsGameOverOneSide(char User) {
 	//TODO
+	int controller = 0;
+	for (int  i = SizeOfGame-1; i >= 0; --i)
+	{
+		for (int j = SizeOfGame - 1; j >= 0; --j)
+		{
+			controller = 0;
 
-	LeftUpCross();
-	LeftDownCross();
-	RightUpCross();
-	RightDownCross();
-	Left();
-	Right();
-	Up();
-	Down();
+			controller +=CheckLeftUpCross( i,j);
+			controller += CheckLeftDownCross(i, j);
+			controller += CheckRightUpCross(i, j);
+			controller += CheckRightDownCross(i, j);
+			controller += CheckLeft(i, j);
+			controller += CheckRight(i, j);
+			controller += CheckUp(i, j);
+			controller += CheckDown(i, j);
+
+
+			if (controller != 0)
+				return true;
+		}
+		
+
+	}
+
+	
 	return false;
 }
 /*
@@ -310,7 +488,7 @@ char TakeMove() {
 			break;
 	}
 
-	if (flag)
+	if (!flag)
 		return CurrentMove
 		;
 	else
@@ -329,6 +507,7 @@ char TakeMove() {
 
 bool MoveInputCheck() {
 
+	cout << "Current MoveInputCheck " << CurrentMove << endl;
 	if (CurrentMove >= 'A' + SizeOfGame || CurrentMove < 'A')
 		return false;
 	if (!isalpha(CurrentMove))

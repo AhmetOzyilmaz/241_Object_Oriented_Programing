@@ -16,17 +16,19 @@ char GameBoard[MAXSIZE][MAXSIZE];
 char CurrentMove = '\0';
 int CurrentPlayerId = 0;
 char CurrentComparor = '\0';
+char OtherComparor = '\0';
+
+int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);
+int CheckLeftUpCross(const int& posX,const int& posY);
+int CheckLeftDownCross(const int& posX, const int& posY);
+int CheckRightUpCross(const int& posX, const int& posY);
+int CheckRightDownCross(const int& posX, const int& posY);
 
 
-
-int CheckLeftUpCross();
-int CheckLeftDownCross();
-int CheckRightUpCross();
-int CheckRightDownCross();
-int CheckLeft();
-int CheckRight();
-int CheckUp();
-int CheckDown();
+int CheckLeft(const int& posX, const int& posY);
+int CheckRight(const int& posX, const int& posY);
+int CheckUp(const int& posX, const int& posY);
+int CheckDown(const int& posX, const int& posY);
 
 void Play();
 

@@ -175,7 +175,7 @@ void Play() {
 	while (1) {
 		if (ONE_PLAYER_VERSUS_COMPUTER == GameMode) {
 			//first move  player 1
-			AllMoveOperation(1);
+			/*AllMoveOperation(1);
 			PrintGameBoard();
 			check = IsGameOver();
 
@@ -186,7 +186,7 @@ void Play() {
 			PrintGameBoard();
 			 check = IsGameOver();
 			 if (check == -1)
-				 break;
+				 break;*/
 
 		}
 		else if (TWO_PLAYER == GameMode) {
@@ -228,13 +228,14 @@ bool AllMoveOperation(const int& PlayerID){
 	if (flag) {
 		cout << "MoveInputCheck is correct\n";
 		//if flag true this can true input i will checking position is playable
-		if (IsPositionPlayable()) {
+		if (IsPositionPlayable(PlayerID,CurrentMove)) {
 			// play move
 			cout << "is position playable " << CurrentMove << "\n";
 
 			MovePlayer(PlayerID);
 		}
 		else {
+			cout << "Position Cannot play enter another move " << endl;
 			return false;
 		}
 	}
@@ -310,10 +311,18 @@ void MoveComputer() {
 *
 */
 
-bool IsPositionPlayable() {
+bool IsPositionPlayable(const int& player_id,const char& pos) {
 	//TODO
+	cout << pos << endl;
+	for (int i = SizeOfGame-1; i >= 0 ; --i)
+	{
+		if (GameBoard[i]['Z'-pos] == EMTHY)
+			return true;
 
-	return true;
+	}
+		
+
+	return false;
 }
 /*
 *	Desciription : This function checking is game ended or not 

@@ -37,7 +37,8 @@ bool AllMoveOperation(const int& PlayerID);
 void MovePlayer(const int&);
 
 void MoveComputer();
-bool IsPositionPlayable();
+bool IsPositionPlayable(const int& player_id, const char& pos);
+
 int IsGameOver();
 
 bool IsGameOverOneSide(const char& User, const char& other);

@@ -1,6 +1,7 @@
 /*Connected Four Game */
 /*AHMET ÖZYILMAZ 111044014 HOMEWORK 1*/
 #include"main.h"
+
 //TODO
 /***/
 
@@ -175,30 +176,29 @@ void Play() {
 	while (1) {
 		if (ONE_PLAYER_VERSUS_COMPUTER == GameMode) {
 			//first move  player 1
-			/*AllMoveOperation(1);
+			AllMoveOperation(USER1PLAYERID);
 			PrintGameBoard();
 			check = IsGameOver();
 
 			if (check == -1)
 				break;
 			//second player 2
-			AllMoveOperation(3);
+			AllMoveOperation(USER2PLAYERID);
 			PrintGameBoard();
 			 check = IsGameOver();
 			 if (check == -1)
-				 break;*/
-
+				 break;
 		}
 		else if (TWO_PLAYER == GameMode) {
 			// first play player 1 
-			AllMoveOperation(1);
+			AllMoveOperation(USER1PLAYERID);
 			PrintGameBoard();
 			check = IsGameOver();
 			 if (check == -1)
 				 break;
 
 			//second play player 2
-			AllMoveOperation(2);
+			AllMoveOperation(COMPUTERPLAYERID);
 			PrintGameBoard();
 			check = IsGameOver();
 			 if (check == -1)
@@ -220,11 +220,14 @@ void Play() {
 bool AllMoveOperation(const int& PlayerID){
 	bool flag = false;
 
-	CurrentPlayerId = PlayerID;
-	CurrentMove = TakeMove();
-
-	flag = MoveInputCheck();
-
+	if (PlayerID != 3) {
+		CurrentMove = TakeMove();
+		flag = MoveInputCheck();
+	}
+	else if (PlayerID == 3) {
+		MovePlayer(PlayerID);
+		return true;
+	}
 	if (flag) {
 		cout << "MoveInputCheck is correct\n";
 		//if flag true this can true input i will checking position is playable
@@ -257,33 +260,37 @@ bool AllMoveOperation(const int& PlayerID){
 */
 void MovePlayer(const int& player_id) {
 
-	if (player_id == 1) {
+	if (player_id == USER1PLAYERID) {
 		CurrentComparor = USER1;
 		OtherComparor   = USER2;
 	}
 
-	else if (player_id == 2) {
+	else if (player_id == USER2PLAYERID) {
 		CurrentComparor = USER2;
 		OtherComparor   = USER1;
 	}
-
-
-	int column = static_cast<int> (CurrentMove - 'A');
-
-	
-	for (auto j = SizeOfGame-1; j >= 0; --j)
-	{
-		if (GameBoard[j][column] == EMTHY) {
-			GameBoard[j][column] = CurrentComparor;
-			break;
-		}
-		else {
-			//TODO bu sütün için hamle bitmiþ baþka hamle istenmeli;
-
-		}
-		
+   
+	if(player_id == COMPUTERPLAYERID) {
+		CurrentComparor = USER2;
+		OtherComparor = USER1;
+		CurrentMove = MoveComputer();
 	}
 
+	if (CurrentMove >= 'A' &&  CurrentMove <= 'Z') {
+		int column = static_cast<int> (CurrentMove - 'A');
+
+		for (auto j = SizeOfGame - 1; j >= 0; --j)
+		{
+			if (GameBoard[j][column] == EMTHY) {
+				GameBoard[j][column] = CurrentComparor;
+				break;
+			}
+			else {
+				//TODO bu sütün için hamle bitmiþ baþka hamle istenmeli;
+
+			}
+		}
+	}
 }
 
 /*
@@ -295,9 +302,21 @@ void MovePlayer(const int& player_id) {
 *	Return Value   : 
 *
 */
-void MoveComputer() {
+char MoveComputer() {
 	//TODO
-
+	char pos;
+	/*easy mode */
+	while (1) {
+		srand(time(NULL));
+		pos = 'A' + rand() % SizeOfGame;
+		cout <<"Computer Position " << pos << endl;
+		if (IsPositionPlayable(COMPUTERPLAYERID, pos)) {
+			return pos;
+		}
+	}
+	/*hard mode */
+		//todo
+	return '.';
 }
 
 
@@ -530,13 +549,20 @@ bool MoveInputCheck() {
 
 
 int main() {
+	char command = '.';
+	while (1) {
+		InputValidator();
+		InitialBoard();
+		PrintGameBoard();
+		Play();
 
+		cout << "if you want to quit enter q " << endl;
+		cin >> command;
+		if (command == 'q' || command == 'Q')
+			break;
 
-	InputValidator();
-	InitialBoard();
-	PrintGameBoard();
-	Play();
-
-	while (1);
+	}
+	
+	//while (1);
 	return 0;
 }

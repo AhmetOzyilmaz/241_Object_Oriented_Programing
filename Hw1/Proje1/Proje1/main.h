@@ -1,17 +1,22 @@
 #pragma once
 
 #include<iostream>
-
+#include <cstdlib>     /* srand, rand */
+#include <ctime>
 using namespace std;
 
+const int USER1PLAYERID = 1;
+const int USER2PLAYERID = 2;
+const int COMPUTERPLAYERID = 3;
 const int MAXSIZE = 20; // Game board max size 
 int SizeOfGame = 0;
 int GameMode = 0;
 const int TWO_PLAYER = 2;
 const int ONE_PLAYER_VERSUS_COMPUTER = 1;
-char USER1 = 'X';
-char USER2 = 'O';
-char EMTHY = '.';
+const char USER1 = 'X';
+const char USER2 = 'O';
+const char EMTHY = '.';
+
 char GameBoard[MAXSIZE][MAXSIZE];
 char CurrentMove = '\0';
 int CurrentPlayerId = 0;
@@ -36,7 +41,7 @@ bool AllMoveOperation(const int& PlayerID);
 
 void MovePlayer(const int&);
 
-void MoveComputer();
+char MoveComputer();
 bool IsPositionPlayable(const int& player_id, const char& pos);
 
 int IsGameOver();

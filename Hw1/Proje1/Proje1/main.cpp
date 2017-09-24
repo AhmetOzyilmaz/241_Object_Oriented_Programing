@@ -14,7 +14,7 @@ int CheckCounter(const int& CurComp, const int& OtherComp , int count,const int&
 		count = 0;
 	return count;
 }
-int CheckLeftUpCross(const int& posX,const int& posY, const char& comparator , const char& othercomparator) {
+int CheckLeftUpCross(const int& posX,const int& posY, const char& comparator , const char& othercomparator, const int& size, const int& WinCounter,const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0,k = 0 , l = 0;
 	for ( i = posX , j = posY; i >= 0 , j >= 0; --i , --j)
@@ -24,86 +24,100 @@ int CheckLeftUpCross(const int& posX,const int& posY, const char& comparator , c
 
 			counter = CheckCounter(comparator, othercomparator,counter,i,j);
 
-			if (counter == 4) {
-				cout << "\n  sol yukarý hamle kazandý\n";
-				for (int t = 0; t < 4; ++t) {
-					GameBoard[i+t][j+t] = comparator + 32;
-					//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+			if (counter == WinCounter) {
+				if (flag) {
+					cout << "\n Left Up Cross Won\n";
+					for (int t = 0; t < WinCounter; ++t) {
+						GameBoard[i + t][j + t] = comparator + 32;
+						//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+					}
 				}
+				
 				PrintGameBoard();
 				return 1;
 			}
 	}
 	return 0;
 }
-int CheckLeftDownCross(const int& posX, const int& posY, const char& comparator, const char& othercomparator) {
+int CheckLeftDownCross(const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0;
 
-	for (i = posX, j = posY; i < SizeOfGame, j >= 0; ++i, --j)
+	for (i = posX, j = posY; i < size, j >= 0; ++i, --j)
 	{
-		if (i >= SizeOfGame || j < 0)
+		if (i >= size || j < 0)
 			return 0;
 
 		counter = CheckCounter(comparator, othercomparator, counter,i,j);
 
-		if (counter == 4) {
-			cout << "\n  sol aþaðý hamle kazandý\n";
-			for (int t = 0; t < 4; ++t) {
-				GameBoard[i - t][j + t] = comparator + 32;//asci lower status
-				//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+		if (counter == WinCounter) {
+			if (flag) {
+				cout << "\n  sol aþaðý hamle kazandý\n";
+
+				for (int t = 0; t < WinCounter; ++t) {
+					GameBoard[i - t][j + t] = comparator + 32;//asci lower status
+															  //cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+				}
 			}
+			
 			PrintGameBoard();
 			return 1;
 		}
 	}
 	return 0;
 }
-int CheckRightUpCross(const int& posX, const int& posY, const char& comparator, const char& othercomparator) {
+int CheckRightUpCross(const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0;
-	for (i = posX, j = posY; i >= 0, j < SizeOfGame; --i, ++j)
+	for (i = posX, j = posY; i >= 0, j < size; --i, ++j)
 	{
-		if (i < 0 || j >= SizeOfGame)
+		if (i < 0 || j >= size)
 			return 0;
 
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 
-		if (counter == 4) {
-			cout << "\n  aþaðý up kazandý\n";
-			for (int t = 0; t < 4; ++t) {
-				GameBoard[i + t][j - t] = comparator + 32;
-				//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+		if (counter == WinCounter) {
+			if (flag) {
+				cout << "\n  Right Up Cross Won\n";
+
+				for (int t = 0; t < WinCounter; ++t) {
+					GameBoard[i + t][j - t] = comparator + 32;
+					//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+				}
 			}
+			
 			PrintGameBoard();
 			return 1;
 		}
 	}
 	return 0;
 }
-int CheckRightDownCross(const int& posX, const int& posY, const char& comparator, const char& othercomparator) {
+int CheckRightDownCross(const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0;
-	for (i = posX, j = posY; i < SizeOfGame , j < SizeOfGame; ++i, ++j)
+	for (i = posX, j = posY; i < size , j < size; ++i, ++j)
 	{
-		if (i >= SizeOfGame || j >= SizeOfGame)
+		if (i >= size || j >= size)
 			return 0;
 
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 
-		if (counter == 4) {
-			cout << "\n  saðaþaðý hamle kazandý\n";
-			for (int t = 0; t < 4; ++t) {
-				GameBoard[i - t][j - t] = comparator + 32;
-				//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+		if (counter == WinCounter) {
+			if (flag) {
+				cout << "\n  Right Down Cross Won\n";
+				for (int t = 0; t < WinCounter; ++t) {
+					GameBoard[i - t][j - t] = comparator + 32;
+					//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+				}			
 			}
+			
 			PrintGameBoard();
 			return 1;
 		}
 	}
 	return 0;
 }
-int CheckUp(const int& posX, const int& posY, const char& comparator, const char& othercomparator) {
+int CheckUp(const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0;
 	for (i = posX , j = posY; i >= 0; --i)
@@ -113,12 +127,15 @@ int CheckUp(const int& posX, const int& posY, const char& comparator, const char
 
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 
-		if (counter == 4) {
-			cout << "\n  yukarý hamle kazandý\n";
-			for (int t = 0; t < 4; ++t) {
-				GameBoard[i + t][j] = comparator + 32;
-				//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+		if (counter == WinCounter) {
+			if (flag) {
+				cout << "\n  Up Move Won\n";
+				for (int t = 0; t < WinCounter; ++t) {
+					GameBoard[i + t][j] = comparator + 32;
+					//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+				}
 			}
+			
 			PrintGameBoard();
 			return 1;
 		}
@@ -126,29 +143,32 @@ int CheckUp(const int& posX, const int& posY, const char& comparator, const char
 	return 0;
 }
 
-int CheckDown(const int& posX, const int& posY, const char& comparator, const char& othercomparator) {
+int CheckDown(const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0;
-	for (i = posX, j = posY; i < SizeOfGame; ++i)
+	for (i = posX, j = posY; i < size; ++i)
 	{
-		if (i <= SizeOfGame)
+		if (i <= size)
 			return 0;
 
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 
-		if (counter == 4) {
-			cout << "\n  aþaðý hamle kazandý\n";
-			for (int t = 0; t < 4; ++t) {
-				GameBoard[i - t][j] = comparator + 32;
-				//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+		if (counter == WinCounter) {
+			if (flag) {
+				cout << "\n  Down Move Won\n";
+				for (int t = 0; t < WinCounter; ++t) {
+					GameBoard[i - t][j] = comparator + 32;
+					//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+				}
 			}
+			
 			PrintGameBoard();
 			return 1;
 		}
 	}
 	return 0;
 }
-int CheckLeft(const int& posX, const int& posY, const char& comparator, const char& othercomparator) {
+int CheckLeft(const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0;
 	for (i = posX, j = posY; j >= 0; --j)
@@ -158,34 +178,39 @@ int CheckLeft(const int& posX, const int& posY, const char& comparator, const ch
 
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 
-		if (counter == 4) {
-			cout << "\n  sola hamle kazandý\n";
-			for (int t = 0; t < 4; ++t) {
-				GameBoard[i][j + t] = comparator + 32;
-				//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
-			}
+		if (counter == WinCounter) {
+			if (flag) {
+				cout << "\n  Left Move Won\n";
+				for (int t = 0; t < WinCounter; ++t) {
+					GameBoard[i][j + t] = comparator + 32;
+					//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+				}
+			}			
 			PrintGameBoard();
 			return 1;
 		}
 	}
 	return 0;
 }
-int CheckRight(const int& posX, const int& posY, const char& comparator, const char& othercomparator) {
+int CheckRight(const int& posX, const int& posY, const char& comparator, const char& othercomparator,const int& size,const int& WinCounter, const bool& flag) {
 	int counter = 0;
 	int i = 0, j = 0;
-	for (i = posX, j = posY; j < SizeOfGame; ++j)
+	for (i = posX, j = posY; j < size; ++j)
 	{
-		if (j >= SizeOfGame)
+		if (j >= size)
 			return 0;
 
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 
-		if (counter == 4) {
-			cout << "\n  aþaðý hamle kazandý\n";
-			for (int t = 0; t < 4; ++t) {
-				GameBoard[i][j - t] = comparator + 32;
-				//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+		if (counter == WinCounter) {
+			if (flag) {
+				cout << "\n  Down Move Won\n";
+				for (int t = 0; t < WinCounter; ++t) {
+					GameBoard[i][j - t] = comparator + 32;
+					//cout << GameBoard[i + t][j + t] << "\t" << i+t << "\t" << j+t << endl;
+				}
 			}
+			
 			PrintGameBoard();
 			return 1;
 		}
@@ -264,7 +289,7 @@ bool AllMoveOperation(const int& PlayerID){
 		flag = MoveInputCheck();
 	}
 	else if (PlayerID == 3) {
-		MovePlayer(PlayerID);
+		FindMaxEnemy();
 		return true;
 	}
 	if (flag) {
@@ -333,12 +358,12 @@ void MovePlayer(const int& player_id) {
 }
 
 /*
-*	Desciription : This function computor automatic playin move
+*	Desciription : This function computer automatic playin move
 *
 *
-*	Input		   : 
+*	Input		   : no parameter
 *
-*	Return Value   : 
+*	Return Value   : returnin if u find placable positon or returning '.' for error
 *
 */
 char MoveComputer() {
@@ -358,6 +383,104 @@ char MoveComputer() {
 	return '.';
 }
 
+/*
+*	Desciription : This function karþý rakibin taþýný bulucak ve oyun tahtasi içinde rakibin en uzun uzantýlý taþýnýn uzantý olan yere taþ koyucak
+*
+*
+*	Input		   : no parameter
+*
+*	Return Value   : no return value
+*
+*/
+void FindMaxEnemy() {
+
+	NeigborEnemy enem[200];
+	bool flag = true;
+	char pos;
+	int index = 0;
+	int controller = 0;
+	for (int i = SizeOfGame-1; i >= 0; --i)
+	{
+		for (int j = SizeOfGame-1; j >= 0; --j)
+		{
+			if (flag) {//ilk hamle için sadece 
+				pos = MoveComputer();
+				int column = static_cast<int> (pos - 'A');
+
+				for (auto j = SizeOfGame - 1; j >= 0; --j)
+				{
+					if (GameBoard[j][column] == EMTHY) {
+						GameBoard[j][column] = 'O';
+						cout << "FUCK2" << endl;
+
+						break;
+					}
+				}
+				flag = false;
+			}
+			if (GameBoard[i][j] == 'O' && flag == false) {
+				//TODO komþulara bak ve sayýsýný structa ata
+				enem[index].posX = i;
+				enem[index].posY = j;
+
+				controller = 0;
+
+				controller += CheckLeftUpCross(i, j, 'O', 'X', SizeOfGame, 2,false);
+				controller += CheckLeftDownCross(i, j, 'O', 'X' ,SizeOfGame,2, false);
+				controller += CheckRightUpCross(i, j, 'O', 'X', SizeOfGame, 2, false);
+				controller += CheckRightDownCross(i, j, 'O', 'X', SizeOfGame, 2, false);
+				controller += CheckLeft(i, j, 'O', 'X', SizeOfGame, 2, false);
+				controller += CheckRight(i, j, 'O', 'X', SizeOfGame, 2, false);
+				controller += CheckUp(i, j, 'O', 'X', SizeOfGame, 2, false);
+				controller += CheckDown(i, j, 'O', 'X', SizeOfGame, 2, false);
+
+				cout << "controller " << controller << "\t" << endl;
+
+				enem[index].NeighborEnemyCounter = controller;
+				++index;
+
+			}
+			
+		}
+	}
+
+	if (flag == false) {
+		int maxIndex = 0;
+		bool isChanged = true;
+
+		for (int k = 0; k < index; ++k)
+		{
+			if (enem[maxIndex].NeighborEnemyCounter < enem[k].NeighborEnemyCounter) {
+				cout << "MAX index changed->" << enem[k].NeighborEnemyCounter<<endl;
+				maxIndex = k;
+				isChanged = false;
+			}
+		}
+
+		/*if (maxIndex == 0 && isChanged) {
+			srand(time(NULL));
+			pos = 'A' + rand() % SizeOfGame;
+			maxIndex = static_cast<int> (pos - 'A');
+
+		}*/
+		if (isChanged == false) {
+			for (auto j = SizeOfGame - 1; j >= 0; --j)
+			{
+				if (GameBoard[j][enem[maxIndex].posY] == EMTHY) {
+					GameBoard[j][enem[maxIndex].posY] = 'O';
+					cout << "FUCK1" << endl;
+					break;
+				}
+			}
+		}
+		
+		//for (int k = 0; k < index; ++k)
+		//	cout << enem[k].posX << "\t" << enem[k].posY << "\t" << enem[k].NeighborEnemyCounter << "\t" << endl;
+	}
+	
+
+	return;
+}
 
 /*
 *	Desciription : This function checking move legal ol illegal
@@ -424,14 +547,14 @@ bool IsGameOverOneSide(const char& User, const char& other) {
 		{
 			controller = 0;
 
-			controller +=CheckLeftUpCross( i,j, User, other);
-			controller += CheckLeftDownCross(i, j, User, other);
-			controller += CheckRightUpCross(i, j, User, other);
-			controller += CheckRightDownCross(i, j, User, other);
-			controller += CheckLeft(i, j, User, other);
-			controller += CheckRight(i, j, User, other);
-			controller += CheckUp(i, j, User, other);
-			controller += CheckDown(i, j, User, other);
+			controller +=CheckLeftUpCross( i,j, User, other,SizeOfGame,4,true);
+			controller += CheckLeftDownCross(i, j, User, other, SizeOfGame, 4, true);
+			controller += CheckRightUpCross(i, j, User, other, SizeOfGame, 4, true);
+			controller += CheckRightDownCross(i, j, User, other, SizeOfGame, 4, true);
+			controller += CheckLeft(i, j, User, other, SizeOfGame, 4, true);
+			controller += CheckRight(i, j, User, other, SizeOfGame, 4, true);
+			controller += CheckUp(i, j, User, other, SizeOfGame, 4, true);
+			controller += CheckDown(i, j, User, other, SizeOfGame, 4, true);
 
 
 			if (controller != 0) {
@@ -584,8 +707,6 @@ bool MoveInputCheck() {
 
 	return true;
 }
-
-
 
 int main() {
 	char command = '.';

@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Hw1\Proje1\Proje1\main.h">
-      <Filter>Başlık Dosyaları</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\Hw1\Proje1\Proje1\main.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Kaynak Dosyalar</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>Kaynak Dosyalar</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

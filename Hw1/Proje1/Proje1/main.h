@@ -4,7 +4,7 @@
 #include <cstdlib>     /* srand, rand */
 #include <ctime>
 #include <string>
-#include <fstream>
+
 
 using namespace std;
 
@@ -33,25 +33,20 @@ struct NeigborEnemy
 	int posY;
 	string NeighborEnemyCounter;
 };
-
-void SaveFile(const string& filename);
-void LoadFile(const string& filename);
-
-
 bool AnyMoveMore();
 
 int MyStringCompare(const string& s1);
 int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);
-string CheckLeftUpCross(const int& posX,const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag=false);
-string CheckLeftDownCross(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
-string CheckRightUpCross(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
-string CheckRightDownCross(const int& posX, const int& pos, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
+string CheckLeftUpCross(const int& posX,const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag);
+string CheckLeftDownCross(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag);
+string CheckRightUpCross(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag);
+string CheckRightDownCross(const int& posX, const int& pos, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag);
 
 
-string CheckLeft(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
-string CheckRight(const int& posX, const int& posY, const char&, const char& othercomparato, const int& size, const int& WinCounterr, const bool& flag = false);
-string CheckUp(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
-string CheckDown(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
+string CheckLeft(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag);
+string CheckRight(const int& posX, const int& posY, const char&, const char& othercomparato, const int& size, const int& WinCounterr, const bool& flag);
+string CheckUp(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag);
+string CheckDown(const int& posX, const int& posY, const char&, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag);
 
 void Play();
 

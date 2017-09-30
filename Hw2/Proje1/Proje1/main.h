@@ -1,4 +1,4 @@
-#include"Lib.h"
+#include"Config.h"
 
 struct NeigborEnemy
 {
@@ -6,7 +6,6 @@ struct NeigborEnemy
 	int posY;
 	string NeighborEnemyCounter;
 };
-
 
 void InputValidator();
 void PrintGameBoard();

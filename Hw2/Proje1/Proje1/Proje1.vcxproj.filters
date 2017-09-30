@@ -23,7 +23,7 @@
     <ClInclude Include="main.h">
       <Filter>Kaynak Dosyalar</Filter>
     </ClInclude>
-    <ClInclude Include="Lib.h">
+    <ClInclude Include="Config.h">
       <Filter>Kaynak Dosyalar</Filter>
     </ClInclude>
   </ItemGroup>

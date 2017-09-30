@@ -19,20 +19,25 @@
 *
 */
 void SaveFile(const string& filename) {
-	ifstream myReadFile;
-	myReadFile.open(filename);
-	char output[100];
-	if (myReadFile.is_open()) {
-		while (!myReadFile.eof()) {
 
+	ofstream myfile(filename, std::ios::out | std::ios::app | std::ios::_Nocreate);
 
-			myReadFile >> output;
-			cout << output;
-
+	if (myfile.is_open())
+	{
+		for (int row = 0; row < SizeOfGame; ++row)
+		{
+			for (int column = 0; column < SizeOfGame; ++column)
+			{
+				myfile << GameBoard[row][column];
+			}
+			myfile << "\n";
 		}
-	}
-	myReadFile.close();
+		myfile.close();
 
+	}
+	else cerr << "Unable to open file";
+
+	cout << "Game Board Saved Correctly" << endl;
 
 }
 
@@ -48,16 +53,25 @@ void SaveFile(const string& filename) {
 void LoadFile(const string& filename) {
 	ifstream myReadFile;
 	myReadFile.open(filename);
-	char output[100];
+	string line = "";
+	int size = 0;
 	if (myReadFile.is_open()) {
+		int column = 0,row = 0;
 		while (!myReadFile.eof()) {
 
-
-			myReadFile >> output;
-			cout << output;
+			getline(myReadFile, line);
+			cout << line<<endl;
+			for (int column = 0; column < line.size(); column++)
+			{
+				GameBoard[row][column] = line[column];
+			}
+			++row;
 
 		}
+			SizeOfGame = row;
+
 	}
+	cout << "Game Board Loaded Correctly" << endl;
 	myReadFile.close();
 }
 /*
@@ -126,13 +140,13 @@ void Play() {
 bool CommandSelector(const string& command) {
 	string filename = "";
 	filename = command.substr(5, command.size());
-	cout << "File name->" << filename << endl;
+	//cout << "File name->" << filename << endl;
 
 	if (command.substr(0, 4).compare("SAVE") == 0) {
-		//SaveFile(filename);
+		SaveFile(filename);
 	}
 	else if (command.substr(0, 4).compare("LOAD") == 0) {
-		//LoadFile(filename);
+		LoadFile(filename);
 	}
 
 
@@ -163,9 +177,9 @@ bool AllMoveOperation(const int& PlayerID) {
 		command = "";
 		cin >> command;
 
-		if (command.size() > 8) { // "LOAD X.txt" minumum kabul edilen kýsým 
+		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
 			cin >> command2;
-
+			command2 = command + " " + command2;
 			CommandSelector(command2);
 		}
 		else {

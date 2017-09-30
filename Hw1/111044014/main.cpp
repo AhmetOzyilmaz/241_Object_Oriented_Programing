@@ -1,5 +1,5 @@
-/*Connected Four Game */
-/*AHMET ÖZYILMAZ 111044014 HOMEWORK 1*/
+ï»¿/*Connected Four Game */
+/*AHMET Ã–ZYILMAZ 111044014 HOMEWORK 1*/
 #include"main.h"
 
 //TODO
@@ -73,7 +73,7 @@ string CheckLeftDownCross(const int& posX, const int& posY, const char& comparat
 
 		if (counter == WinCounter) {
 			if (flag) {
-				cout << "\n  sol aþaðý hamle kazandý\n";
+				cout << "\n  sol aÅŸaÄŸÄ± hamle kazandÄ±\n";
 
 				for (int t = 0; t < WinCounter; ++t) {
 					GameBoard[i - t][j + t] = comparator + 32;//asci lower status
@@ -259,45 +259,34 @@ void Play() {
 	int control = 0;
 	int check = 0;
 	while (1) {
-		if (ONE_PLAYER_VERSUS_COMPUTER == GameMode) {
-			//first move  player 1
-			AllMoveOperation(USER1PLAYERID);
-			PrintGameBoard();
-			check = IsGameOver();
 
-			if (check == -1)
-				break;
-			else
-				PrintGameBoard();
+		//first move  player 1
+		AllMoveOperation(USER1PLAYERID);
+		check = IsGameOver();
+		PrintGameBoard();
+
+		if (check == -1)
+			break;
+
+		if (ONE_PLAYER_VERSUS_COMPUTER == GameMode) {
 
 			//second player 2
 			AllMoveOperation(USER2PLAYERID);
 			PrintGameBoard();
-			 check = IsGameOver();
-			 if (check == -1)
-				 break;
-			
+			check = IsGameOver();
+			if (check == -1)
+				break;
 		}
 		else if (TWO_PLAYER == GameMode) {
-			// first play player 1 
-			AllMoveOperation(USER1PLAYERID);
-			PrintGameBoard();
-			check = IsGameOver();
-			 if (check == -1)
-				 break;
-			
-
 			//second play player 2
 			AllMoveOperation(COMPUTERPLAYERID);
 			PrintGameBoard();
 			check = IsGameOver();
-			 if (check == -1)
-				 break;
-			
-
+			if (check == -1)
+				break;
 		}
 	}
-	
+
 }
 /*
 *	Desciription : This function for one player doing all move operation
@@ -377,7 +366,7 @@ void MovePlayer(const int& player_id) {
 				break;
 			}
 			else {
-				//TODO bu sütün için hamle bitmiþ baþka hamle istenmeli;
+				//TODO bu sÃ¼tÃ¼n iÃ§in hamle bitmiÅŸ baÅŸka hamle istenmeli;
 
 			}
 		}
@@ -411,7 +400,7 @@ char MoveComputer() {
 }
 
 /*
-*	Desciription : This function karþý rakibin taþýný bulucak ve oyun tahtasi içinde rakibin en uzun uzantýlý taþýnýn uzantý olan yere taþ koyucak
+*	Desciription : This function karÅŸÄ± rakibin taÅŸÄ±nÄ± bulucak ve oyun tahtasi iÃ§inde rakibin en uzun uzantÄ±lÄ± taÅŸÄ±nÄ±n uzantÄ± olan yere taÅŸ koyucak
 *
 *
 *	Input		   : no parameter
@@ -423,7 +412,7 @@ void FindComputerMove() {
 
 	NeigborEnemy enem[200];
 	NeigborEnemy MaxEnem;
-	int Sameness = 0,control = 0,MaxControl = 0;
+	int Sameness = 0, control = 0, MaxControl = 0;
 	MaxEnem.posX = 0;
 	MaxEnem.posY = 0;
 	MaxEnem.NeighborEnemyCounter = "00000000";
@@ -431,8 +420,11 @@ void FindComputerMove() {
 	bool flag = true;
 	char pos;
 	int index = 0;
-	string controller ="00000000";
+	string controller = "00000000";
 	bool isPlayeable = true;
+
+
+	//cout << "***************COMPUTUTER TIME " << endl;
 	for (int column = SizeOfGame - 1; column >= 0; --column)
 	{
 		//cout << GameBoard[SizeOfGame - 1][column] << endl;
@@ -441,7 +433,7 @@ void FindComputerMove() {
 			break;
 		}
 	}
-	
+
 	if (flag) {//First Move in game
 		pos = MoveComputer();
 		int column = static_cast<int> (pos - 'A');
@@ -449,7 +441,7 @@ void FindComputerMove() {
 		{
 			if (GameBoard[row][column] == EMTHY) {
 				GameBoard[row][column] = 'O';
-				cout << "First Movement For Computer " << endl;
+				cout << "Movement For Computer " << "Position is row ->  "<<row <<"Column is " << column << endl;
 				break;
 			}
 		}
@@ -460,14 +452,14 @@ void FindComputerMove() {
 			for (int column = 0; column < SizeOfGame; ++column)
 			{
 
-				for (int i = 3; i >=2; --i)
+				for (int i = 3; i >= 2; --i)
 				{
 					controller = "";
 
 					controller += CheckLeftUpCross(row, column, 'X', 'O', SizeOfGame, i, false);
 					controller += CheckLeftDownCross(row, column, 'X', 'O', SizeOfGame, i, false);
 					controller += CheckRightUpCross(row, column, 'X', 'O', SizeOfGame, i, false);
-					controller += CheckRightDownCross(row, column, 'X', 'O', SizeOfGame,i, false);
+					controller += CheckRightDownCross(row, column, 'X', 'O', SizeOfGame, i, false);
 					controller += CheckLeft(row, column, 'X', 'O', SizeOfGame, i, false);
 					controller += CheckRight(row, column, 'X', 'O', SizeOfGame, i, false);
 					controller += CheckUp(row, column, 'X', 'O', SizeOfGame, i, false);
@@ -486,99 +478,105 @@ void FindComputerMove() {
 						break;
 					}
 				}
-				
+
 			}
 		}
 
-		cout << MaxControl << " MaxEnem.posX "<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY <<" MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter  << endl;
+		//cout << MaxControl << " MaxEnem.posX "<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY <<" MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter  << endl;
 		if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY] == USER1 &&  isPlayeable) {
 			//cout << "***********DEBUG1" << endl;
-			//yukarý doðru
+			//yukarÃ½ doÃ°ru
 			for (int row = MaxEnem.posX - 1; row >= 0; --row)
 			{
 				if (GameBoard[row][MaxEnem.posY] == EMTHY) {
 					GameBoard[row][MaxEnem.posY] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << MaxEnem.posY << endl;
+
 					isPlayeable = false;
 					//cout << "***********DEBUG2" << endl;
 					break;
 				}
 			}
 		}
-		else if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
-			//sol üst dogru
-			//cout << "***********DEBUG1" << endl;
+		if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
+			//sol Ã¼st dogru
+			//cout << "***********DEBUG2" << endl;
 			int row = SizeOfGame;
 			for (int column = MaxEnem.posY - 1; row >= 0, column >= 0; --row, --column)
 			{
 				if (GameBoard[row][column] == EMTHY) {
 					GameBoard[row][column] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << MaxEnem.posY << endl;
+
 					isPlayeable = false;
 					//cout << "***********DEBUG2" << endl;
 					break;
 				}
 			}
 		}
-		else if (GameBoard[MaxEnem.posX][MaxEnem.posY + 1] == USER1 &&  isPlayeable) {
+		if (GameBoard[MaxEnem.posX][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
 			//sol dogru
-			//cout << "***********DEBUG1" << endl;
+			//cout << "***********DEBUG3" << endl;
 
 			for (int column = MaxEnem.posY - 1; column >= 0; --column)
 			{
 				if (GameBoard[MaxEnem.posX][column] == EMTHY) {
 					GameBoard[MaxEnem.posX][column] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
+
 					isPlayeable = false;
-					//cout << "***********DEBUG2" << endl;
+					//cout << "***********DEBUG33" << endl;
 					break;
 				}
 			}
 		}
-		else if (GameBoard[MaxEnem.posX][MaxEnem.posY-1] == USER1 &&  isPlayeable) {
-			//sað dogru
-			//cout << "***********DEBUG1" << endl;
+		if (GameBoard[MaxEnem.posX][MaxEnem.posY + 1] == USER1 &&  isPlayeable) {
+			//saÄŸ dogru
+			//cout << "***********DEBUG4" << endl;
 
-			for (int column = MaxEnem.posY - 1; column <SizeOfGame; ++column)
+			for (int column = MaxEnem.posY + 1; column < SizeOfGame; ++column)
 			{
-				if (GameBoard[MaxEnem.posX][column] == EMTHY) {
+				if (GameBoard[MaxEnem.posX][column] == EMTHY && GameBoard[MaxEnem.posX + 1][column] != EMTHY) {
 					GameBoard[MaxEnem.posX][column] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
+
 					isPlayeable = false;
 					//cout << "***********DEBUG2" << endl;
 					break;
 				}
 			}
 		}
-		else if(  isPlayeable){
+		if (true == isPlayeable) {
 			int  column = 0;
+			time_t t;
+			srand(time(0));
+			bool temp = true;
 			while (1) {
-
-				for (int row = SizeOfGame - 1; row >= 0; --row) {
+				column = rand() % SizeOfGame;
+				if (column < 0)
+					column *= -1;
+				//cout << "DEBUG " << column << endl;
+				for (int row = SizeOfGame - 1; row >= 0,column>=0, column < SizeOfGame ; --row) {
+					if (row < 0)
+					{
+						row = SizeOfGame - 1;
+						//temp = false;
+						break;
+					}
 					if (GameBoard[row][column] == EMTHY) {
 						GameBoard[row][column] = USER2;
+						cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
 						isPlayeable = false;
 						break;
 					}
 				}
 				if (isPlayeable == false)
 					break;
+				if (temp == false)
+					break;
 			}
-			/*for (int row = SizeOfGame-1; row >= 0; --row)
-			{
-				for (int column = SizeOfGame-1; column >= 0; --column)
-				{
-					if (GameBoard[row][column] == EMTHY) {
-						GameBoard[row][column] = USER2;
-						isPlayeable = false;
-						return;
-					}
-				}
-
-			}*/
-
 		}
-
-		
 	}
-
-
 	return;
 }
 
@@ -614,6 +612,11 @@ bool IsPositionPlayable(const int& player_id,const char& pos) {
 *
 */
 int IsGameOver() {
+	if (false == AnyMoveMore()) {
+		cout << "Game is Ended " << endl;
+		cout << "Game is draw play new game" << endl;
+		return -1;
+	}
 
 	if (IsGameOverOneSide(USER1,USER2)){
 		cout << "USER1 WON " << endl;
@@ -624,12 +627,11 @@ int IsGameOver() {
 		return -1;
 
 	}
+
+	
+
 	cout << "Game is not ended " << endl;
 
-	if (!AnyMoveMore()) {
-		cout << "Game is Enden " << endl;
-		return -1;
-	}
 	return 0;
 
 }
@@ -644,6 +646,7 @@ bool AnyMoveMore() {
 			}
 		}
 	}
+	return false;
 }
 
 /*
@@ -690,7 +693,7 @@ bool IsGameOverOneSide(const char& User, const char& other) {
 }
 /*
 *	Desciription : This function checking game board size and game mode 
-*					Cheking interger or not and for size 6x6, 8x8, 10x10, …, 20x20
+*					Cheking interger or not and for size 6x6, 8x8, 10x10, â€¦, 20x20
 *					Cheking game mode  should be 1 or 2
 *	Input		   : no input parameter
 * 

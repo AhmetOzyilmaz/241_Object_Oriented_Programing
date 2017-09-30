@@ -2,13 +2,6 @@
 /*AHMET ÖZYILMAZ 111044014 HOMEWORK 2*/
 #include"main.h"
 
-//TODO
-/***/
-
-
-// auto statement and declrtype statement
-
-
 /*
 *	Desciription : This function saving gameboard status
 *
@@ -372,6 +365,8 @@ void FindComputerMove() {
 			{
 				if (GameBoard[row][MaxEnem.posY] == EMTHY) {
 					GameBoard[row][MaxEnem.posY] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << MaxEnem.posY << endl;
+
 					isPlayeable = false;
 					//cout << "***********DEBUG2" << endl;
 					break;
@@ -386,6 +381,8 @@ void FindComputerMove() {
 			{
 				if (GameBoard[row][column] == EMTHY) {
 					GameBoard[row][column] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
+
 					isPlayeable = false;
 					//cout << "***********DEBUG2" << endl;
 					break;
@@ -400,6 +397,8 @@ void FindComputerMove() {
 			{
 				if (GameBoard[MaxEnem.posX][column] == EMTHY) {
 					GameBoard[MaxEnem.posX][column] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
+
 					isPlayeable = false;
 					//cout << "***********DEBUG33" << endl;
 					break;
@@ -414,28 +413,42 @@ void FindComputerMove() {
 			{
 				if (GameBoard[MaxEnem.posX][column] == EMTHY && GameBoard[MaxEnem.posX+1][column] != EMTHY) {
 					GameBoard[MaxEnem.posX][column] = USER2;
+					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
+
 					isPlayeable = false;
 					//cout << "***********DEBUG2" << endl;
 					break;
 				}
 			}
 		}
-		 if (isPlayeable) {
-			//cout << "***************COMPUTUTER 11111 " << endl;
+		 if (true == isPlayeable) {
+			 //cout << "***************COMPUTUTER 11111 " << endl;
 			int  column = 0;
 			time_t t;
 			srand(time(0));
 
 			while (1) {
 				column = rand() % SizeOfGame;
-				for (int row = SizeOfGame - 1; row >= 0 , column< SizeOfGame; --row) {
+				if (column < 0)
+					column *= -1;
+				//cout << "DEBUG " << column << endl; 
+				for (int row = SizeOfGame - 1; row >= 0, column >= 0, column < SizeOfGame; --row) {
+					if (row < 0)
+					{
+						row = SizeOfGame - 1;
+						//temp = false; 
+						break;
+					}
 					if (GameBoard[row][column] == EMTHY) {
 						GameBoard[row][column] = USER2;
+						cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
 						isPlayeable = false;
 						return;
+						break;
 					}
 				}
-				++column;
+				if (isPlayeable == false)
+					break;
 			}
 
 		}
@@ -494,6 +507,11 @@ int main() {
 */
 int IsGameOver() {
 
+	if (false == AnyMoveMore()) {
+		cout << "Game is Ended " << endl;
+		cout << "Game is draw play new game" << endl;
+		return -1;
+	}
 	if (IsGameOverOneSide(USER1, USER2)) {
 		cout << "USER1 WON " << endl;
 		return -1;
@@ -505,10 +523,7 @@ int IsGameOver() {
 	}
 	cout << "Game is not ended " << endl;
 
-	if (!AnyMoveMore()) {
-		cout << "Game is Enden " << endl;
-		return -1;
-	}
+	
 	return 0;
 
 }
@@ -522,6 +537,7 @@ bool AnyMoveMore() {
 			}
 		}
 	}
+	return false;
 }
 
 /*

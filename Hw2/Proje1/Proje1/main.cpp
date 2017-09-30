@@ -20,10 +20,16 @@
 */
 void SaveFile(const string& filename) {
 
-	ofstream myfile(filename, std::ios::out | std::ios::app | std::ios::_Nocreate);
+	ofstream myfile;
+	myfile.open(filename, std::ofstream::out | std::ofstream::app);
 
 	if (myfile.is_open())
 	{
+		//Oyun modu 1 se  user vs user 2 ise user vs computer 
+		//ikinci eleman oyunun size ı 
+
+		myfile << GameMode << " " << SizeOfGame<< endl;
+
 		for (int row = 0; row < SizeOfGame; ++row)
 		{
 			for (int column = 0; column < SizeOfGame; ++column)
@@ -57,16 +63,23 @@ void LoadFile(const string& filename) {
 	int size = 0;
 	if (myReadFile.is_open()) {
 		int column = 0,row = 0;
-		while (!myReadFile.eof()) {
 
+
+		while (!myReadFile.eof()) {
 			getline(myReadFile, line);
+
+			GameMode = line[0];//ilk eleman oyun modu
+			SizeOfGame = line[2];//2.değişken oyunun size ı
+
+			if(!myReadFile.eof())
+				getline(myReadFile, line);
+
 			cout << line<<endl;
 			for (int column = 0; column < line.size(); column++)
 			{
 				GameBoard[row][column] = line[column];
 			}
 			++row;
-
 		}
 			SizeOfGame = row;
 
@@ -223,24 +236,21 @@ void MovePlayer(const int& player_id,const char& CurrentMove) {
 		OtherComparor = USER1;
 	}
 
-	if (player_id == COMPUTERPLAYERID) {
-		CurrentComparor = USER2;
-		OtherComparor = USER1;
-		//CurrentMove = MoveComputer();
-	}
 
-	if (CurrentMove >= 'A' &&  CurrentMove <= 'Z') {
-		int column = static_cast<int> (CurrentMove - 'A');
+	if (player_id != COMPUTERPLAYERID){
+		if (CurrentMove >= 'A' &&  CurrentMove <= 'Z') {
+			int column = static_cast<int> (CurrentMove - 'A');
 
-		for (auto j = SizeOfGame - 1; j >= 0; --j)
-		{
-			if (GameBoard[j][column] == EMTHY) {
-				GameBoard[j][column] = CurrentComparor;
-				break;
-			}
-			else {
-				//TODO bu sütün için hamle bitmiþ baþka hamle istenmeli;
+			for (auto j = SizeOfGame - 1; j >= 0; --j)
+			{
+				if (GameBoard[j][column] == EMTHY) {
+					GameBoard[j][column] = CurrentComparor;
+					break;
+				}
+				else {
+					//TODO bu sütün için hamle bitmiþ baþka hamle istenmeli;
 
+				}
 			}
 		}
 	}
@@ -295,6 +305,9 @@ void FindComputerMove() {
 	int index = 0;
 	string controller = "00000000";
 	bool isPlayeable = true;
+
+
+	//cout << "***************COMPUTUTER TIME " << endl;
 	for (int column = SizeOfGame - 1; column >= 0; --column)
 	{
 		//cout << GameBoard[SizeOfGame - 1][column] << endl;
@@ -366,9 +379,9 @@ void FindComputerMove() {
 				}
 			}
 		}
-		else if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
+		 if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
 			//sol üst dogru
-			//cout << "***********DEBUG1" << endl;
+			//cout << "***********DEBUG2" << endl;
 			int row = SizeOfGame;
 			for (int column = MaxEnem.posY - 1; row >= 0, column >= 0; --row, --column)
 			{
@@ -380,27 +393,27 @@ void FindComputerMove() {
 				}
 			}
 		}
-		else if (GameBoard[MaxEnem.posX][MaxEnem.posY + 1] == USER1 &&  isPlayeable) {
+		 if (GameBoard[MaxEnem.posX][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
 			//sol dogru
-			//cout << "***********DEBUG1" << endl;
+			//cout << "***********DEBUG3" << endl;
 
 			for (int column = MaxEnem.posY - 1; column >= 0; --column)
 			{
 				if (GameBoard[MaxEnem.posX][column] == EMTHY) {
 					GameBoard[MaxEnem.posX][column] = USER2;
 					isPlayeable = false;
-					//cout << "***********DEBUG2" << endl;
+					//cout << "***********DEBUG33" << endl;
 					break;
 				}
 			}
 		}
-		else if (GameBoard[MaxEnem.posX][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
-			//sað dogru
-			//cout << "***********DEBUG1" << endl;
+		 if (GameBoard[MaxEnem.posX][MaxEnem.posY + 1] == USER1 &&  isPlayeable) {
+			//sağ dogru
+			//cout << "***********DEBUG4" << endl;
 
-			for (int column = MaxEnem.posY - 1; column < SizeOfGame; ++column)
+			for (int column = MaxEnem.posY + 1; column < SizeOfGame; ++column)
 			{
-				if (GameBoard[MaxEnem.posX][column] == EMTHY) {
+				if (GameBoard[MaxEnem.posX][column] == EMTHY && GameBoard[MaxEnem.posX+1][column] != EMTHY) {
 					GameBoard[MaxEnem.posX][column] = USER2;
 					isPlayeable = false;
 					//cout << "***********DEBUG2" << endl;
@@ -408,37 +421,28 @@ void FindComputerMove() {
 				}
 			}
 		}
-		else if (isPlayeable) {
+		 if (isPlayeable) {
+			//cout << "***************COMPUTUTER 11111 " << endl;
 			int  column = 0;
-			while (1) {
+			time_t t;
+			srand(time(0));
 
-				for (int row = SizeOfGame - 1; row >= 0; --row) {
+			while (1) {
+				column = rand() % SizeOfGame;
+				for (int row = SizeOfGame - 1; row >= 0 , column< SizeOfGame; --row) {
 					if (GameBoard[row][column] == EMTHY) {
 						GameBoard[row][column] = USER2;
 						isPlayeable = false;
-						break;
+						return;
 					}
 				}
-				if (isPlayeable == false)
-					break;
+				++column;
 			}
-			/*for (int row = SizeOfGame-1; row >= 0; --row)
-			{
-			for (int column = SizeOfGame-1; column >= 0; --column)
-			{
-			if (GameBoard[row][column] == EMTHY) {
-			GameBoard[row][column] = USER2;
-			isPlayeable = false;
-			return;
-			}
-			}
-			}*/
 
 		}
 
 
 	}
-
 
 	return;
 }

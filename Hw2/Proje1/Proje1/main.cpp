@@ -2,13 +2,6 @@
 /*AHMET ÖZYILMAZ 111044014 HOMEWORK 2*/
 #include"main.h"
 
-//TODO
-/***/
-
-
-// auto statement and declrtype statement
-
-
 /*
 *	Desciription : This function saving gameboard status
 *

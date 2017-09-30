@@ -114,6 +114,31 @@ void Play() {
 	}
 
 }
+
+/*
+*	Desciription : 
+*
+*	Input		   : 
+*
+*	Return Value   : 
+*
+*/
+bool CommandSelector(const string& command) {
+	string filename = "";
+	filename = command.substr(5, command.size());
+	cout << "File name->" << filename << endl;
+
+	if (command.substr(0, 4).compare("SAVE") == 0) {
+		//SaveFile(filename);
+	}
+	else if (command.substr(0, 4).compare("LOAD") == 0) {
+		//LoadFile(filename);
+	}
+
+
+	return false;
+}
+
 /*
 *	Desciription : This function for one player doing all move operation
 *					if player id 1 is user1 if  player id  2 user2 if player id 3 is computer game
@@ -125,33 +150,33 @@ void Play() {
 */
 bool AllMoveOperation(const int& PlayerID) {
 	bool flag = false;
-	string command = "";
-	while (true)
-	{
+	string command = "" ;
+	string command2 = "";
+
+	
+	while (cin)
+	{		
 		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
 			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
 			<< "if you want to continue enter 'GO'  " << endl;
 
-		getline(cin, command);
-		cout << "--->" << command << endl;
+		command = "";
+		cin >> command;
+
 		if (command.size() > 8) { // "LOAD X.txt" minumum kabul edilen kýsým 
-			if (command.substr(0, 4).compare("SAVE") == 0) {
-				string filename = "";
-				filename = command.substr(5, command.size());
-				cout << "File name->" << filename << endl;
-				SaveFile(filename);
-			}
-			else if (command.substr(0, 4).compare("LOAD") == 0) {
-				string filename = "";
-				filename = command.substr(5, command.size());
-				cout << "Filename->" << filename << endl;
-				LoadFile(filename);
-			}
-			else if (command.compare("GO") == 0) {
+			cin >> command2;
+
+			CommandSelector(command2);
+		}
+		else {
+			if (command.compare("GO") == 0) {
 				break;
 			}
-
+			else {
+				cerr << "ERROR COMMAND ENTER NEW  COMMAND " << endl;
+			}
 		}
+
 
 	}
 

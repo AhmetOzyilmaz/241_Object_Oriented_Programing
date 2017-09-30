@@ -12,7 +12,7 @@ void InputValidator();
 void PrintGameBoard();
 bool MoveInputCheck();
 char TakeMove(const int& PlayerID);
-
+bool CommandSelector();
 
 int MyStringCompare(const string& s1);
 int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);

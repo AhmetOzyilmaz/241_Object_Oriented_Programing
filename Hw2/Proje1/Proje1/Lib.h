@@ -21,4 +21,3 @@ const char USER2 = 'O';
 const char EMTHY = '.';
 
 char GameBoard[MAXSIZE][MAXSIZE];
-char CurrentMove = '\0';

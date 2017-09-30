@@ -165,38 +165,15 @@ bool CommandSelector(const string& command) {
 bool AllMoveOperation(const int& PlayerID) {
 	bool flag = false;
 	string command = "" ;
-	string command2 = "";
-
-	
-	while (cin)
-	{		
-		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
-			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
-			<< "if you want to continue enter 'GO'  " << endl;
-
-		command = "";
-		cin >> command;
-
-		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
-			cin >> command2;
-			command2 = command + " " + command2;
-			CommandSelector(command2);
-		}
-		else {
-			if (command.compare("GO") == 0) {
-				break;
-			}
-			else {
-				cerr << "ERROR COMMAND ENTER NEW  COMMAND " << endl;
-			}
-		}
-
-
-	}
 
 	if (PlayerID != 3) {
-		CurrentMove = TakeMove(PlayerID);
-		flag = MoveInputCheck();
+		command = TakeMove(PlayerID);
+
+		while(command[0]== '-' || command[0] =='+')
+			command = TakeMove(PlayerID);
+
+		flag = MoveInputCheck(command);
+
 	}
 	else if (PlayerID == 3) {
 		FindComputerMove();
@@ -205,11 +182,11 @@ bool AllMoveOperation(const int& PlayerID) {
 	if (flag) {
 		cout << "MoveInputCheck is correct\n";
 		//if flag true this can true input i will checking position is playable
-		if (IsPositionPlayable(PlayerID, CurrentMove)) {
+		if (IsPositionPlayable(PlayerID, command[0])) {
 			// play move
 			//cout << "is position playable " << CurrentMove << "\n";
 
-			MovePlayer(PlayerID);
+			MovePlayer(PlayerID, command[0]);
 		}
 		else {
 			cerr << "Position Cannot play enter another move " << endl;
@@ -232,7 +209,7 @@ bool AllMoveOperation(const int& PlayerID) {
 *	Return Value   :
 *
 */
-void MovePlayer(const int& player_id) {
+void MovePlayer(const int& player_id,const char& CurrentMove) {
 	char CurrentComparor = '\0';
 	char OtherComparor = '\0';
 
@@ -249,7 +226,7 @@ void MovePlayer(const int& player_id) {
 	if (player_id == COMPUTERPLAYERID) {
 		CurrentComparor = USER2;
 		OtherComparor = USER1;
-		CurrentMove = MoveComputer();
+		//CurrentMove = MoveComputer();
 	}
 
 	if (CurrentMove >= 'A' &&  CurrentMove <= 'Z') {
@@ -867,12 +844,12 @@ bool IsPositionPlayable(const int& player_id, const char& pos) {
 *
 */
 
-bool MoveInputCheck() {
+bool MoveInputCheck(const string& command) {
 
 	//cout << "Current MoveInputCheck " << CurrentMove << endl;
-	if (CurrentMove >= 'A' + SizeOfGame || CurrentMove < 'A')
+	if (command[0] >= 'A' + SizeOfGame || command[0] < 'A')
 		return false;
-	if (!isalpha(CurrentMove))
+	if (!isalpha(command[0]))
 		return false;
 
 	return true;
@@ -891,23 +868,35 @@ bool MoveInputCheck() {
 */
 char TakeMove(const int& PlayerID ) {
 	bool flag = false;
+	string command = "",command2="";
 	while (1) {
+
+		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
+			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n ";
+
 		cout << "Enter one grater letter  move A , B, C ...\n";
 		cout << "\t For : USER" << PlayerID << endl;
-		cin >> CurrentMove;
-		if (MoveInputCheck())
-			break;
-	}
 
-	if (!flag)
-		return CurrentMove
-		;
-	else
+		cin >> command;
+
+		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
+			cin >> command2;
+			command2 = command + " " + command2;
+			CommandSelector(command2);
+			return '+';
+		}
+		else {
+			 if (command.size()== 1) {
+				if (MoveInputCheck(command));
+				return command[0];
+			}
+			else {
+				cerr << "ERROR COMMAND ENTER NEW  COMMAND " << endl;
+			}
+		}
+	}
 		return '-';
 }
-
-
-
 
 /*
 *	Desciription : Printing screen current status of game board

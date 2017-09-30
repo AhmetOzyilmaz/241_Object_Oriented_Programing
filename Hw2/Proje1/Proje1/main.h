@@ -10,9 +10,9 @@ struct NeigborEnemy
 
 void InputValidator();
 void PrintGameBoard();
-bool MoveInputCheck();
+bool MoveInputCheck(const string& command);
 char TakeMove(const int& PlayerID);
-bool CommandSelector();
+bool CommandSelector(const string& command);
 
 int MyStringCompare(const string& s1);
 int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);
@@ -43,7 +43,7 @@ bool AnyMoveMore();
 
 void Play();
 
-void MovePlayer(const int&);
+void MovePlayer(const int&,const char&);
 char MoveComputer();
 void FindComputerMove();
 

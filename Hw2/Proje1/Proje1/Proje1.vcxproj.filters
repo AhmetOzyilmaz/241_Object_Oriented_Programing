@@ -23,5 +23,8 @@
     <ClInclude Include="main.h">
       <Filter>Kaynak Dosyalar</Filter>
     </ClInclude>
+    <ClInclude Include="Lib.h">
+      <Filter>Kaynak Dosyalar</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

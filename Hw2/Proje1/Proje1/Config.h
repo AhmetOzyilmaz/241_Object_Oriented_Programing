@@ -1,5 +1,3 @@
-#pragma once
-
 #include<iostream>
 #include <cstdlib>     /* srand, rand */
 #include <ctime>
@@ -19,5 +17,4 @@ const int ONE_PLAYER_VERSUS_COMPUTER = 1;
 const char USER1 = 'X';
 const char USER2 = 'O';
 const char EMTHY = '.';
-
 char GameBoard[MAXSIZE][MAXSIZE];

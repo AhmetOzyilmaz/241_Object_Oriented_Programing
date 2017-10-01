@@ -17,7 +17,7 @@ int MyStringCompare(const string& s1);
 int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);
 
 string PartnerCheck(const int direction, const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
-
+bool PlayIsPlayeable(const int& direction, bool isPlayeable, const NeigborEnemy& MaxEnem, int row, int column);
 bool IsPositionPlayable(const int& player_id, const char& pos);
 bool IsGameOverOneSide(const char& User, const char& other);
 int IsGameOver();

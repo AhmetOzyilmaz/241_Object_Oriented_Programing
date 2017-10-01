@@ -32,7 +32,6 @@ void SaveFile(const string& filename) {
 	cout << "Game Board Saved Correctly" << endl;
 
 }
-
 /*
 *	Desciription : This function loading saved gameboard from file
 *	Input		   : conts string file name
@@ -56,20 +55,15 @@ void LoadFile(const string& filename) {
 			cout << "GameMode -->" << GameMode << endl;
 
 		}
-			
-
 		while (!myReadFile.eof()) {
 			getline(myReadFile, line);
 
 			for (int column = 0; column < line.size(); column++)
-			{
 				GameBoard[row][column] = line[column];
-			}
+
 			++row;
 		}
 			SizeOfGame = line.size();
-
-
 	}
 	cout << "Game Board Loaded Correctly" << endl;
 	cout << "New Game Board is " << endl;
@@ -84,10 +78,8 @@ void LoadFile(const string& filename) {
 *	Return Value   : no return value
 */
 void Play() {
-	int control = 0;
-	int check = 0;
+	int control = 0, check = 0;
 	while (1) {
-
 		//first move  player 1
 		AllMoveOperation(USER1PLAYERID);
 		check = IsGameOver();
@@ -97,7 +89,6 @@ void Play() {
 			break;
 
 		if (ONE_PLAYER_VERSUS_COMPUTER == GameMode) {
-
 			//second player 2
 			AllMoveOperation(USER2PLAYERID);
 			PrintGameBoard();
@@ -106,7 +97,7 @@ void Play() {
 				break;
 		}
 		else if (TWO_PLAYER == GameMode) {
-				//second play player 2
+			//second play player 2
 			AllMoveOperation(COMPUTERPLAYERID);
 			PrintGameBoard();
 			check = IsGameOver();
@@ -114,9 +105,7 @@ void Play() {
 				break;
 		}
 	}
-
 }
-
 /*
 *	Desciription : //This game has 2 type command Load and Save 
 *	Input		   : const string& taking command from user 
@@ -163,10 +152,8 @@ bool AllMoveOperation(const int& PlayerID) {
 	if (flag) {
 		cout << "MoveInputCheck is correct\n";
 		//if flag true this can true input i will checking position is playable
-		if (IsPositionPlayable(PlayerID, command[0])) {
-			// play move
+		if (IsPositionPlayable(PlayerID, command[0])) {// play move
 			//cout << "is position playable " << CurrentMove << "\n";
-
 			MovePlayer(PlayerID, command[0]);
 		}
 		else {
@@ -195,19 +182,14 @@ void MovePlayer(const int& player_id,const char& CurrentMove) {
 		CurrentComparor = USER1;
 		OtherComparor = USER2;
 	}
-
 	else if (player_id == USER2PLAYERID) {
 		CurrentComparor = USER2;
 		OtherComparor = USER1;
 	}
-
-
 	if (player_id != COMPUTERPLAYERID){
 		if (CurrentMove >= 'A' &&  CurrentMove <= 'Z') {
 			int column = static_cast<int> (CurrentMove - 'A');
-
-			for (auto j = SizeOfGame - 1; j >= 0; --j)
-			{
+			for (auto j = SizeOfGame - 1; j >= 0; --j){
 				if (GameBoard[j][column] == EMTHY) {
 					GameBoard[j][column] = CurrentComparor;
 					break;
@@ -223,15 +205,13 @@ void MovePlayer(const int& player_id,const char& CurrentMove) {
 *	Return Value   : returnin if u find placable positon or returning '.' for error
 */
 char MoveComputer() {
-	//TODO
 	char pos;
 	while (1) {
 		srand(time(NULL));
 		pos = 'A' + rand() % SizeOfGame;
 		//cout <<"Computer Position " << pos << endl;
-		if (IsPositionPlayable(COMPUTERPLAYERID, pos)) {
+		if (IsPositionPlayable(COMPUTERPLAYERID, pos))
 			return pos;
-		}
 	}
 	return '.';
 }
@@ -244,26 +224,21 @@ char MoveComputer() {
 void FindComputerMove() {
 
 	NeigborEnemy MaxEnem;
-
 	MaxEnem.posX = 0;
 	MaxEnem.posY = 0;
 	MaxEnem.NeighborEnemyCounter = "00000000";
 
-	int  control = 0, MaxControl = 0;
-	bool flag = true;
+	int  control = 0, MaxControl = 0, index = 0;
+	bool flag = true ,isPlayeable = true;
 	char pos;
-	int index = 0;
 	string controller = "00000000";
-	bool isPlayeable = true;
 
-	for (int column = SizeOfGame - 1; column >= 0; --column)
-	{
+	for (int column = SizeOfGame - 1; column >= 0; --column){
 		if (GameBoard[SizeOfGame - 1][column] == USER2) {
 			flag = false;
 			break;
 		}
 	}
-
 	if (flag) {//First Move in game
 		pos = MoveComputer();
 		int column = static_cast<int> (pos - 'A');
@@ -277,24 +252,14 @@ void FindComputerMove() {
 		}
 	}
 	else {
-		for (int row = 0; row < SizeOfGame; ++row)
-		{
-			for (int column = 0; column < SizeOfGame; ++column)
-			{
-
-				for (int i = 3; i >= 2; --i)
-				{
+		for (int row = 0; row < SizeOfGame; ++row){
+			for (int column = 0; column < SizeOfGame; ++column){
+				for (int i = 3; i >= 2; --i){
 					controller = "";
-
 					for (int direction = 1; direction <= 8; direction++)//8 is number of direction
-					{
 						controller += PartnerCheck(direction,row, column, 'X', 'O', SizeOfGame, i, false);
-					}
-
 					control = MyStringCompare(controller);
-
 					if (control > MaxControl) {
-
 						MaxControl = control;
 						MaxEnem.posX = row;
 						MaxEnem.posY = column;
@@ -302,80 +267,36 @@ void FindComputerMove() {
 						break;
 					}
 				}
-
 			}
 		}
-
+		int row = 0, column = 0;
 		//cout << MaxControl << " MaxEnem.posX "<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY <<" MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter  << endl;
 		if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY] == USER1 &&  isPlayeable) {
 			//cout << "***********DEBUG1" << endl;
 			//yukarý doðru
-			for (int row = MaxEnem.posX - 1; row >= 0; --row)
-			{
-				if (GameBoard[row][MaxEnem.posY] == EMTHY) {
-					GameBoard[row][MaxEnem.posY] = USER2;
-					cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << MaxEnem.posY << endl;
-
-					isPlayeable = false;
-					//cout << "***********DEBUG2" << endl;
-					break;
-				}
-			}
+			
+			isPlayeable=PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
 		}
-		 if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
+		if (GameBoard[MaxEnem.posX - 1][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
 			//sol üst dogru
 			//cout << "***********DEBUG2" << endl;
-			int row = SizeOfGame;
-			for (int column = MaxEnem.posY - 1; row >= 0, column >= 0; --row, --column)
-			{
-				if (GameBoard[row][column] == EMTHY) {
-					GameBoard[row][column] = USER2;
-					cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
-
-					isPlayeable = false;
-					//cout << "***********DEBUG2" << endl;
-					break;
-				}
-			}
+			isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, SizeOfGame, MaxEnem.posY - 1);
 		}
-		 if (GameBoard[MaxEnem.posX][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
+		if (GameBoard[MaxEnem.posX][MaxEnem.posY - 1] == USER1 &&  isPlayeable) {
 			//sol dogru
 			//cout << "***********DEBUG3" << endl;
-
-			for (int column = MaxEnem.posY - 1; column >= 0; --column)
-			{
-				if (GameBoard[MaxEnem.posX][column] == EMTHY) {
-					GameBoard[MaxEnem.posX][column] = USER2;
-					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
-
-					isPlayeable = false;
-					//cout << "***********DEBUG33" << endl;
-					break;
-				}
-			}
+			isPlayeable = PlayIsPlayeable(3, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY - 1);
 		}
-		 if (GameBoard[MaxEnem.posX][MaxEnem.posY + 1] == USER1 &&  isPlayeable) {
+		if (GameBoard[MaxEnem.posX][MaxEnem.posY + 1] == USER1 &&  isPlayeable) {
 			//sağ dogru
 			//cout << "***********DEBUG4" << endl;
-
-			for (int column = MaxEnem.posY + 1; column < SizeOfGame; ++column)
-			{
-				if (GameBoard[MaxEnem.posX][column] == EMTHY && GameBoard[MaxEnem.posX+1][column] != EMTHY) {
-					GameBoard[MaxEnem.posX][column] = USER2;
-					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
-
-					isPlayeable = false;
-					//cout << "***********DEBUG2" << endl;
-					break;
-				}
-			}
+			isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
 		}
-		 if (true == isPlayeable) {
+		if (true == isPlayeable) {
 			 //cout << "***************COMPUTUTER 11111 " << endl;
 			int  column = 0;
 			time_t t;
 			srand(time(0));
-
 			while (1) {
 				column = rand() % SizeOfGame;
 				if (column < 0)
@@ -399,15 +320,55 @@ void FindComputerMove() {
 				if (isPlayeable == false)
 					break;
 			}
-
 		}
-
-
 	}
-
 	return;
 }
+/*
+*	Desciription : returning isPlaceable
+*	Input		   : no input parameter
+*	Return Value : no return value
+*/
+bool PlayIsPlayeable(const int& direction,bool isPlayeable, const NeigborEnemy& MaxEnem, int row,int column) {
 
+	for (; ; )
+	{
+		if (row < 0 || row >= SizeOfGame ) 
+			break;
+		if (column < 0 || column >= SizeOfGame)
+			break;
+
+		if (direction != 4) {//özel durum
+			if (GameBoard[row][column] == EMTHY) {
+				GameBoard[row][column] = USER2;
+				cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
+				return false;
+			}
+		}
+		else {
+			if (GameBoard[MaxEnem.posX][column] == EMTHY && GameBoard[MaxEnem.posX + 1][column] != EMTHY) {
+				GameBoard[MaxEnem.posX][column] = USER2;
+				cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
+				return false;
+			}
+		}
+		if (direction == 1) {
+			--row;
+		}
+		else if (direction == 2) {
+			--row, --column;
+		}
+		else if (direction == 3) {
+			--column;
+		}
+		else if (direction == 4) {
+			++column;
+		}
+		else if (direction == 5) {
+		}
+	}
+	return true;
+}
 /*
 *	Desciription : This function initial board
 *	Input		   : no input parameter
@@ -461,13 +422,10 @@ int IsGameOver() {
 	return 0;
 }
 bool AnyMoveMore() {
-	for (int i = SizeOfGame - 1; i >= 0; --i)
-	{
-		for (int j = SizeOfGame - 1; j >= 0; --j)
-		{
-			if (GameBoard[i][j] == EMTHY) {
+	for (int i = SizeOfGame - 1; i >= 0; --i){
+		for (int j = SizeOfGame - 1; j >= 0; --j){
+			if (GameBoard[i][j] == EMTHY) 
 				return true;
-			}
 		}
 	}
 	return false;
@@ -479,15 +437,12 @@ bool AnyMoveMore() {
 *	Return Value : return interger if 1 user one won if  2 user2 won  if -1 game is not ender
 */
 bool IsGameOverOneSide(const char& User, const char& other) {
-	//TODO
-
 	string controller = "";
 	for (int i = SizeOfGame - 1; i >= 0; --i)
 	{
 		for (int j = SizeOfGame - 1; j >= 0; --j)
 		{
 			controller = "";
-			
 			for (int direction = 1; direction <= 8; direction++)//8 is number of direction
 				controller += PartnerCheck(direction, i, j, User, other, SizeOfGame, 4, true);
 			if (controller != "00000000") {
@@ -496,9 +451,7 @@ bool IsGameOverOneSide(const char& User, const char& other) {
 				return true;
 			}
 		}
-
 	}
-
 	return false;
 }
 
@@ -526,8 +479,6 @@ int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int&
 		count = 0;
 	return count;
 }
-
-
 /*
 *	Desciription : This function controlling given direction and size of element
 *	Input		   : 

@@ -299,7 +299,7 @@ void Play() {
 */
 bool AllMoveOperation(const int& PlayerID){
 	bool flag = false;
-
+	CurrentPlayerId = PlayerID;
 	if (PlayerID != 3) {
 		CurrentMove = TakeMove();
 		flag = MoveInputCheck();

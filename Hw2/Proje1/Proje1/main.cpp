@@ -125,7 +125,6 @@ int AllMoveOperation(const int& PlayerID) {
 		command = TakeMove(PlayerID);
 		if (command[0] == '+')
 			return 2;// 
-			command = TakeMove(PlayerID);
 		flag = MoveInputCheck(command);
 	}
 	else if (PlayerID == 3) {

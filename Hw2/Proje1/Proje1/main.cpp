@@ -14,14 +14,13 @@ void SaveFile(const string& filename) {
 		//Oyun modu 1 se  user vs user 2 ise user vs computer 
 		//ikinci eleman oyunun size ı 
 		//TODO hamle kimde kaldıysa onun idsi CurrenPlayerID olarak atanıcak
-		int CurrentPlayerId = 1;//WRONG
 
-		myfile << GameMode << " " << SizeOfGame<<" "<<CurrentPlayerId<<endl;
+		myfile << GameMode << " " << SizeOfGame<<" "<< WhoIsWillPlay <<endl;
 		for (int row = 0; row < SizeOfGame; ++row){
 			for (int column = 0; column < SizeOfGame; ++column)
 				myfile << GameBoard[row][column];
 			if(row < SizeOfGame -1)
-			myfile << "\n";
+				myfile << "\n";
 		}
 		myfile.close();
 	}
@@ -48,6 +47,8 @@ void LoadFile(const string& filename) {
 		if (!myReadFile.eof()) {
 			GameMode = line[0]- '0';//ilk eleman oyun modu
 			SizeOfGame = line[2] - '0';//2.değişken oyunun size ı
+			WhoIsWillPlay = line[4] - '0';//3.değişken oyunu şimdi kimin oynaması gerektiği
+
 			//cout << "SizeOFgame -->" << SizeOfGame<<endl;//cout << "GameMode -->" << GameMode << endl;
 			while (!myReadFile.eof()) {
 				getline(myReadFile, line);
@@ -75,20 +76,23 @@ void LoadFile(const string& filename) {
 */
 void Play() {
 	int control = 0, check = 0;
-	int whoIsPlaying = 0;
 
 	while (1) {
-		if (whoIsPlaying == 0){
+		if (WhoIsWillPlay == 1){
 			//Player1
-			AllMoveOperation(USER1PLAYERID);
-			whoIsPlaying = 1;
+			control = AllMoveOperation(USER1PLAYERID);
+			if(control != 2)
+				WhoIsWillPlay = 2;
+			//cout << "PLAYER 1 " << endl;
 		}
-		else if (whoIsPlaying == 1 ) {
+		 else if (WhoIsWillPlay == 2 ) {
 			if(ONE_PLAYER_VERSUS_COMPUTER == GameMode)
-				AllMoveOperation(COMPUTERPLAYERID);
+				control = AllMoveOperation(COMPUTERPLAYERID);
 			else if( TWO_PLAYER == GameMode)
-				AllMoveOperation(USER2PLAYERID);
-			whoIsPlaying = 0;
+				control = AllMoveOperation(USER2PLAYERID);
+			WhoIsWillPlay = 1;
+			//cout << "PLAYER 2 " << endl;
+
 		}
 		check = IsGameOver();
 		PrintGameBoard();
@@ -119,25 +123,25 @@ bool CommandSelector(const string& command) {
 /*
 *	Desciription : This function managing all player move operation 
 *	Input		   : Interger for which player playing
-*	Return Value   : if return false  take move from user again
+*	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
 */
-bool AllMoveOperation(const int& PlayerID) {
+int AllMoveOperation(const int& PlayerID) {
 	bool flag = false;
 	string command = "" ;
 	if (PlayerID != 3) {
-		while (flag != true) {
+		//while (flag != true) {
 			command = TakeMove(PlayerID);
-			PrintGameBoard();
-			while (command[0] == '-' || command[0] == '+') {
+			if (command[0] == '+')
+				return 2;// 
+			/*while (command[0] == '-' || command[0] == '+') {
 				command = TakeMove(PlayerID);
-			}
+			}*/
 			flag = MoveInputCheck(command);
-		
-		}
+		//}
 	}
 	else if (PlayerID == 3) {
 		FindComputerMove();
-		return true;
+		return 0;
 	}
 	if (flag) {
 		cout << "MoveInputCheck is correct\n";
@@ -148,14 +152,14 @@ bool AllMoveOperation(const int& PlayerID) {
 		}
 		else {
 			cerr << "Position Cannot play enter another move " << endl;
-			return false;
+			return -1;
 		}
 	}
 	else
 		cerr << "MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
 
 	//cout << "AllMoveOperation func return false\n";
-	return false;
+	return -1;
 }
 /*
 *	Desciription : This function taking one move without computer and make a move
@@ -347,7 +351,6 @@ void InitialBoard() {
 		for (auto j = 0; j < SizeOfGame; ++j)
 			GameBoard[i][j] = EMTHY;
 }
-
 int main() {
 	char command = '.';
 	while (1) {
@@ -393,7 +396,6 @@ bool AnyMoveMore() {
 	}
 	return false;
 }
-
 /*
 *	Desciription : This function checking is game ended for one side
 *	Input		   : no input
@@ -435,9 +437,9 @@ int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int&
 	return count;
 }
 /*
-*	Desciription : This function controlling given direction and size of element
-*	Input		   : 
-*	Return Value : return string 1 or 0
+*	Desciription	: This function controlling given direction and size of element
+*	Input			: 
+*	Return Value	: return string 1 or 0
 */
 
 string PartnerCheck(const int direction,const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
@@ -535,9 +537,9 @@ bool IsPositionPlayable(const int& player_id, const char& pos) {
 }
 
 /*
-*	Desciription : This function checking input function
-*	Input		   : char move = entered move
-*	Return Value   : if move is legal  return true  or return false
+*	Desciription	: This function checking input function
+*	Input			: char move = entered move
+*	Return Value	: if move is legal  return true  or return false
 */
 
 bool MoveInputCheck(const string& command) {
@@ -579,7 +581,7 @@ char TakeMove(const int& PlayerID ) {
 	return '-';
 }
 /*	Desciription : Printing screen current status of game board
-*	Input		   : no input parameter
+*	Input		 : no input parameter
 *	Return Value : no return value
 */
 void PrintGameBoard() {
@@ -599,11 +601,9 @@ void PrintGameBoard() {
 *	Desciription : This function checking game board size and game mode
 *					Cheking interger or not and for size 6x6, 8x8, 10x10, 20x20
 *					Cheking game mode  should be 1 or 2
-*	Input		   : no input parameter
+*	Input		 : no input parameter
 *	Return Value : no return value */
-
 void InputValidator() {
-
 	while (1) {
 		cout << "Enter Game size \n" << "Game board size should be ->  \n  <  4 x 4 , 6x6, 8x8, 10x10,  ... , 20x20 >.\n";
 		cin >> SizeOfGame;

@@ -18,3 +18,4 @@ const char USER1 = 'X';
 const char USER2 = 'O';
 const char EMTHY = '.';
 char GameBoard[MAXSIZE][MAXSIZE];
+int WhoIsWillPlay = 1;

@@ -19,7 +19,7 @@ bool PlayIsPlayeable(const int& direction, bool isPlayeable, const NeigborEnemy&
 bool IsPositionPlayable(const int& player_id, const char& pos);
 bool IsGameOverOneSide(const char& User, const char& other);
 int IsGameOver();
-bool AllMoveOperation(const int& PlayerID);
+int AllMoveOperation(const int& PlayerID);
 void SaveFile(const string& filename);
 void LoadFile(const string& filename);
 bool AnyMoveMore();

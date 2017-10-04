@@ -4,8 +4,8 @@
 /*
 *	This input file first line 1 element is game mode 
 *	second element is game board size and 
-*	3 element is which player will play  after loading game
-*/
+*	3 element is which player will play  after loading game*/
+
 /*
 *	Desciription : This function saving gameboard status
 *	Input		   : conts string file name
@@ -47,9 +47,11 @@ void LoadFile(const string& filename) {
 		getline(myReadFile, line);
 		//cout << line<<endl;
 		if (!myReadFile.eof()) {
-			GameMode = line[0]- '0';//ilk eleman oyun modu
-			SizeOfGame = line[2] - '0';//2.değişken oyunun size ı
-			WhoIsWillPlay = line[4] - '0';//3.değişken oyunu şimdi kimin oynaması gerektiği
+			if (line.size() >= 5) {
+				GameMode = line[0] - '0';//ilk eleman oyun modu
+				SizeOfGame = line[2] - '0';//2.değişken oyunun size ı
+				WhoIsWillPlay = line[4] - '0';//3.değişken oyunu şimdi kimin oynaması gerektiği		
+			}			
 			while (!myReadFile.eof()) {
 				getline(myReadFile, line);
 				for (int column = 0; column < line.size(); ++column)
@@ -327,20 +329,7 @@ void InitialBoard() {
 		for (auto j = 0; j < SizeOfGame; ++j)
 			GameBoard[i][j] = EMTHY;
 }
-int main() {
-	char command = '.';
-	while (1) {
-		InputValidator();
-		InitialBoard();
-		PrintGameBoard();
-		Play();
-		cout << "if you want to quit enter q or enter different character" << endl;
-		cin >> command;
-		if (command == 'q' || command == 'Q')
-			break;
-	}
-	return 0;
-}
+
 /*
 *	Desciription : This function checking is game ended or not
 *	Input		   : no input
@@ -613,4 +602,19 @@ void InputValidator() {
 		}
 	}
 	return;
+}
+
+int main() {
+	char command = '.';
+	while (1) {
+		InputValidator();
+		InitialBoard();
+		PrintGameBoard();
+		Play();
+		cout << "if you want to quit enter q or enter different character" << endl;
+		cin >> command;
+		if (command == 'q' || command == 'Q')
+			break;
+	}
+	return 0;
 }

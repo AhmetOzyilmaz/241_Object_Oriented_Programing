@@ -1,7 +1,11 @@
 ﻿/*Connected Four Game */
 /*AHMET ÖZYILMAZ 111044014 HOMEWORK 2*/
 #include"main.h"
-
+/*
+*	This input file first line 1 element is game mode 
+*	second element is game board size and 
+*	3 element is which player will play  after loading game
+*/
 /*
 *	Desciription : This function saving gameboard status
 *	Input		   : conts string file name
@@ -27,8 +31,6 @@ void SaveFile(const string& filename) {
 	else cerr << "Unable to open file";
 	//cout << "Game Board Saved Correctly" << endl;
 }
-
-
 /*
 *	Desciription : This function loading saved gameboard from file
 *	Input		   : conts string file name
@@ -48,19 +50,14 @@ void LoadFile(const string& filename) {
 			GameMode = line[0]- '0';//ilk eleman oyun modu
 			SizeOfGame = line[2] - '0';//2.değişken oyunun size ı
 			WhoIsWillPlay = line[4] - '0';//3.değişken oyunu şimdi kimin oynaması gerektiği
-
-			//cout << "SizeOFgame -->" << SizeOfGame<<endl;//cout << "GameMode -->" << GameMode << endl;
 			while (!myReadFile.eof()) {
 				getline(myReadFile, line);
-				//cout << line << endl;
-				//cout << line.size() << endl;
 				for (int column = 0; column < line.size(); ++column)
 					GameBoard[row][column] = line[column];
 				++row;
 			}
 			SizeOfGame = row;
-			cout << "Game Board Loaded Correctly" << endl;
-			cout << "New Game Board is " << endl;
+			cout << "Game Board Loaded Correctly\nNew Game Board is " << endl;
 			PrintGameBoard();
 		}
 		else 
@@ -76,14 +73,12 @@ void LoadFile(const string& filename) {
 */
 void Play() {
 	int control = 0, check = 0;
-
 	while (1) {
 		if (WhoIsWillPlay == 1){
 			//Player1
 			control = AllMoveOperation(USER1PLAYERID);
 			if(control != 2)
 				WhoIsWillPlay = 2;
-			//cout << "PLAYER 1 " << endl;
 		}
 		 else if (WhoIsWillPlay == 2 ) {
 			if(ONE_PLAYER_VERSUS_COMPUTER == GameMode)
@@ -91,8 +86,6 @@ void Play() {
 			else if( TWO_PLAYER == GameMode)
 				control = AllMoveOperation(USER2PLAYERID);
 			WhoIsWillPlay = 1;
-			//cout << "PLAYER 2 " << endl;
-
 		}
 		check = IsGameOver();
 		PrintGameBoard();
@@ -106,9 +99,7 @@ void Play() {
 *	Return Value   :  doing operation correctly returning true else returning false
 */
 bool CommandSelector(const string& command) {
-	string filename = "";
-	filename = command.substr(5, command.size());
-	//cout << "File name->" << filename << endl;
+	 string filename = command.substr(5, command.size());
 	if (command.substr(0, 4).compare("SAVE") == 0) {
 		SaveFile(filename);
 		return true;
@@ -129,15 +120,11 @@ int AllMoveOperation(const int& PlayerID) {
 	bool flag = false;
 	string command = "" ;
 	if (PlayerID != 3) {
-		//while (flag != true) {
+		command = TakeMove(PlayerID);
+		if (command[0] == '+')
+			return 2;// 
 			command = TakeMove(PlayerID);
-			if (command[0] == '+')
-				return 2;// 
-			/*while (command[0] == '-' || command[0] == '+') {
-				command = TakeMove(PlayerID);
-			}*/
-			flag = MoveInputCheck(command);
-		//}
+		flag = MoveInputCheck(command);
 	}
 	else if (PlayerID == 3) {
 		FindComputerMove();
@@ -147,7 +134,6 @@ int AllMoveOperation(const int& PlayerID) {
 		cout << "MoveInputCheck is correct\n";
 		//if flag true this can true input i will checking position is playable
 		if (IsPositionPlayable(PlayerID, command[0])) {// play move
-			//cout << "is position playable " << CurrentMove << "\n";
 			MovePlayer(PlayerID, command[0]);
 		}
 		else {
@@ -157,8 +143,6 @@ int AllMoveOperation(const int& PlayerID) {
 	}
 	else
 		cerr << "MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
-
-	//cout << "AllMoveOperation func return false\n";
 	return -1;
 }
 /*
@@ -168,9 +152,7 @@ int AllMoveOperation(const int& PlayerID) {
 *	Return Value   : No return value
 */
 void MovePlayer(const int& player_id,const char& CurrentMove) {
-	char CurrentComparor = '\0';
-	char OtherComparor = '\0';
-
+	char CurrentComparor = '\0', OtherComparor = '\0';
 	if (player_id == USER1PLAYERID) {
 		CurrentComparor = USER1;
 		OtherComparor = USER2;
@@ -191,7 +173,6 @@ void MovePlayer(const int& player_id,const char& CurrentMove) {
 		}
 	}
 }
-
 /*
 *	Desciription : This function computer automatic playin move
 *	Input		   : no parameter
@@ -202,7 +183,6 @@ char MoveComputer() {
 	while (1) {
 		srand(time(NULL));
 		pos = 'A' + rand() % SizeOfGame;
-		//cout <<"Computer Position " << pos << endl;
 		if (IsPositionPlayable(COMPUTERPLAYERID, pos))
 			return pos;
 	}
@@ -215,7 +195,6 @@ char MoveComputer() {
 *	Return Value   : no return value
 */
 void FindComputerMove() {
-
 	NeigborEnemy MaxEnem;
 	MaxEnem.posX = 0;
 	MaxEnem.posY = 0;
@@ -281,7 +260,6 @@ void FindComputerMove() {
 				column = rand() % SizeOfGame;
 				if (column < 0)
 					column *= -1;
-				//cout << "DEBUG " << column << endl; 
 				for (int row = SizeOfGame - 1; row >= 0, column >= 0, column < SizeOfGame; --row) {
 					if (row < 0){
 						row = SizeOfGame - 1;
@@ -313,7 +291,6 @@ bool PlayIsPlayeable(const int& direction,bool isPlayeable, const NeigborEnemy& 
 			break;
 		if (column < 0 || column >= SizeOfGame)
 			break;
-
 		if (direction != 4) {//özel durum
 			if (GameBoard[row][column] == EMTHY) {
 				GameBoard[row][column] = USER2;
@@ -345,7 +322,6 @@ bool PlayIsPlayeable(const int& direction,bool isPlayeable, const NeigborEnemy& 
 *	Input		   : no input parameter
 *	Return Value : no return value
 */
-
 void InitialBoard() {
 	for (auto i = 0; i < SizeOfGame; ++i)
 		for (auto j = 0; j < SizeOfGame; ++j)
@@ -377,11 +353,11 @@ int IsGameOver() {
 		return -1;
 	}
 	if (IsGameOverOneSide(USER1, USER2)) {
-		cout << "USER1 WON " << endl;
+		cout << "<---------------->USER1 WON<---------------->" << endl;
 		return -1;
 	}
 	if (IsGameOverOneSide(USER2, USER1)) {
-		cout << "USER2 WON " << endl;
+		cout << "<---------------->USER2 WON<----------------> " << endl;
 		return -1;
 	}
 	cout << "Game is not ended " << endl;
@@ -414,7 +390,6 @@ bool IsGameOverOneSide(const char& User, const char& other) {
 	}
 	return false;
 }
-
 /*
 *	Desciription : This function returnin number of '1' in your string
 *	Input		   : const string& s1
@@ -441,7 +416,6 @@ int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int&
 *	Input			: 
 *	Return Value	: return string 1 or 0
 */
-
 string PartnerCheck(const int direction,const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
 	auto counter = 0, i = 0, j = 0, l = 0;
 	decltype(i) k = 0;
@@ -453,36 +427,37 @@ string PartnerCheck(const int direction,const int& posX, const int& posY, const 
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 		if (counter == WinCounter) {
 			if (flag) {
+				int t = 0;
 				switch (direction){
 				case 1:
-					for (int t = 0; t < WinCounter; ++t)
+					for( ; t < WinCounter; ++t)
 						GameBoard[i + t][j + t] = comparator + 32;
 				case 2:
-					for (int t = 0; t < WinCounter; ++t)
+					for (; t < WinCounter; ++t)
 						GameBoard[i - t][j + t] = comparator + 32;//asci lower status
 					break;
 				case 3:
-					for (int t = 0; t < WinCounter; ++t) 
+					for (; t < WinCounter; ++t) 
 						GameBoard[i + t][j - t] = comparator + 32;
 					break;
 				case 4:
-					for (int t = 0; t < WinCounter; ++t)
+					for (; t < WinCounter; ++t)
 						GameBoard[i - t][j - t] = comparator + 32;
 					break;
 				case 5:
-					for (int t = 0; t < WinCounter; ++t)
+					for (; t < WinCounter; ++t)
 						GameBoard[i + t][j] = comparator + 32;
 					break;
 				case 6:
-					for (int t = 0; t < WinCounter; ++t)
+					for (; t < WinCounter; ++t)
 						GameBoard[i - t][j] = comparator + 32;
 					break;
 				case 7:
-					for (int t = 0; t < WinCounter; ++t)
+					for (; t < WinCounter; ++t)
 						GameBoard[i][j + t] = comparator + 32;
 					break;
 				case 8:
-					for (int t = 0; t < WinCounter; ++t)
+					for (; t < WinCounter; ++t)
 						GameBoard[i][j - t] = comparator + 32;
 					break;
 				default:

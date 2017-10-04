@@ -13,7 +13,10 @@ void SaveFile(const string& filename) {
 	if (myfile.is_open()){
 		//Oyun modu 1 se  user vs user 2 ise user vs computer 
 		//ikinci eleman oyunun size ı 
-		myfile << GameMode << " " << SizeOfGame<< endl;
+		//TODO hamle kimde kaldıysa onun idsi CurrenPlayerID olarak atanıcak
+		int CurrentPlayerId = 1;//WRONG
+
+		myfile << GameMode << " " << SizeOfGame<<" "<<CurrentPlayerId<<endl;
 		for (int row = 0; row < SizeOfGame; ++row){
 			for (int column = 0; column < SizeOfGame; ++column)
 				myfile << GameBoard[row][column];
@@ -25,6 +28,8 @@ void SaveFile(const string& filename) {
 	else cerr << "Unable to open file";
 	//cout << "Game Board Saved Correctly" << endl;
 }
+
+
 /*
 *	Desciription : This function loading saved gameboard from file
 *	Input		   : conts string file name
@@ -70,29 +75,25 @@ void LoadFile(const string& filename) {
 */
 void Play() {
 	int control = 0, check = 0;
+	int whoIsPlaying = 0;
+
 	while (1) {
-		//first move  player 1
-		AllMoveOperation(USER1PLAYERID);
+		if (whoIsPlaying == 0){
+			//Player1
+			AllMoveOperation(USER1PLAYERID);
+			whoIsPlaying = 1;
+		}
+		else if (whoIsPlaying == 1 ) {
+			if(ONE_PLAYER_VERSUS_COMPUTER == GameMode)
+				AllMoveOperation(COMPUTERPLAYERID);
+			else if( TWO_PLAYER == GameMode)
+				AllMoveOperation(USER2PLAYERID);
+			whoIsPlaying = 0;
+		}
 		check = IsGameOver();
 		PrintGameBoard();
 		if (check == -1)
 			break;
-		if (ONE_PLAYER_VERSUS_COMPUTER == GameMode) {
-			//second player 2
-			AllMoveOperation(USER2PLAYERID);
-			PrintGameBoard();
-			check = IsGameOver();
-			if (check == -1)
-				break;
-		}
-		else if (TWO_PLAYER == GameMode) {
-			//second play player 2
-			AllMoveOperation(COMPUTERPLAYERID);
-			PrintGameBoard();
-			check = IsGameOver();
-			if (check == -1)
-				break;
-		}
 	}
 }
 /*
@@ -124,11 +125,15 @@ bool AllMoveOperation(const int& PlayerID) {
 	bool flag = false;
 	string command = "" ;
 	if (PlayerID != 3) {
-		command = TakeMove(PlayerID);
-		while (command[0] == '-' || command[0] == '+') {
+		while (flag != true) {
 			command = TakeMove(PlayerID);
+			PrintGameBoard();
+			while (command[0] == '-' || command[0] == '+') {
+				command = TakeMove(PlayerID);
+			}
+			flag = MoveInputCheck(command);
+		
 		}
-		flag = MoveInputCheck(command);
 	}
 	else if (PlayerID == 3) {
 		FindComputerMove();
@@ -147,7 +152,8 @@ bool AllMoveOperation(const int& PlayerID) {
 		}
 	}
 	else
-		cerr << "MoveInputCheck function return false\n";
+		cerr << "MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
+
 	//cout << "AllMoveOperation func return false\n";
 	return false;
 }
@@ -318,20 +324,15 @@ bool PlayIsPlayeable(const int& direction,bool isPlayeable, const NeigborEnemy& 
 				return false;
 			}
 		}
-		if (direction == 1) {
+		if (direction == 1)
 			--row;
-		}
-		else if (direction == 2) {
+		else if (direction == 2)
 			--row, --column;
-		}
-		else if (direction == 3) {
+		else if (direction == 3)
 			--column;
-		}
-		else if (direction == 4) {
+		else if (direction == 4)
 			++column;
-		}
-		else if (direction == 5) {
-		}
+		else if (direction == 5){}
 	}
 	return true;
 }
@@ -413,9 +414,9 @@ bool IsGameOverOneSide(const char& User, const char& other) {
 }
 
 /*
-*	Desciription : This function comparing 2 string and returning number same element
-*	Input		   : 2 const reference string
-*	Return Value   : intger value
+*	Desciription : This function returnin number of '1' in your string
+*	Input		   : const string& s1
+*	Return Value   : intger counter of "1"
 */
 int MyStringCompare(const string& s1) {
 	int counter = 0;
@@ -440,15 +441,13 @@ int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int&
 */
 
 string PartnerCheck(const int direction,const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag) {
-	auto counter = 0;
-	auto i = 0, j = 0, l = 0;
+	auto counter = 0, i = 0, j = 0, l = 0;
 	decltype(i) k = 0;
 	for (i = posX, j = posY; ;){
 		if (i < 0 || i >= size)
 			break;
 		if (j < 0 || j >= size)
 			break;
-
 		counter = CheckCounter(comparator, othercomparator, counter, i, j);
 		if (counter == WinCounter) {
 			if (flag) {
@@ -528,7 +527,6 @@ string PartnerCheck(const int direction,const int& posX, const int& posY, const 
 */
 
 bool IsPositionPlayable(const int& player_id, const char& pos) {
-
 	for (int i = SizeOfGame - 1; i >= 0; --i){
 		if (GameBoard[i][pos - 'A'] == EMTHY)
 			return true;

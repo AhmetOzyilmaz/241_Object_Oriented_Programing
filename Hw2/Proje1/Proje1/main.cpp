@@ -28,7 +28,7 @@ void SaveFile(const string& filename) {
 		}
 		myfile.close();
 	}
-	else cerr << "Unable to open file";
+	else cerr << " <--->ILLEGAL<---> Unable to open file";
 	//cout << "Game Board Saved Correctly" << endl;
 }
 /*
@@ -45,7 +45,6 @@ void LoadFile(const string& filename) {
 	if (myReadFile.is_open()) {
 		int column = 0,row = 0;
 		getline(myReadFile, line);
-		//cout << line<<endl;
 		if (!myReadFile.eof()) {
 			if (line.size() >= 5) {
 				GameMode = line[0] - '0';//ilk eleman oyun modu
@@ -63,7 +62,7 @@ void LoadFile(const string& filename) {
 			PrintGameBoard();
 		}
 		else 
-			cerr << "File is EMTHY \ Please enter new file or keep going game " << endl;	
+			cerr << "<--->ILLEGAL<---> File is EMTHY  Please enter new file or keep going game " << endl;	
 	}
 	myReadFile.close();
 }
@@ -138,12 +137,12 @@ int AllMoveOperation(const int& PlayerID) {
 			MovePlayer(PlayerID, command[0]);
 		}
 		else {
-			cerr << "Position Cannot play enter another move " << endl;
+			cerr << " <--->ILLEGAL<---> Position Cannot play enter another move " << endl;
 			return -1;
 		}
 	}
 	else
-		cerr << "MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
+		cerr << "<--->ILLEGAL<---> MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
 	return -1;
 }
 /*
@@ -538,7 +537,7 @@ char TakeMove(const int& PlayerID ) {
 				return command[0];
 			}
 			else 
-				cerr << "ERROR COMMAND ENTER NEW  COMMAND " << endl;
+				cerr << "<--->ILLEGAL<---> ERROR COMMAND ENTER NEW  COMMAND " << endl;
 		}
 	}
 	return '-';
@@ -573,7 +572,7 @@ void InputValidator() {
 		if (cin.fail()) {
 			cin.clear(); //This corrects the stream.
 			cin.ignore(); //This skips the left over stream data.
-			cerr << "Wrong input enter integer \n";
+			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
 		}
 		else {
 			if (!(SizeOfGame % 2)) {
@@ -581,7 +580,7 @@ void InputValidator() {
 					break;
 			}
 			else 
-				cerr << "Wrong input for game size \n";
+				cerr << " <--->ILLEGAL<---> Wrong input for game size \n";
 		}
 	}
 	while (1) {
@@ -590,14 +589,14 @@ void InputValidator() {
 		if (cin.fail()) {
 			cin.clear(); //This corrects the stream.
 			cin.ignore(); //This skips the left over stream data.
-			cerr << "Wrong input enter integer \n";
+			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
 		}
 		else {
 			if (GameMode >= 1 && GameMode <= 2) {
 				break;
 			}
 			else 
-				cerr << "Wrong Game Mode \n";
+				cerr << "<--->ILLEGAL<---> Wrong Game Mode \n";
 		}
 	}
 	return;

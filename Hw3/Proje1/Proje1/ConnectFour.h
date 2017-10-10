@@ -17,6 +17,12 @@ const char EMTHY = '.';
 
 using namespace std;
 
+struct NeigborEnemy
+{
+	int posX;
+	int posY;
+	string NeighborEnemyCounter;
+};
 
 class ConnectFour
 {
@@ -65,7 +71,9 @@ public:
 
 	inline const vector <vector<Cell>> GetGameBoard() { return gameCells;}
 
-	inline Cell GetGameBoard(const int& row ,const int& column) { return gameCells[row][column]; }
+	inline Cell GetGameBoard(const int& row, const int& column) { return gameCells[row][column]; }
+	inline void SetGameBoard(const int& row, const int& column,const char& value) { gameCells[row][column].SetCellValue(value);	 }
+
 	void SetGameBoard(Cell c) {
 		int row = c.GetPosRow();
 		int column = c.GetPosColumn();
@@ -92,7 +100,7 @@ public:
 	int MyStringCompare(const string& s1);
 	int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);
 	string PartnerCheck(const int direction, const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& size, const int& WinCounter, const bool& flag = false);
-	bool PlayIsPlayeable(const int& direction, bool isPlayeable, const Cell& MaxEnem, int row, int column);
+	bool PlayIsPlayeable(const int& direction, bool isPlayeable, const NeigborEnemy& MaxEnem, int row, int column);
 	bool IsPositionPlayable(const int& player_id, const char& pos);
 	bool IsGameOverOneSide(const char& User, const char& other);
 	int IsGameOver();

@@ -18,13 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Kaynak Dosyalar</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectFour.cpp">
+      <Filter>Kaynak Dosyalar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>Kaynak Dosyalar</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.h">
-      <Filter>Kaynak Dosyalar</Filter>
+    <ClInclude Include="ConnectFour.h">
+      <Filter>Başlık Dosyaları</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

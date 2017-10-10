@@ -80,8 +80,6 @@ public:
 		gameCells[row][column] = c;
 	}
 
-	inline void SetGameBoard(const vector <vector<Cell>>& game) { gameCells = game;}
-
 	void Play();
 
 	void InputValidator();

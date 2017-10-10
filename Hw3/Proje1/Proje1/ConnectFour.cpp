@@ -1,5 +1,13 @@
 ﻿#include "ConnectFour.h"
 
+/*
+*	This input file first line 1 element is game mode
+*	second element is game board size and
+*	3 element is which player will play  after loading game*/
+
+
+
+
 
 /*
 *	Desciription : This function saving gameboard status
@@ -19,8 +27,6 @@ void ConnectFour::Play() {
 			break;
 	}
 }
-
-
 
 /*
 *	Desciription : This function taking move
@@ -522,7 +528,8 @@ void ConnectFour::GameManager() {
 void ConnectFour::InitialBoard() {
 	int size = GetGameCurrentSize();
 	Cell c;//no parameter contructor 
-	vector <vector<Cell> > temp(10);
+	vector <vector<Cell> > temp(size + 10);
+
 	for (auto i = 0; i < size; ++i) {
 		for (auto j = 0; j < size; ++j) {
 			c.SetPosRow(i);
@@ -530,7 +537,7 @@ void ConnectFour::InitialBoard() {
 			temp[i].push_back(c);
 		}
 	}
-	SetGameBoard(temp);
+	gameCells = temp;
 }
 /*
 *	Desciription : This function checking game board size and game mode
@@ -622,9 +629,9 @@ void ConnectFour::LoadFile(const string& filename) {
 		getline(myReadFile, line);
 		if (!myReadFile.eof()) {
 			if (line.size() >= 5) {
-				GameMode = line[0] - '0';//ilk eleman oyun modu
+				SetGameMode( line[0] - '0');//ilk eleman oyun modu
 				SetGameCurrentSize(line[2] - '0');//2.değişken oyunun size ı
-				WhoIsWillPlay = line[4] - '0';//3.değişken oyunu şimdi kimin oynaması gerektiği		
+				SetWhoIsWillPlay( line[4] - '0');//3.değişken oyunu şimdi kimin oynaması gerektiği		
 			}
 			while (!myReadFile.eof()) {
 				getline(myReadFile, line);
@@ -653,13 +660,14 @@ void ConnectFour::LoadFile(const string& filename) {
 
 void ConnectFour::PrintGameBoard() {
 	char a = 'A', b = 'A';
-	while (a < b + GetGameCurrentSize()) {
+	int size = GetGameCurrentSize();
+	while (a < b + size) {
 		cout << "  " << a << " ";
 		a++;
 	}
 	cout << endl;
-	for (auto i = 0; i < GetGameCurrentSize(); i++) {
-		for (auto j = 0; j < GetGameCurrentSize(); j++)
+	for (auto i = 0; i < size; i++) {
+		for (auto j = 0; j < size; j++)
 			cout << "  " <<  GetGameBoard(i,j).GetCellValue() << " ";
 		cout << "\n";
 	}

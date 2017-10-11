@@ -15,7 +15,6 @@
 void ConnectFour::Play() {
 	char command = '.';
 	while (1) {
-		PrintGameBoard();
 		GameManager();
 		cout << "if you want to quit enter q or enter different character" << endl;
 		cin >> command;
@@ -23,251 +22,6 @@ void ConnectFour::Play() {
 			break;
 	}
 }
-
-
-/*
-*	Desciription : This function loading saved gameboard from file
-*	Input		   : conts string file name
-*	Return Value   : no return value
-*/
-// TODO yanlış dosya yükleme,
-void ConnectFour::LoadFile(const string& filename) {
-	ifstream myReadFile;
-	myReadFile.open(filename);
-	string line = "";
-	Cell copy;
-	int size = 0;
-	if (myReadFile.is_open()) {
-		int column = 0, row = 0;
-		getline(myReadFile, line);
-		if (!myReadFile.eof()) {
-			if (line.size() >= 6) {
-				SetGameMode(line[0] - '0');//ilk eleman oyun modu
-				setGameSizeRow(line[2] - '0');//2.değişken oyunun size ı
-				setGameSizeColumn(line[4] - '0');//2.değişken oyunun size ı
-				SetWhoIsWillPlay(line[6] - '0');//3.değişken oyunu şimdi kimin oynaması gerektiği		
-			}
-			while (!myReadFile.eof()) {
-				getline(myReadFile, line);
-				for (int column = 0; column < line.size(); ++column) {
-					copy.SetPosColumn(column);
-					copy.SetPosRow(row);
-					copy.SetCellValue(line[column]);
-					SetGameBoard(copy);
-				}
-				++row;
-			}
-			cout << "Game Board Loaded Correctly\nNew Game Board is " << endl;
-			PrintGameBoard();
-		}
-		else
-			cerr << "<--->ILLEGAL<---> File is EMTHY  Please enter new file or keep going game " << endl;
-	}
-	myReadFile.close();
-}
-
-
-
-
-/*
-*	Desciription : This function saving gameboard status
-*	Input		   : conts string file name
-*	Return Value   : no return value
-*/
-void ConnectFour::SaveFile(const string& filename) {
-	ofstream myfile;
-	myfile.open(filename, std::ofstream::out | std::ofstream::app);
-	if (myfile.is_open()) {
-		//Oyun modu 1 se  user vs user 2 ise user vs computer 
-		//ikinci eleman oyunun size ı 
-		//TODO hamle kimde kaldıysa onun idsi CurrenPlayerID olarak atanıcak
-
-		myfile << GetGameMode() << " " << getGameSizeRow() << getGameSizeColumn() << " " << WhoIsWillPlay << endl;
-		for (int row = 0; row < getGameSizeRow(); ++row) {
-			for (int column = 0; column < getGameSizeColumn(); ++column)
-				myfile << GetGameBoard(row, column).GetCellValue();
-			if (row < getGameSizeRow() - 1)
-				myfile << "\n";
-		}
-		myfile.close();
-	}
-	else cerr << " <--->ILLEGAL<---> Unable to open file";
-	//cout << "Game Board Saved Correctly" << endl;
-}
-
-/*
-*	Desciription : This function checking game board size and game mode
-*					Cheking interger or not and for size 6x6, 8x8, 10x10, 20x20
-*					Cheking game mode  should be 1 or 2
-*	Input		 : no input parameter
-*	Return Value : no return value */
-void ConnectFour::InputValidator() {
-	int row = 0,column = 0; // TODO update size 
-	while (1) {
-		cout << "Enter Game Row Size  \n" << "Game board can be any size \n";
-		cin >> row;
-
-		cout << "Enter Game Column Size  \n" << "Game board can be any size \n";
-		cin >> column;
-
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else {
-				setGameSizeColumn(column);
-				setGameSizeRow(row);
-				break;
-		}
-	}
-	int mode = 0;
-	while (1) {
-		cout << "Enter Game mode \n" << "Game mode  1 : two player game \n 2: User versus computer game \n";
-		cin >> mode;
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else {
-			if (mode == 1 || mode == 2) {
-				SetGameMode(mode);
-				break;
-			}
-			else
-				cerr << "<--->ILLEGAL<---> Wrong Game Mode \n";
-		}
-	}
-	return;
-}
-
-/*
-*	Desciription : This function playing game respectively until one of the player win or moveable
-*					position when end
-*	Input		   : no input
-*	Return Value   : no return value
-*/
-void ConnectFour::GameManager() {
-	int control = 0, check = 0;
-	while (1) {
-		//cout << " 111 GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-
-		if (GetWhoIsWillPlay() == 1) {
-			//Player1
-			control = AllMoveOperation(USER1PLAYERID);
-			//cout << "control" << control  << endl;
-
-			if (control != 2 && control != -1)
-				SetWhoIsWillPlay(2);
-		}
-		else if (GetWhoIsWillPlay() == 2) {
-			//cout << "GetGameMode\t" << GetGameMode()<< endl;
-			//cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-
-			if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
-				control = AllMoveOperation(COMPUTERPLAYERID);
-			else if (TWO_PLAYER == GetGameMode())
-				control = AllMoveOperation(USER2PLAYERID);
-			if (control != 2 && control != -1)
-				SetWhoIsWillPlay(1);
-		}
-
-		check = IsGameOver();
-		if (check == -1)
-			break;
-		PrintGameBoard();
-	}
-}
-
-/*
-*	Desciription : //This game has 2 type command Load and Save
-*	Input		   : const string& taking command from user
-*	Return Value   :  doing operation correctly returning true else returning false
-*/
-bool ConnectFour::CommandSelector(const string& command) {
-	string filename = command.substr(5, command.size());
-	if (command.substr(0, 4).compare("SAVE") == 0) {
-		SaveFile(filename);
-		return true;
-	}
-	else if (command.substr(0, 4).compare("LOAD") == 0) {
-		LoadFile(filename);
-		return true;
-	}
-	return false;
-}
-
-/*
-*	Desciription : This function managing all player move operation
-*	Input		   : Interger for which player playing
-*	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
-*/
-int ConnectFour::AllMoveOperation(const int& PlayerID) {
-	bool flag = false;
-	string command = "";
-	if (PlayerID != 3) {
-		command = TakeMove(PlayerID);
-		if (command[0] == '+')
-			return 2;// 
-		flag = MoveInputCheck(command);
-	}
-	else if (PlayerID == 3) {
-		FindComputerMove();
-		return 0;
-	}
-	if (flag) {
-		cout << "MoveInputCheck is correct\n";
-		//if flag true this can true input i will checking position is playable
-		if (IsPositionPlayable(PlayerID, command[0])) {// play move
-			MovePlayer(PlayerID, command[0]);
-			return 0;
-		}
-		else {
-			cerr << " <--->ILLEGAL<---> Position Cannot play enter another move " << endl;
-			return -1;
-		}
-	}
-	else
-		cerr << "<--->ILLEGAL<---> MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
-	return -1;
-}
-
-
-/*
-*	Desciription : This function taking one move without computer and make a move
-*	Input		   : int curren player id
-*					  const char& current move to make a move
-*	Return Value   : No return value
-*/
-void ConnectFour::MovePlayer(const int& player_id, const char& CurrentMove) {
-	char CurrentComparor = '\0', OtherComparor = '\0';
-	if (player_id == USER1PLAYERID) {
-		CurrentComparor = USER1;
-		OtherComparor = USER2;
-	}
-	else if (player_id == USER2PLAYERID) {
-		CurrentComparor = USER2;
-		OtherComparor = USER1;
-	}
-	if (player_id != COMPUTERPLAYERID) {
-		if (CurrentMove >= 'A' &&  CurrentMove <= 'Z') {
-			int column = static_cast<int> (CurrentMove - 'A');
-			for (auto j = getGameSizeRow() - 1; j >= 0; --j) {
-				if (GetGameBoard(j, column).GetCellValue() == EMTHY) {
-					Cell temp;
-					temp.SetCellValue(CurrentComparor);
-					temp.SetPosColumn(column);
-					temp.SetPosRow(j);
-					SetGameBoard(temp);
-					break;
-				}
-			}
-		}
-	}
-}
-
-
 /*
 *	Desciription : This function computer automatic playin move
 *	Input		   : no parameter
@@ -307,7 +61,7 @@ void  ConnectFour::FindComputerMove() {
 			break;
 		}
 	}
-	if (flag) {//First Move in game
+	//if (flag) {//First Move in game
 		pos = MoveComputer();
 		int column = static_cast<int> (pos - 'A');
 		for (int row = rowSize - 1; row >= 0; --row) {
@@ -317,8 +71,8 @@ void  ConnectFour::FindComputerMove() {
 				break;
 			}
 		}
-	}
-	else {
+	//}
+	/*else {
 		for (int row = 0; row < rowSize; ++row) {
 			for (int column = 0; column < columnSize; ++column) {
 				for (int i = 3; i >= 2; --i) {
@@ -375,7 +129,7 @@ void  ConnectFour::FindComputerMove() {
 					break;
 			}
 		}
-	}
+	}*/
 	return;
 }
 
@@ -699,4 +453,240 @@ void ConnectFour::InitialBoard(const int& row, const int& column) {
 
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
 
+}
+
+/*
+*	Desciription : This function loading saved gameboard from file
+*	Input		   : conts string file name
+*	Return Value   : no return value
+*/
+// TODO yanlış dosya yükleme,
+void ConnectFour::LoadFile(const string& filename) {
+	ifstream myReadFile;
+	myReadFile.open(filename);
+	string line = "";
+	Cell copy;
+	int size = 0;
+	if (myReadFile.is_open()) {
+		int column = 0, row = 0;
+		getline(myReadFile, line);
+		if (!myReadFile.eof()) {
+			if (line.size() >= 6) {
+				SetGameMode(line[0] - '0');//ilk eleman oyun modu
+				setGameSizeRow(line[2] - '0');//2.değişken oyunun size ı
+				setGameSizeColumn(line[4] - '0');//2.değişken oyunun size ı
+				SetWhoIsWillPlay(line[6] - '0');//3.değişken oyunu şimdi kimin oynaması gerektiği		
+			}
+			while (!myReadFile.eof()) {
+				getline(myReadFile, line);
+				for (int column = 0; column < line.size(); ++column) {
+					copy.SetPosColumn(column);
+					copy.SetPosRow(row);
+					copy.SetCellValue(line[column]);
+					SetGameBoard(copy);
+				}
+				++row;
+			}
+			cout << "Game Board Loaded Correctly\nNew Game Board is " << endl;
+			PrintGameBoard();
+		}
+		else
+			cerr << "<--->ILLEGAL<---> File is EMTHY  Please enter new file or keep going game " << endl;
+	}
+	myReadFile.close();
+}
+
+/*
+*	Desciription : This function saving gameboard status
+*	Input		   : conts string file name
+*	Return Value   : no return value
+*/
+void ConnectFour::SaveFile(const string& filename) {
+	ofstream myfile;
+	myfile.open(filename, std::ofstream::out | std::ofstream::app);
+	if (myfile.is_open()) {
+		//Oyun modu 1 se  user vs user 2 ise user vs computer 
+		//ikinci eleman oyunun size ı 
+		//TODO hamle kimde kaldıysa onun idsi CurrenPlayerID olarak atanıcak
+
+		myfile << GetGameMode() << " " << getGameSizeRow() << getGameSizeColumn() << " " << WhoIsWillPlay << endl;
+		for (int row = 0; row < getGameSizeRow(); ++row) {
+			for (int column = 0; column < getGameSizeColumn(); ++column)
+				myfile << GetGameBoard(row, column).GetCellValue();
+			if (row < getGameSizeRow() - 1)
+				myfile << "\n";
+		}
+		myfile.close();
+	}
+	else cerr << " <--->ILLEGAL<---> Unable to open file";
+	//cout << "Game Board Saved Correctly" << endl;
+}
+
+
+/*
+*	Desciription : This function checking game board size and game mode
+*					Cheking interger or not and for size 6x6, 8x8, 10x10, 20x20
+*					Cheking game mode  should be 1 or 2
+*	Input		 : no input parameter
+*	Return Value : no return value */
+void ConnectFour::InputValidator() {
+	int row = 0, column = 0; // TODO update size 
+	while (1) {
+		cout << "Enter Game Row Size  \n" << "Game board can be any size \n";
+		cin >> row;
+
+		cout << "Enter Game Column Size  \n" << "Game board can be any size \n";
+		cin >> column;
+
+		if (cin.fail()) {
+			cin.clear(); //This corrects the stream.
+			cin.ignore(); //This skips the left over stream data.
+			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
+		}
+		else {
+			setGameSizeColumn(column);
+			setGameSizeRow(row);
+			break;
+		}
+	}
+	int mode = 0;
+	while (1) {
+		cout << "Enter Game mode \n" << "Game mode  1 : two player game \n 2: User versus computer game \n";
+		cin >> mode;
+		if (cin.fail()) {
+			cin.clear(); //This corrects the stream.
+			cin.ignore(); //This skips the left over stream data.
+			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
+		}
+		else {
+			if (mode == 1 || mode == 2) {
+				SetGameMode(mode);
+				break;
+			}
+			else
+				cerr << "<--->ILLEGAL<---> Wrong Game Mode \n";
+		}
+	}
+	return;
+}
+/*
+*	Desciription : This function playing game respectively until one of the player win or moveable
+*					position when end
+*	Input		   : no input
+*	Return Value   : no return value
+*/
+void ConnectFour::GameManager() {
+	int control = 0, check = 0;
+	while (1) {
+		//cout << " 111 GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
+
+		if (GetWhoIsWillPlay() == 1) {
+			//Player1
+			control = AllMoveOperation(USER1PLAYERID);
+			//cout << "control" << control  << endl;
+
+			if (control != 2 && control != -1)
+				SetWhoIsWillPlay(2);
+		}
+		else if (GetWhoIsWillPlay() == 2) {
+			//cout << "GetGameMode\t" << GetGameMode()<< endl;
+			//cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
+
+			if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
+				control = AllMoveOperation(COMPUTERPLAYERID);
+			else if (TWO_PLAYER == GetGameMode())
+				control = AllMoveOperation(USER2PLAYERID);
+			if (control != 2 && control != -1)
+				SetWhoIsWillPlay(1);
+		}
+
+		check = IsGameOver();
+		if (check == -1)
+			break;
+		PrintGameBoard();
+	}
+}
+/*
+*	Desciription : //This game has 2 type command Load and Save
+*	Input		   : const string& taking command from user
+*	Return Value   :  doing operation correctly returning true else returning false
+*/
+bool ConnectFour::CommandSelector(const string& command) {
+	string filename = command.substr(5, command.size());
+	if (command.substr(0, 4).compare("SAVE") == 0) {
+		SaveFile(filename);
+		return true;
+	}
+	else if (command.substr(0, 4).compare("LOAD") == 0) {
+		LoadFile(filename);
+		return true;
+	}
+	return false;
+}
+/*
+*	Desciription : This function managing all player move operation
+*	Input		   : Interger for which player playing
+*	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
+*/
+int ConnectFour::AllMoveOperation(const int& PlayerID) {
+	bool flag = false;
+	string command = "";
+	if (PlayerID != 3) {
+		command = TakeMove(PlayerID);
+		if (command[0] == '+')
+			return 2;// 
+		flag = MoveInputCheck(command);
+	}
+	else if (PlayerID == 3) {
+		FindComputerMove();
+
+		return 0;
+	}
+	if (flag) {
+		cout << "MoveInputCheck is correct\n";
+		//if flag true this can true input i will checking position is playable
+		if (IsPositionPlayable(PlayerID, command[0])) {// play move
+			MovePlayer(PlayerID, command[0]);
+			return 0;
+		}
+		else {
+			cerr << " <--->ILLEGAL<---> Position Cannot play enter another move " << endl;
+			return -1;
+		}
+	}
+	else
+		cerr << "<--->ILLEGAL<---> MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
+	return -1;
+}
+/*
+*	Desciription : This function taking one move without computer and make a move
+*	Input		   : int curren player id
+*					  const char& current move to make a move
+*	Return Value   : No return value
+*/
+void ConnectFour::MovePlayer(const int& player_id, const char& CurrentMove) {
+	char CurrentComparor = '\0', OtherComparor = '\0';
+	if (player_id == USER1PLAYERID) {
+		CurrentComparor = USER1;
+		OtherComparor = USER2;
+	}
+	else if (player_id == USER2PLAYERID) {
+		CurrentComparor = USER2;
+		OtherComparor = USER1;
+	}
+	if (player_id != COMPUTERPLAYERID) {
+		if (CurrentMove >= 'A' &&  CurrentMove <= 'Z') {
+			int column = static_cast<int> (CurrentMove - 'A');
+			for (auto i = getGameSizeRow() - 1; i >= 0; --i) {
+				if (GetGameBoard(i, column).GetCellValue() == EMTHY) {
+					Cell temp;
+					temp.SetCellValue(CurrentComparor);
+					temp.SetPosColumn(column);
+					temp.SetPosRow(i);
+					SetGameBoard(temp);
+					break;
+				}
+			}
+		}
+	}
 }

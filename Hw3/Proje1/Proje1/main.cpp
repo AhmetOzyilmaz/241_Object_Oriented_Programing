@@ -1,5 +1,5 @@
 ﻿/*Connected Four Game */
-/*AHMET ÖZYILMAZ 111044014 HOMEWORK 2*/
+/*AHMET ÖZYILMAZ 111044014 HOMEWORK 3*/
 #include "ConnectFour.h"
 
 int ConnectFour::CellCounter = 0;
@@ -12,7 +12,6 @@ int main() {
 	/*ConnectFour GameTwo(5,10);
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
 	GameTwo.Play();*/
-
 
 return 0;
 }

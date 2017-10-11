@@ -51,17 +51,17 @@ private:
 	int gameSizeColumn = 4; //default size
 	int GameMode = 1; //default game mode
 	int WhoIsWillPlay = 1;
-
-
 public:
 	
 	ConnectFour() {
 		InputValidator();
 		InitialBoard(gameSizeRow, gameSizeColumn); 
+		PrintGameBoard();
 	}
-	ConnectFour(int row,int column): gameSizeRow(row),gameSizeColumn(column) {
-		InputValidator();
+	ConnectFour(int row,int column,int mode): gameSizeRow(row),gameSizeColumn(column), GameMode(mode){
 		InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/ 
+		PrintGameBoard();
+
 	}
 	//TODO at least 3 constructors
 

@@ -9,5 +9,10 @@ int main() {
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
 	GameOne.Play();
 
+	/*ConnectFour GameTwo(5,10);
+	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
+	GameTwo.Play();*/
+
+
 return 0;
 }

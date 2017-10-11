@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 
+
 const int USER1PLAYERID = 1;
 const int USER2PLAYERID = 2;
 const int COMPUTERPLAYERID = 3;
@@ -31,8 +32,8 @@ private:
 	class Cell
 	{
 	public:
-		Cell() :Cell(0, 0,'.') {	/*Can Be Emthy	*/ }
-		Cell(int PosC, int PosR,char val) :PosColumn(PosC), PosRow(PosR),CellValue(val) {/*Can Be Emthy*/ }
+		Cell() :Cell(0, 0, '.') { CellCounter+=1;	/*Can Be Emthy	*/ }
+		Cell(int PosC, int PosR,char val) :PosColumn(PosC), PosRow(PosR),CellValue(val) { CellCounter += 1;/*Can Be Emthy*/ }
 
 		inline void SetPosRow(const int& row) { PosRow = row; }
 		inline void SetPosColumn(const int& col) { PosColumn = col; }
@@ -40,7 +41,6 @@ private:
 		inline int GetPosColumn() { return PosColumn; }
 		inline void SetCellValue(const char& col) { CellValue = col; }
 		inline const char GetCellValue() { return CellValue; }
-
 	private:
 		int PosColumn = 0;
 		int  PosRow = 0;
@@ -74,6 +74,8 @@ public:
 	inline Cell GetGameBoard(const int& row, const int& column) { return gameCells[row][column]; }
 	inline void SetGameBoard(const int& row, const int& column,const char& value) { gameCells[row][column].SetCellValue(value);	 }
 
+	inline static int GetCellCounter() { return CellCounter; }
+
 	void SetGameBoard(Cell c) {
 		int row = c.GetPosRow();
 		int column = c.GetPosColumn();
@@ -81,7 +83,6 @@ public:
 	}
 
 	void Play();
-
 	void InputValidator();
 	void InitialBoard();
 
@@ -90,7 +91,6 @@ public:
 	void LoadFile(const string& filename);
 	//End File Operation
 	void PrintGameBoard();	
-
 
 	bool MoveInputCheck(const string& command);
 	char TakeMove(const int& PlayerID);

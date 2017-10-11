@@ -5,10 +5,6 @@
 *	second element is game board size and
 *	3 element is which player will play  after loading game*/
 
-
-
-
-
 /*
 *	Desciription : This function saving gameboard status
 *	Input		   : conts string file name
@@ -37,10 +33,10 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 	bool flag = false;
 	string command = "", command2 = "";
 	while (1) {
-		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
-			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n ";
-		cout << "Enter one grater letter  move A , B, C ...\n";
-		cout << "\t For : USER" << PlayerID << endl;
+			cout<< "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
+				<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
+				<< "Enter one grater letter  move A , B, C ...\n"
+				<< "\t For : USER" << PlayerID << endl;
 		cin >> command;
 		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
 			cin >> command2;
@@ -59,8 +55,6 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 	}
 	return '-';
 }
-
-
 /*
 *	Desciription	: This function checking input function
 *	Input			: char move = entered move
@@ -403,7 +397,6 @@ char ConnectFour::MoveComputer() {
 	return '.';
 }
 
-
 /*
 *	Desciription : This function taking one move without computer and make a move
 *	Input		   : int curren player id
@@ -460,6 +453,7 @@ int ConnectFour::AllMoveOperation(const int& PlayerID) {
 		//if flag true this can true input i will checking position is playable
 		if (IsPositionPlayable(PlayerID, command[0])) {// play move
 			MovePlayer(PlayerID, command[0]);
+			return 0;
 		}
 		else {
 			cerr << " <--->ILLEGAL<---> Position Cannot play enter another move " << endl;
@@ -489,8 +483,6 @@ bool ConnectFour::CommandSelector(const string& command) {
 	return false;
 }
 
-
-
 /*
 *	Desciription : This function playing game respectively until one of the player win or moveable
 *					position when end
@@ -500,23 +492,32 @@ bool ConnectFour::CommandSelector(const string& command) {
 void ConnectFour::GameManager() {
 	int control = 0, check = 0;
 	while (1) {
+		//cout << " 111 GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
+
 		if ( GetWhoIsWillPlay() == 1) {
 			//Player1
 			control = AllMoveOperation(USER1PLAYERID);
-			if (control != 2)
-			SetWhoIsWillPlay(2);
+			//cout << "control" << control  << endl;
+
+			if (control != 2 && control != -1)
+				SetWhoIsWillPlay(2);
 		}
 		else if (GetWhoIsWillPlay() == 2) {
-			if (ONE_PLAYER_VERSUS_COMPUTER == GameMode)
+			//cout << "GetGameMode\t" << GetGameMode()<< endl;
+			//cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
+
+			if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
 				control = AllMoveOperation(COMPUTERPLAYERID);
-			else if (TWO_PLAYER == GameMode)
+			else if (TWO_PLAYER == GetGameMode())
 				control = AllMoveOperation(USER2PLAYERID);
-			SetWhoIsWillPlay(1);
+			if (control != 2 && control != -1)
+				SetWhoIsWillPlay(1);
 		}
+
 		check = IsGameOver();
-		PrintGameBoard();
 		if (check == -1)
 			break;
+		PrintGameBoard();
 	}
 }
 
@@ -538,6 +539,9 @@ void ConnectFour::InitialBoard() {
 		}
 	}
 	gameCells = temp;
+
+	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
+
 }
 /*
 *	Desciription : This function checking game board size and game mode

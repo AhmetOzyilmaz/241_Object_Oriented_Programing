@@ -117,7 +117,7 @@ public:
 	void MovePlayer(const int&, const char&);
 	char MoveComputer();
 	void FindComputerMove();
-
+	void NewGame();
 
 };
 

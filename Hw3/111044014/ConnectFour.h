@@ -14,6 +14,7 @@ const int ONE_PLAYER_VERSUS_COMPUTER = 2;
 const char USER1 = 'X';
 const char USER2 = 'O';
 const char EMTHY = '.';
+
 using namespace std;
 
 struct NeigborEnemy
@@ -45,7 +46,6 @@ private:
 		char CellValue = '.';
 	};
 	static int CellCounter;
-	static int GameCount;
 	vector< vector<Cell> > gameCells;
 	int gameSizeRow = 4; //default size
 	int gameSizeColumn = 4; //default size
@@ -54,19 +54,13 @@ private:
 public:
 	
 	ConnectFour() {
-		playGame();
+		InputValidator();
 		InitialBoard(gameSizeRow, gameSizeColumn); 
 		PrintGameBoard();
-		++GameCount;
 	}
 	ConnectFour(int row,int column,int mode): gameSizeRow(row),gameSizeColumn(column), GameMode(mode){
 		InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/ 
 		PrintGameBoard();
-		++GameCount;
-
-	}
-	ConnectFour(int row, int column) :ConnectFour(row, column,2){
-		//automaticly starting with PLAYER VS COMPUTER
 	}
 	//TODO at least 3 constructors
 
@@ -96,7 +90,7 @@ public:
 	}
 
 	void Play();
-	void playGame();
+	void InputValidator();
 	void ParseFirstLine(const string& line,int& mode, int& row, int& column, int& play);
 
 	void ReSizeGameBoard(const int& row, const int& column);
@@ -119,15 +113,13 @@ public:
 	bool IsGameOverOneSide(const char& User, const char& other);
 	int IsGameOver();
 	int AllMoveOperation(const int& PlayerID);
+
 	bool AnyMoveMore();
 	void GameManager();
 	void MovePlayer(const int&, const char&);
 	char MoveComputer();
-	int PlayMove();
-	int PlayMove(const string& column,const int& playerID );
+	void FindComputerMove();
 	void NewGame();
-	bool IsBetter(const ConnectFour& one,const ConnectFour& two);
-
 
 };
 

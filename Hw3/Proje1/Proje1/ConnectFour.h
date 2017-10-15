@@ -6,7 +6,6 @@
 #include <fstream>
 #include <vector>
 
-
 const int USER1PLAYERID = 1;
 const int USER2PLAYERID = 2;
 const int COMPUTERPLAYERID = 3;
@@ -31,8 +30,9 @@ private:
 	class Cell
 	{
 	public:
-		Cell() :Cell(0, 0, '.') { CellCounter+=1;	/*Can Be Emthy	*/ }
-		Cell(int PosC, int PosR,char val) :PosColumn(PosC), PosRow(PosR),CellValue(val) { CellCounter += 1;/*Can Be Emthy*/ }
+		Cell() :Cell(0, 0, '.') { CellCounter += 1;	/*Can Be Emthy	*/ }
+		Cell(int PosC, int PosR, char val) :PosColumn(PosC), PosRow(PosR), CellValue(val) { CellCounter += 1;/*Can Be Emthy*/ }
+		Cell(const Cell& cell) :PosColumn(cell.PosColumn), PosRow(cell.PosRow), CellValue(cell.CellValue) { CellCounter += 1;/*Can Be Emthy*/ }
 
 		inline void SetPosRow(const int& row) { PosRow = row; }
 		inline void SetPosColumn(const int& col) { PosColumn = col; }
@@ -61,7 +61,6 @@ public:
 	ConnectFour(int row,int column,int mode): gameSizeRow(row),gameSizeColumn(column), GameMode(mode){
 		InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/ 
 		PrintGameBoard();
-
 	}
 	//TODO at least 3 constructors
 
@@ -92,6 +91,9 @@ public:
 
 	void Play();
 	void InputValidator();
+	void ParseFirstLine(const string& line,int& mode, int& row, int& column, int& play);
+
+	void ReSizeGameBoard(const int& row, const int& column);
 	void InitialBoard(const int& row,const int& column);
 
 	//File Operation

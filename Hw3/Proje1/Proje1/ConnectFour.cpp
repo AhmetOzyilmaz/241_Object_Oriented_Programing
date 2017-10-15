@@ -24,6 +24,25 @@ void ConnectFour::Play() {
 		}
 	}
 }
+
+void ConnectFour::ReSizeGameBoard(const int& row,const int& column) {
+	vector<Cell> temp;
+	Cell empth;
+
+	for (int i = 0; i < column; ++i)
+		temp.push_back(empth);
+
+	if (row > getGameSizeRow()) {
+		for(int i = row- getGameSizeRow(); 0 <= i; -- i)
+			gameCells.push_back(temp);
+	}
+	for (int i = 0; i < row; ++i)
+		gameCells.at(i) = temp;
+		
+	setGameSizeRow(row);//2.değişken oyunun size ı
+	setGameSizeColumn(column);//2.değişken oyunun size ı
+	cout << "New Game Size" << getGameSizeRow() << " X " << getGameSizeColumn() << endl;
+}
 void ConnectFour::NewGame() {
 	InputValidator();
 	InitialBoard(gameSizeRow, gameSizeColumn);
@@ -174,7 +193,6 @@ bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const 
 	}
 	return true;
 }
-
 /*
 *	Desciription : This function checking is game ended or not
 *	Input		   : no input
@@ -197,7 +215,6 @@ int ConnectFour::IsGameOver() {
 	cout << "Game is not ended " << endl;
 	return 0;
 }
-
 bool ConnectFour::AnyMoveMore() {
 	int row = getGameSizeRow();
 	int column = getGameSizeColumn();
@@ -209,7 +226,6 @@ bool ConnectFour::AnyMoveMore() {
 	}
 	return false;
 }
-
 /*
 *	Desciription	: This function controlling given direction and size of element
 *	Input			:
@@ -438,6 +454,29 @@ void ConnectFour::InitialBoard(const int& row, const int& column) {
 *	Input		   : conts string file name
 *	Return Value   : no return value
 */
+
+void ConnectFour::ParseFirstLine(const string& line,int& mode, int& row,int& column,int& play) {
+	string s = "";
+	mode = line[0] -'0';
+	int i = 2;
+	cout << "line->" << line.size();
+	for (int t = 0; t < 2; ++t) {
+		s = "";
+		while (1) {
+			s += line[i];
+			++i;
+			if (line[i] == ' ')
+				break;
+		}
+		if (t == 0)
+			row = stoi(s);
+		else if (t == 1)
+			column = stoi(s);
+		++i;
+	}
+	play = line[line.size() - 1] - '0';
+
+}
 // TODO yanlış dosya yükleme,
 void ConnectFour::LoadFile(const string& filename) {
 	ifstream myReadFile;
@@ -446,18 +485,19 @@ void ConnectFour::LoadFile(const string& filename) {
 	Cell copy;
 	int size = 0;
 	if (myReadFile.is_open()) {
-		int column = 0, row = 0;
+		int column = 0, row = 0, WillPlay = 0,mode = 0;
 		getline(myReadFile, line);
 		if (!myReadFile.eof()) {
 			if (line.size() >= 6) {
-				SetGameMode(line[0] - '0');//ilk eleman oyun modu
-				setGameSizeRow(line[2] - '0');//2.değişken oyunun size ı
-				setGameSizeColumn(line[4] - '0');//2.değişken oyunun size ı
-				SetWhoIsWillPlay(line[6] - '0');//3.değişken oyunu şimdi kimin oynaması gerektiği		
+				ParseFirstLine(line,mode, row, column, WillPlay);
+				SetGameMode(mode);//ilk eleman oyun modu
+				SetWhoIsWillPlay(WillPlay);//3.değişken oyunu şimdi kimin oynaması gerektiği	
+				ReSizeGameBoard(row, column);
 			}
+			row = 0;
 			while (!myReadFile.eof()) {
 				getline(myReadFile, line);
-				for (int column = 0; column < line.size(); ++column) {
+				for (int column = 0; column < getGameSizeColumn(); ++column) {
 					copy.SetPosColumn(column);
 					copy.SetPosRow(row);
 					copy.SetCellValue(line[column]);
@@ -485,7 +525,7 @@ void ConnectFour::SaveFile(const string& filename) {
 		//Oyun modu 1 se  user vs user 2 ise user vs computer 
 		//ikinci eleman oyunun size ı 
 		//TODO hamle kimde kaldıysa onun idsi CurrenPlayerID olarak atanıcak
-		myfile << GetGameMode() << " " << getGameSizeRow() << getGameSizeColumn() << " " << WhoIsWillPlay << endl;
+		myfile << GetGameMode() << " " << getGameSizeRow() << " " << getGameSizeColumn() << " " << WhoIsWillPlay << endl;
 		for (int row = 0; row < getGameSizeRow(); ++row) {
 			for (int column = 0; column < getGameSizeColumn(); ++column)
 				myfile << GetGameBoard(row, column).GetCellValue();

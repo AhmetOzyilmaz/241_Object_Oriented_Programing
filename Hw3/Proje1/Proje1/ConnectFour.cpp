@@ -1,6 +1,4 @@
-﻿
-
-#include "ConnectFour.h"
+﻿#include "ConnectFour.h"
 
 /*
 *	This input file first line 1 element is game mode
@@ -58,8 +56,7 @@ void  ConnectFour::FindComputerMove() {
 	MaxEnem.posY = 0;
 	MaxEnem.NeighborEnemyCounter = "00000000";
 	int  control = 0, MaxControl = 0, index = 0;
-	const int rowSize = getGameSizeRow();
-	const int columnSize = getGameSizeColumn();
+	const int rowSize = getGameSizeRow(); const int columnSize = getGameSizeColumn();
 	bool flag = true, isPlayeable = true;
 	char pos;
 	string controller = "00000000";
@@ -98,24 +95,44 @@ void  ConnectFour::FindComputerMove() {
 				}
 			}
 		}
-		/*int row = 0, column = 0;
-		//cout << MaxControl << " MaxEnem.posX "<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY <<" MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter  << endl;
-		if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1 &&  isPlayeable) {
-			isPlayeable = PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
-		}
-		if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable) {
-			isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY - 1);
-		}
-		if (GetGameBoard(MaxEnem.posX, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable) {
+		int row = 0, column = 0;
+		cout << MaxControl << " MaxEnem.posX "<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY <<" MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter  << endl;
+		if (MaxEnem.posX - 1 >= 0) 
+			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1 &&  isPlayeable) 
+				isPlayeable = PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
+		if (MaxEnem.posX - 1 >= 0  && MaxEnem.posY - 1 >= 0)
+			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable) 
+				isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY - 1);
+		if (MaxEnem.posY - 1 >= 0)
+			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable) 
 			isPlayeable = PlayIsPlayeable(3, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY - 1);
+		if (MaxEnem.posY + 1 < columnSize)
+			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &&  isPlayeable) 
+				isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
+		if (true == isPlayeable) {
+			int  column = 0;
+			time_t t;
+			srand(time(0));
+			while (1) {
+				column = rand() % columnSize;
+				if (column < 0)
+					column *= -1;
+				for (int row = rowSize - 1; row >= 0, column >= 0, column < columnSize; --row) {
+					if (GetGameBoard(row , column ).GetCellValue() == EMTHY) {
+						SetGameBoard(row, column, USER2);
+						cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
+						isPlayeable = false;
+						break;
+					}
+				}
+				if (isPlayeable == false)
+					break;
+			}
 		}
-		if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &&  isPlayeable) {
-			isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
-		}*/
+
 	}
 	return;
 }
-
 /*
 *	Desciription : returning isPlaceable
 *	Input		   : no input parameter
@@ -124,28 +141,25 @@ void  ConnectFour::FindComputerMove() {
 bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const NeigborEnemy& MaxEnem, int row, int column) {
 	const int rowSize = getGameSizeRow();
 	const int columnSize = getGameSizeColumn();
-
 	for (; ; ) {
 		if (row < 0 || row >= rowSize)
 			break;
 		if (column < 0 || column >= columnSize)
 			break;
 		if (direction != 4) {//özel durum
-
 			if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
 				SetGameBoard(row, column, USER2);
 				cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
 				return false;
 			}
 		}
-		else {
-			if (MaxEnem.posX + 1 < rowSize) {
+		else if (direction == 4) {
+			if (MaxEnem.posX + 1 < rowSize && MaxEnem.posX + 1 >= 0) {
 				if(GetGameBoard(MaxEnem.posX, column).GetCellValue() == EMTHY && GetGameBoard(MaxEnem.posX + 1, column).GetCellValue() != EMTHY){
-
-				}
-				SetGameBoard(MaxEnem.posX, column, USER2);
-				cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
-				return false;
+					SetGameBoard(MaxEnem.posX, column, USER2);
+					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
+					return false;
+				}			
 			}
 		}
 		if (direction == 1)
@@ -284,8 +298,6 @@ string ConnectFour::PartnerCheck(const int direction, const int& posX, const int
 	}
 	return "0";
 }
-
-
 /*
 *	Desciription : This function checking is game ended for one side
 *	Input		   : no input
@@ -294,7 +306,6 @@ string ConnectFour::PartnerCheck(const int direction, const int& posX, const int
 bool ConnectFour::IsGameOverOneSide(const char& User, const char& other) {
 	int row = getGameSizeRow();
 	int column = getGameSizeColumn();
-
 	string controller = "";
 	for (int i = row - 1; i >= 0; --i) {
 		for (int j = column - 1; j >= 0; --j) {
@@ -307,7 +318,6 @@ bool ConnectFour::IsGameOverOneSide(const char& User, const char& other) {
 	}
 	return false;
 }
-
 /*
 *	Desciription : This function returnin number of '1' in your string
 *	Input		   : const string& s1
@@ -322,7 +332,6 @@ int ConnectFour::MyStringCompare(const string& s1) {
 	}
 	return counter;
 }
-
 int ConnectFour::CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j) {
 	if (GetGameBoard(i, j).GetCellValue() == CurComp)
 		++count;
@@ -330,14 +339,11 @@ int ConnectFour::CheckCounter(const int& CurComp, const int& OtherComp, int coun
 		count = 0;
 	return count;
 }
-
-
 /*
 *	Desciription : This function checking move legal ol illegal
 *	Input		   : position
 *	Return Value : if return true position is legal if false its illegal
 */
-
 bool ConnectFour::IsPositionPlayable(const int& player_id, const char& pos) {
 	for (int i = getGameSizeRow() - 1; i >= 0; --i) {
 		if (GetGameBoard(i, pos - 'A').GetCellValue() == EMTHY)
@@ -345,14 +351,11 @@ bool ConnectFour::IsPositionPlayable(const int& player_id, const char& pos) {
 	}
 	return false;
 }
-
-
 /*
 *	Desciription	: This function checking input function
 *	Input			: char move = entered move
 *	Return Value	: if move is legal  return true  or return false
 */
-
 bool ConnectFour::MoveInputCheck(const string& command) {
 	if (command[0] >= 'A' + getGameSizeColumn() || command[0] < 'A')
 		return false;
@@ -360,8 +363,6 @@ bool ConnectFour::MoveInputCheck(const string& command) {
 		return false;
 	return true;
 }
-
-
 /*
 *	Desciription : This function taking move
 *	Input		   : no input
@@ -397,15 +398,12 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 *	Input		 : no input parameter
 *	Return Value : no return value
 */
-
 void ConnectFour::PrintGameBoard() {
 	char a = 'A', b = 'A';
 	int row = getGameSizeRow();
 	int column = getGameSizeColumn();
-
-	cout << "GameBoard row -> " << row << endl;
-	cout << "GameBoard column -> " << column << endl;
-
+	//cout << "GameBoard row -> " << row << endl;
+	//cout << "GameBoard column -> " << column << endl;
 	while (a < b + column) {
 		cout << "  " << a << " ";
 		a++;
@@ -417,18 +415,14 @@ void ConnectFour::PrintGameBoard() {
 		cout << "\n";
 	}
 }
-
-
 /*
 *	Desciription : This function initial board
 *	Input		   : no input parameter
 *	Return Value : no return value
 */
 void ConnectFour::InitialBoard(const int& row, const int& column) {
-
 	Cell c(0,0,'.');//no parameter contructor 
 	vector <vector<Cell> > temp(row + 10, vector<Cell>(column));
-
 	for (auto i = 0; i < row; ++i) {
 		for (auto j = 0; j < column; ++j) {
 			c.SetPosRow(i);
@@ -437,11 +431,8 @@ void ConnectFour::InitialBoard(const int& row, const int& column) {
 		}
 	}
 	gameCells = temp;
-
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-
 }
-
 /*
 *	Desciription : This function loading saved gameboard from file
 *	Input		   : conts string file name
@@ -482,7 +473,6 @@ void ConnectFour::LoadFile(const string& filename) {
 	}
 	myReadFile.close();
 }
-
 /*
 *	Desciription : This function saving gameboard status
 *	Input		   : conts string file name
@@ -495,7 +485,6 @@ void ConnectFour::SaveFile(const string& filename) {
 		//Oyun modu 1 se  user vs user 2 ise user vs computer 
 		//ikinci eleman oyunun size ı 
 		//TODO hamle kimde kaldıysa onun idsi CurrenPlayerID olarak atanıcak
-
 		myfile << GetGameMode() << " " << getGameSizeRow() << getGameSizeColumn() << " " << WhoIsWillPlay << endl;
 		for (int row = 0; row < getGameSizeRow(); ++row) {
 			for (int column = 0; column < getGameSizeColumn(); ++column)
@@ -508,8 +497,6 @@ void ConnectFour::SaveFile(const string& filename) {
 	else cerr << " <--->ILLEGAL<---> Unable to open file";
 	//cout << "Game Board Saved Correctly" << endl;
 }
-
-
 /*
 *	Desciription : This function checking game board size and game mode
 *					Cheking interger or not and for size 6x6, 8x8, 10x10, 20x20
@@ -521,10 +508,8 @@ void ConnectFour::InputValidator() {
 	while (1) {
 		cout << "Enter Game Row Size  \n" << "Game board can be any size \n";
 		cin >> row;
-
 		cout << "Enter Game Column Size  \n" << "Game board can be any size \n";
 		cin >> column;
-
 		if (cin.fail()) {
 			cin.clear(); //This corrects the stream.
 			cin.ignore(); //This skips the left over stream data.
@@ -566,19 +551,16 @@ void ConnectFour::GameManager() {
 	int control = 0, check = 0;
 	while (1) {
 		//cout << " 111 GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-
 		if (GetWhoIsWillPlay() == 1) {
 			//Player1
 			control = AllMoveOperation(USER1PLAYERID);
 			//cout << "control" << control  << endl;
-
 			if (control != 2 && control != -1)
 				SetWhoIsWillPlay(2);
 		}
 		else if (GetWhoIsWillPlay() == 2) {
 			cout << "GetGameMode\t" << GetGameMode()<< endl;
 			cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-
 			if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
 				control = AllMoveOperation(COMPUTERPLAYERID);
 			else if (TWO_PLAYER == GetGameMode())
@@ -586,7 +568,6 @@ void ConnectFour::GameManager() {
 			if (control != 2 && control != -1)
 				SetWhoIsWillPlay(1);
 		}
-
 		check = IsGameOver();
 		if (check == -1)
 			break;

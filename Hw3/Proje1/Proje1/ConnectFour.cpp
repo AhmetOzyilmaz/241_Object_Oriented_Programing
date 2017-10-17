@@ -24,7 +24,6 @@ bool ConnectFour::IsBetter( ConnectFour& one, ConnectFour& two){
 */
 bool ConnectFour::GameManager() {
 	int control = 0, check = 0;
-	while (1) {
 		if (GetWhoIsWillPlay() == 1) {
 			//Player1
 			control = AllMoveOperation(USER1PLAYERID);
@@ -42,10 +41,12 @@ bool ConnectFour::GameManager() {
 				SetWhoIsWillPlay(1);
 		}
 		check = IsGameOver();
-		if (check == -1)
+		if (check == -1) {
+			setGameisEnded(true);
 			return true;
+		}
 		PrintGameBoard();
-	}
+
 	return false;
 }
 /*
@@ -66,7 +67,6 @@ void ConnectFour::Play() {
 			NewGame();
 		}
 	}
-	
 }
 void ConnectFour::ReSizeGameBoard(const int& row,const int& column) {
 	vector<Cell> temp;
@@ -343,6 +343,9 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 	bool flag = false;
 	string command = "", command2 = "";
 	while (1) {
+
+		cout << "\n\nGAME " << getGameID()<<endl;
+		PrintGameBoard();
 		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
 			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
 			<< "Enter one grater letter  move A , B, C ...\n"

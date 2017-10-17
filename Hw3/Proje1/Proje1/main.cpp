@@ -16,20 +16,26 @@ int main() {
 	while (ConnectFour::GetGameCounter() > 0) {
 		cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
 		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-		GameOne.Play();
+		if(GameOne.getGameisEnded() == false)
+			GameOne.Play();
 
 		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-		GameTwo.Play();
+		if (GameTwo.getGameisEnded() == false)
+			GameTwo.Play();
 
 		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-		GameThree.Play();
+		if (GameThree.getGameisEnded() == false)
+			GameThree.Play();
 
 		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-		GameFour.Play();
+		if (GameFour.getGameisEnded() == false)
+			GameFour.Play();
 
 		cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
 		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-		GameFive.Play();
+
+		if (GameFour.getGameisEnded() == false)
+			GameFive.Play();
 
 		bool result = GameOne.IsBetter(GameTwo, GameThree);
 		if (result)

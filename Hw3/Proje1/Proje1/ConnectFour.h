@@ -52,19 +52,24 @@ private:
 	int GameMode = 1; //default game mode
 	int WhoIsWillPlay = 1;
 	int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
+	bool isEnded = false;
+	int GameID = 0;
 public:
 	
 	ConnectFour() {
+		++GameCount;
+		setGameID(GameCount);
+		cout << "\n\nGame " << getGameID() << endl;
 		playGame();
 		InitialBoard(gameSizeRow, gameSizeColumn); 
 		PrintGameBoard();
-		++GameCount;
 	}
 	ConnectFour(int row,int column,int mode): gameSizeRow(row),gameSizeColumn(column), GameMode(mode){
+		++GameCount;
+		setGameID(GameCount);
+		cout << "\n\nGame " << getGameID() << endl;
 		InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/ 
 		PrintGameBoard();
-		++GameCount;
-
 	}
 	ConnectFour(int row, int column) :ConnectFour(row, column,2){
 		//automaticly starting with PLAYER VS COMPUTER
@@ -77,11 +82,17 @@ public:
 	inline void setGameSizeRow(const int size) { gameSizeRow = size; }
 	inline const int getGameSizeRow() { return gameSizeRow; }
 	
-	inline void setGameSizeColumn(const int size) { gameSizeColumn = size; }
-	inline const int getGameSizeColumn() { return gameSizeColumn; }
+	inline void setGameisEnded(const bool end) { isEnded = end; }
+	inline const bool getGameisEnded() { return isEnded; }
+
+	inline void setGameID(const int id) { GameID = id; }
+	inline const int getGameID() { return GameID; }
 
 	inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
 	inline const int getCurrentElementCounter() { return CurrentElementCounter; }
+
+	inline void setGameSizeColumn(const int size) { gameSizeColumn = size; }
+	inline const int getGameSizeColumn() { return gameSizeColumn; }
 
 	inline void SetGameMode(const int mode) { GameMode = mode; }
 	inline const int GetGameMode() { return GameMode; }

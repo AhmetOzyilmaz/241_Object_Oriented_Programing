@@ -125,7 +125,7 @@ public:
 	int IsGameOver();
 	int AllMoveOperation(const int& PlayerID);
 	bool AnyMoveMore();
-	void GameManager();
+	bool GameManager();
 	void MovePlayer(const int&, const char&);
 	char MoveComputer();
 	int PlayMove();

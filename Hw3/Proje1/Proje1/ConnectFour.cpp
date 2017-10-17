@@ -12,9 +12,40 @@
 *	Return Value   : no return value
 */
 bool ConnectFour::IsBetter( ConnectFour& one, ConnectFour& two){
-
 	if (one.getCurrentElementCounter() > two.getCurrentElementCounter())
 		return true;
+	return false;
+}
+/*
+*	Desciription : This function playing game respectively until one of the player win or moveable
+*					position when end
+*	Input		   : no input
+*	Return Value   : if return true game is over if return false game is not ended
+*/
+bool ConnectFour::GameManager() {
+	int control = 0, check = 0;
+	while (1) {
+		if (GetWhoIsWillPlay() == 1) {
+			//Player1
+			control = AllMoveOperation(USER1PLAYERID);
+			if (control != 2 && control != -1)
+				SetWhoIsWillPlay(2);
+		}
+		else if (GetWhoIsWillPlay() == 2) {
+			//cout << "GetGameMode\t" << GetGameMode()<< endl;
+			//cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
+			if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
+				control = AllMoveOperation(COMPUTERPLAYERID);
+			else if (TWO_PLAYER == GetGameMode())
+				control = AllMoveOperation(USER2PLAYERID);
+			if (control != 2 && control != -1)
+				SetWhoIsWillPlay(1);
+		}
+		check = IsGameOver();
+		if (check == -1)
+			return true;
+		PrintGameBoard();
+	}
 	return false;
 }
 /*
@@ -24,18 +55,18 @@ bool ConnectFour::IsBetter( ConnectFour& one, ConnectFour& two){
 */
 void ConnectFour::Play() {
 	char command = '.';
-	while (1) {
-		cout << "\n\n\GAME " << GameCount << " is playing " << endl;
-		GameManager();
+	bool isEnded = GameManager();
+	if (isEnded) {
 		cout << "if you want to quit enter q or enter different character" << endl;
 		cin >> command;
 		if (command == 'q' || command == 'Q')
-			break;
+			--GameCount;
 		else {
 			cout << "\n\n************************************New Game*******************\\n" << endl;
 			NewGame();
 		}
 	}
+	
 }
 void ConnectFour::ReSizeGameBoard(const int& row,const int& column) {
 	vector<Cell> temp;
@@ -504,37 +535,7 @@ void ConnectFour::playGame() {
 	}
 	return;
 }
-/*
-*	Desciription : This function playing game respectively until one of the player win or moveable
-*					position when end
-*	Input		   : no input
-*	Return Value   : no return value
-*/
-void ConnectFour::GameManager() {
-	int control = 0, check = 0;
-	while (1) {
-		if (GetWhoIsWillPlay() == 1) {
-			//Player1
-			control = AllMoveOperation(USER1PLAYERID);
-			if (control != 2 && control != -1)
-				SetWhoIsWillPlay(2);
-		}
-		else if (GetWhoIsWillPlay() == 2) {
-			cout << "GetGameMode\t" << GetGameMode()<< endl;
-			cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-			if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
-				control = AllMoveOperation(COMPUTERPLAYERID);
-			else if (TWO_PLAYER == GetGameMode())
-				control = AllMoveOperation(USER2PLAYERID);
-			if (control != 2 && control != -1)
-				SetWhoIsWillPlay(1);
-		}
-		check = IsGameOver();
-		if (check == -1)
-			break;
-		PrintGameBoard();
-	}
-}
+
 /*
 *	Desciription : //This game has 2 type command Load and Save
 *	Input		   : const string& taking command from user

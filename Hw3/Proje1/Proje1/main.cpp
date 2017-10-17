@@ -13,28 +13,31 @@ int main() {
 	ConnectFour GameFour(4, 7, 2);
 	ConnectFour GameFive;
 
-	cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
-	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameOne.Play();
+	while (ConnectFour::GetGameCounter() > 0) {
+		cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
+		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
+		GameOne.Play();
 
-	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameTwo.Play();
+		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
+		GameTwo.Play();
 
-	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameThree.Play();
+		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
+		GameThree.Play();
 
-	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameFour.Play();
+		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
+		GameFour.Play();
 
-	cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
-	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameFive.Play();
+		cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
+		cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
+		GameFive.Play();
 
-	bool result = GameOne.IsBetter(GameTwo, GameThree);
-	if(result)
-		cout << " GameTwo is better than GameThree " << endl;
-	else 
-		cout << " GameTwo is worse than GameThree " << endl;
+		bool result = GameOne.IsBetter(GameTwo, GameThree);
+		if (result)
+			cout << " GameTwo is better than GameThree " << endl;
+		else
+			cout << " GameTwo is worse than GameThree " << endl;
+	}
+	
 
 return 0;
 }

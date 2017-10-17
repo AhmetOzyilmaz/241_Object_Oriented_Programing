@@ -11,9 +11,10 @@
 *	Input		   : conts string file name
 *	Return Value   : no return value
 */
-bool ConnectFour::IsBetter(const ConnectFour& one, const ConnectFour& two) {
+bool ConnectFour::IsBetter( ConnectFour& one, ConnectFour& two){
 
-
+	if (one.getCurrentElementCounter() > two.getCurrentElementCounter())
+		return true;
 	return false;
 }
 /*
@@ -596,6 +597,7 @@ int  ConnectFour::PlayMove() {
 						MaxEnem.posX = row;
 						MaxEnem.posY = column;
 						MaxEnem.NeighborEnemyCounter = controller;
+						setCurrentElementCounter(i);
 						break;
 					}
 				}

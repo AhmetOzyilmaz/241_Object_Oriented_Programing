@@ -51,6 +51,7 @@ private:
 	int gameSizeColumn = 4; //default size
 	int GameMode = 1; //default game mode
 	int WhoIsWillPlay = 1;
+	int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
 public:
 	
 	ConnectFour() {
@@ -79,6 +80,9 @@ public:
 	inline void setGameSizeColumn(const int size) { gameSizeColumn = size; }
 	inline const int getGameSizeColumn() { return gameSizeColumn; }
 
+	inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
+	inline const int getCurrentElementCounter() { return CurrentElementCounter; }
+
 	inline void SetGameMode(const int mode) { GameMode = mode; }
 	inline const int GetGameMode() { return GameMode; }
 
@@ -88,6 +92,7 @@ public:
 	inline void SetGameBoard(const int& row, const int& column,const char& value) { gameCells[row][column].SetCellValue(value);	 }
 
 	inline static int GetCellCounter() { return CellCounter; }
+	inline static int GetGameCounter() { return GameCount; }
 
 	void SetGameBoard(Cell c) {
 		int row = c.GetPosRow();
@@ -126,7 +131,7 @@ public:
 	int PlayMove();
 	int PlayMove(const string& column,const int& playerID );
 	void NewGame();
-	bool IsBetter(const ConnectFour& one,const ConnectFour& two);
+	bool IsBetter( ConnectFour& one, ConnectFour& two);
 
 
 };

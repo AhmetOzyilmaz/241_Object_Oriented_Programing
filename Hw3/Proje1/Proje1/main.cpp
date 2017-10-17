@@ -11,8 +11,9 @@ int main() {
 	ConnectFour GameTwo(5, 10);
 	ConnectFour GameThree(8, 8, 2);
 	ConnectFour GameFour(4, 7, 2);
+	ConnectFour GameFive;
 
-
+	cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
 	GameOne.Play();
 
@@ -20,14 +21,20 @@ int main() {
 	GameTwo.Play();
 
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameTwo.Play();
+	GameThree.Play();
 
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameTwo.Play();
+	GameFour.Play();
 
+	cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-	GameTwo.Play();
+	GameFive.Play();
 
+	bool result = GameOne.IsBetter(GameTwo, GameThree);
+	if(result)
+		cout << " GameTwo is better than GameThree " << endl;
+	else 
+		cout << " GameTwo is worse than GameThree " << endl;
 
 return 0;
 }

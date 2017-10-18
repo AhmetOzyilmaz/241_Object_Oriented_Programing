@@ -110,20 +110,16 @@ public:
 		int column = c.GetPosColumn();
 		gameCells[row][column] = c;
 	}
-
 	void Play();
 	void playGame();
 	void ParseFirstLine(const string& line,int& mode, int& row, int& column, int& play);
-
 	void ReSizeGameBoard(const int& row, const int& column);
 	void InitialBoard(const int& row,const int& column);
-
 	//File Operation
 	void SaveFile(const string& filename);
 	void LoadFile(const string& filename);
 	//End File Operation
 	void PrintGameBoard();	
-
 	bool MoveInputCheck(const string& command);
 	char TakeMove(const int& PlayerID);
 	bool CommandSelector(const string& command);
@@ -143,7 +139,5 @@ public:
 	int PlayMove(const string& column,const int& playerID );
 	void NewGame();
 	bool IsBetter( ConnectFour& one, ConnectFour& two);
-
-
 };
 

@@ -1,5 +1,4 @@
 ﻿#include "ConnectFour.h"
-
 /*
 *	This input file first line 1 element is game mode
 *	second element is game board size and
@@ -12,64 +11,110 @@
 */
 void ConnectFour::Play() {
 	char command = '.';
-	while (1) {
-		GameManager();
+	bool isEnded = GameManager();
+	if (isEnded) {
 		cout << "if you want to quit enter q or enter different character" << endl;
 		cin >> command;
 		if (command == 'q' || command == 'Q')
-			break;
+			--GameCount;
 		else {
 			cout << "\n\n************************************New Game*******************\\n" << endl;
 			NewGame();
 		}
 	}
 }
-
-void ConnectFour::ReSizeGameBoard(const int& row,const int& column) {
-	vector<Cell> temp;
-	Cell empth;
-
-	for (int i = 0; i < column; ++i)
-		temp.push_back(empth);
-
-	if (row > getGameSizeRow()) {
-		for(int i = row- getGameSizeRow(); 0 <= i; -- i)
-			gameCells.push_back(temp);
-	}
-	for (int i = 0; i < row; ++i)
-		gameCells.at(i) = temp;
-		
-	setGameSizeRow(row);//2.değişken oyunun size ı
-	setGameSizeColumn(column);//2.değişken oyunun size ı
-	cout << "New Game Size" << getGameSizeRow() << " X " << getGameSizeColumn() << endl;
-}
-void ConnectFour::NewGame() {
-	InputValidator();
-	InitialBoard(gameSizeRow, gameSizeColumn);
-	PrintGameBoard();
-	SetWhoIsWillPlay(USER1PLAYERID);
-}
 /*
-*	Desciription : This function computer automatic playin move
-*	Input		   : no parameter
-*	Return Value   : returnin if u find placable positon or returning '.' for error
+*	Desciription : This function playing game respectively until one of the player win or moveable
+*					position when end
+*	Input		   : no input
+*	Return Value   : if return true game is over if return false game is not ended
 */
-char ConnectFour::MoveComputer() {
-	char pos;
-	while (1) {
-		srand(time(NULL));
-		pos = 'A' + rand() % getGameSizeColumn();
-		if (IsPositionPlayable(COMPUTERPLAYERID, pos))
-			return pos;
+bool ConnectFour::GameManager() {
+	int control = 0, check = 0;
+	if (GetWhoIsWillPlay() == 1) {
+		//Player1
+		control = AllMoveOperation(USER1PLAYERID);
+		if (control != 2 && control != -1)
+			SetWhoIsWillPlay(2);
 	}
-	return '.';
+	else if (GetWhoIsWillPlay() == 2) {
+		//cout << "GetGameMode\t" << GetGameMode()<< endl;
+		//cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
+		if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
+			control = AllMoveOperation(COMPUTERPLAYERID);
+		else if (TWO_PLAYER == GetGameMode())
+			control = AllMoveOperation(USER2PLAYERID);
+		if (control != 2 && control != -1)
+			SetWhoIsWillPlay(1);
+	}
+	check = IsGameOver();
+	if (check == -1) {
+		setGameisEnded(true);
+		return true;
+	}
+	PrintGameBoard();
+	return false;
 }
 /*
-*	Desciription : This function finding computer move and moving
+*	Desciription : This function managing all player move operation
+*	Input		   : Interger for which player playing
+*	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
+*/
+int ConnectFour::AllMoveOperation(const int& PlayerID) {
+	bool flag = false;
+	string move = "";
+	if (PlayerID != 3) {
+		move = TakeMove(PlayerID);
+		while(move[0] == '-' || move[0] == '+' )
+			move = TakeMove(PlayerID);
+
+		return PlayMove(move, PlayerID);
+	}
+	else if (PlayerID == 3) {
+		return PlayMove();
+	}
+	return -1;
+}
+/*
+*	Desciription : This function taking move
+*	Input		   : no input
+*	Return Value   : returing legal move if return '-' move is not legal taking new move
+*/
+char ConnectFour::TakeMove(const int& PlayerID) {
+	bool flag = false;
+	string command = "", command2 = "";
+	while (1) {
+
+		cout << "\n\nGAME " << getGameID() << endl;
+		PrintGameBoard();
+		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
+			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
+			<< "Enter one grater letter  move A , B, C ...\n"
+			<< "\t For : USER" << PlayerID << endl;
+		cin >> command;
+		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
+			cin >> command2;
+			command2 = command + " " + command2;
+			CommandSelector(command2);
+			return '+';
+		}
+		else {
+			if (command.size() == 1) {
+				if (MoveInputCheck(command))
+				return command[0];
+			}
+			else
+				cerr << "<--->ILLEGAL<---> ERROR COMMAND ENTER NEW  COMMAND " << endl;
+		}
+	}
+	return '-';
+}
+/*
+*	Desciription : This function it dont take parameter playing for computer is taking parameter will play for user
 *	Input		   : no parameter
 *	Return Value   : no return value
 */
-void  ConnectFour::FindComputerMove() {
+int  ConnectFour::PlayMove() {
 	NeigborEnemy MaxEnem;
 	MaxEnem.posX = 0;
 	MaxEnem.posY = 0;
@@ -109,24 +154,25 @@ void  ConnectFour::FindComputerMove() {
 						MaxEnem.posX = row;
 						MaxEnem.posY = column;
 						MaxEnem.NeighborEnemyCounter = controller;
+						setCurrentElementCounter(i);
 						break;
 					}
 				}
 			}
 		}
 		int row = 0, column = 0;
-		cout << MaxControl << " MaxEnem.posX "<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY <<" MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter  << endl;
-		if (MaxEnem.posX - 1 >= 0) 
-			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1 &&  isPlayeable) 
+		cout << MaxControl << " MaxEnem.posX " << MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY << " MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter << endl;
+		if (MaxEnem.posX - 1 >= 0)
+			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
-		if (MaxEnem.posX - 1 >= 0  && MaxEnem.posY - 1 >= 0)
-			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable) 
+		if (MaxEnem.posX - 1 >= 0 && MaxEnem.posY - 1 >= 0)
+			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY - 1);
 		if (MaxEnem.posY - 1 >= 0)
-			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable) 
-			isPlayeable = PlayIsPlayeable(3, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY - 1);
+			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable)
+				isPlayeable = PlayIsPlayeable(3, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY - 1);
 		if (MaxEnem.posY + 1 < columnSize)
-			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &&  isPlayeable) 
+			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
 		if (true == isPlayeable) {
 			int  column = 0;
@@ -137,7 +183,7 @@ void  ConnectFour::FindComputerMove() {
 				if (column < 0)
 					column *= -1;
 				for (int row = rowSize - 1; row >= 0, column >= 0, column < columnSize; --row) {
-					if (GetGameBoard(row , column ).GetCellValue() == EMTHY) {
+					if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
 						SetGameBoard(row, column, USER2);
 						cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 						isPlayeable = false;
@@ -150,7 +196,93 @@ void  ConnectFour::FindComputerMove() {
 		}
 
 	}
-	return;
+	return 0;
+}
+int ConnectFour::PlayMove(const string& move, const int& PlayerID) {
+	bool flag = false;
+	if (move[0] == '+')
+		return 2;// 
+	flag = MoveInputCheck(move);
+	if (flag) {
+		cout << "MoveInputCheck is correct\n";
+		//if flag true this can true input i will checking position is playable
+		if (IsPositionPlayable(PlayerID, move[0])) {// play move
+			MovePlayer(PlayerID, move[0]);
+			return 0;
+		}
+		else {
+			cerr << " <--->ILLEGAL<---> Position Cannot play enter another move " << endl;
+			return -1;
+		}
+	}
+	else
+		cerr << "<--->ILLEGAL<---> MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
+}
+/*
+*	Desciription : //This game has 2 type command Load and Save
+*	Input		   : const string& taking command from user
+*	Return Value   :  doing operation correctly returning true else returning false
+*/
+bool ConnectFour::CommandSelector(const string& command) {
+	string filename = command.substr(5, command.size());
+	if (command.substr(0, 4).compare("SAVE") == 0) {
+		SaveFile(filename);
+		return true;
+	}
+	else if (command.substr(0, 4).compare("LOAD") == 0) {
+		LoadFile(filename);
+		return true;
+	}
+	return false;
+}
+/*
+*	Desciription : This function saving gameboard status
+*	Input		   : conts string file name
+*	Return Value   : no return value
+*/
+bool ConnectFour::IsBetter( ConnectFour& one, ConnectFour& two){
+	if (one.getCurrentElementCounter() > two.getCurrentElementCounter())
+		return true;
+	return false;
+}
+void ConnectFour::ReSizeGameBoard(const int& row,const int& column) {
+	vector<Cell> temp;
+	Cell empth;
+
+	for (int i = 0; i < column; ++i)
+		temp.push_back(empth);
+
+	if (row > getGameSizeRow()) {
+		for(int i = row- getGameSizeRow(); 0 <= i; -- i)
+			gameCells.push_back(temp);
+	}
+	for (int i = 0; i < row; ++i)
+		gameCells.at(i) = temp;
+		
+	setGameSizeRow(row);//2.değişken oyunun size ı
+	setGameSizeColumn(column);//2.değişken oyunun size ı
+	cout << "New Game Size" << getGameSizeRow() << " X " << getGameSizeColumn() << endl;
+}
+void ConnectFour::NewGame() {
+	playGame();
+	InitialBoard(gameSizeRow, gameSizeColumn);
+	PrintGameBoard();
+	SetWhoIsWillPlay(USER1PLAYERID);
+}
+/*
+*	Desciription : This function computer automatic playin move
+*	Input		   : no parameter
+*	Return Value   : returnin if u find placable positon or returning '.' for error
+*/
+char ConnectFour::MoveComputer() {
+	char pos;
+	while (1) {
+		srand(time(NULL));
+		pos = 'A' + rand() % getGameSizeColumn();
+		if (IsPositionPlayable(COMPUTERPLAYERID, pos))
+			return pos;
+	}
+	return '.';
 }
 /*
 *	Desciription : returning isPlaceable
@@ -379,37 +511,7 @@ bool ConnectFour::MoveInputCheck(const string& command) {
 		return false;
 	return true;
 }
-/*
-*	Desciription : This function taking move
-*	Input		   : no input
-*	Return Value   : returing legal move if return '-' move is not legal taking new move
-*/
-char ConnectFour::TakeMove(const int& PlayerID) {
-	bool flag = false;
-	string command = "", command2 = "";
-	while (1) {
-		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
-			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
-			<< "Enter one grater letter  move A , B, C ...\n"
-			<< "\t For : USER" << PlayerID << endl;
-		cin >> command;
-		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
-			cin >> command2;
-			command2 = command + " " + command2;
-			CommandSelector(command2);
-			return '+';
-		}
-		else {
-			if (command.size() == 1) {
-				if (MoveInputCheck(command));
-				return command[0];
-			}
-			else
-				cerr << "<--->ILLEGAL<---> ERROR COMMAND ENTER NEW  COMMAND " << endl;
-		}
-	}
-	return '-';
-}
+
 /*	Desciription : Printing screen current status of game board
 *	Input		 : no input parameter
 *	Return Value : no return value
@@ -454,7 +556,6 @@ void ConnectFour::InitialBoard(const int& row, const int& column) {
 *	Input		   : conts string file name
 *	Return Value   : no return value
 */
-
 void ConnectFour::ParseFirstLine(const string& line,int& mode, int& row,int& column,int& play) {
 	string s = "";
 	mode = line[0] -'0';
@@ -477,7 +578,6 @@ void ConnectFour::ParseFirstLine(const string& line,int& mode, int& row,int& col
 	play = line[line.size() - 1] - '0';
 
 }
-// TODO yanlış dosya yükleme,
 void ConnectFour::LoadFile(const string& filename) {
 	ifstream myReadFile;
 	myReadFile.open(filename);
@@ -524,7 +624,6 @@ void ConnectFour::SaveFile(const string& filename) {
 	if (myfile.is_open()) {
 		//Oyun modu 1 se  user vs user 2 ise user vs computer 
 		//ikinci eleman oyunun size ı 
-		//TODO hamle kimde kaldıysa onun idsi CurrenPlayerID olarak atanıcak
 		myfile << GetGameMode() << " " << getGameSizeRow() << " " << getGameSizeColumn() << " " << WhoIsWillPlay << endl;
 		for (int row = 0; row < getGameSizeRow(); ++row) {
 			for (int column = 0; column < getGameSizeColumn(); ++column)
@@ -543,8 +642,8 @@ void ConnectFour::SaveFile(const string& filename) {
 *					Cheking game mode  should be 1 or 2
 *	Input		 : no input parameter
 *	Return Value : no return value */
-void ConnectFour::InputValidator() {
-	int row = 0, column = 0; // TODO update size 
+void ConnectFour::playGame() {
+	int row = 0, column = 0; 
 	while (1) {
 		cout << "Enter Game Row Size  \n" << "Game board can be any size \n";
 		cin >> row;
@@ -581,90 +680,7 @@ void ConnectFour::InputValidator() {
 	}
 	return;
 }
-/*
-*	Desciription : This function playing game respectively until one of the player win or moveable
-*					position when end
-*	Input		   : no input
-*	Return Value   : no return value
-*/
-void ConnectFour::GameManager() {
-	int control = 0, check = 0;
-	while (1) {
-		//cout << " 111 GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-		if (GetWhoIsWillPlay() == 1) {
-			//Player1
-			control = AllMoveOperation(USER1PLAYERID);
-			//cout << "control" << control  << endl;
-			if (control != 2 && control != -1)
-				SetWhoIsWillPlay(2);
-		}
-		else if (GetWhoIsWillPlay() == 2) {
-			cout << "GetGameMode\t" << GetGameMode()<< endl;
-			cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-			if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
-				control = AllMoveOperation(COMPUTERPLAYERID);
-			else if (TWO_PLAYER == GetGameMode())
-				control = AllMoveOperation(USER2PLAYERID);
-			if (control != 2 && control != -1)
-				SetWhoIsWillPlay(1);
-		}
-		check = IsGameOver();
-		if (check == -1)
-			break;
-		PrintGameBoard();
-	}
-}
-/*
-*	Desciription : //This game has 2 type command Load and Save
-*	Input		   : const string& taking command from user
-*	Return Value   :  doing operation correctly returning true else returning false
-*/
-bool ConnectFour::CommandSelector(const string& command) {
-	string filename = command.substr(5, command.size());
-	if (command.substr(0, 4).compare("SAVE") == 0) {
-		SaveFile(filename);
-		return true;
-	}
-	else if (command.substr(0, 4).compare("LOAD") == 0) {
-		LoadFile(filename);
-		return true;
-	}
-	return false;
-}
-/*
-*	Desciription : This function managing all player move operation
-*	Input		   : Interger for which player playing
-*	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
-*/
-int ConnectFour::AllMoveOperation(const int& PlayerID) {
-	bool flag = false;
-	string command = "";
-	if (PlayerID != 3) {
-		command = TakeMove(PlayerID);
-		if (command[0] == '+')
-			return 2;// 
-		flag = MoveInputCheck(command);
-	}
-	else if (PlayerID == 3) {
-		FindComputerMove();
-		return 0;
-	}
-	if (flag) {
-		cout << "MoveInputCheck is correct\n";
-		//if flag true this can true input i will checking position is playable
-		if (IsPositionPlayable(PlayerID, command[0])) {// play move
-			MovePlayer(PlayerID, command[0]);
-			return 0;
-		}
-		else {
-			cerr << " <--->ILLEGAL<---> Position Cannot play enter another move " << endl;
-			return -1;
-		}
-	}
-	else
-		cerr << "<--->ILLEGAL<---> MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
-	return -1;
-}
+
 /*
 *	Desciription : This function taking one move without computer and make a move
 *	Input		   : int curren player id

@@ -14,7 +14,6 @@ const int ONE_PLAYER_VERSUS_COMPUTER = 2;
 const char USER1 = 'X';
 const char USER2 = 'O';
 const char EMTHY = '.';
-
 using namespace std;
 
 struct NeigborEnemy
@@ -46,21 +45,34 @@ private:
 		char CellValue = '.';
 	};
 	static int CellCounter;
+	static int GameCount;
 	vector< vector<Cell> > gameCells;
 	int gameSizeRow = 4; //default size
 	int gameSizeColumn = 4; //default size
 	int GameMode = 1; //default game mode
 	int WhoIsWillPlay = 1;
+	int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
+	bool isEnded = false;
+	int GameID = 0;
 public:
 	
 	ConnectFour() {
-		InputValidator();
+		++GameCount;
+		setGameID(GameCount);
+		cout << "\n\nGame " << getGameID() << endl;
+		playGame();
 		InitialBoard(gameSizeRow, gameSizeColumn); 
 		PrintGameBoard();
 	}
 	ConnectFour(int row,int column,int mode): gameSizeRow(row),gameSizeColumn(column), GameMode(mode){
+		++GameCount;
+		setGameID(GameCount);
+		cout << "\n\nGame " << getGameID() << endl;
 		InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/ 
 		PrintGameBoard();
+	}
+	ConnectFour(int row, int column) :ConnectFour(row, column,2){
+		//automaticly starting with PLAYER VS COMPUTER
 	}
 	//TODO at least 3 constructors
 
@@ -70,6 +82,15 @@ public:
 	inline void setGameSizeRow(const int size) { gameSizeRow = size; }
 	inline const int getGameSizeRow() { return gameSizeRow; }
 	
+	inline void setGameisEnded(const bool end) { isEnded = end; }
+	inline const bool getGameisEnded() { return isEnded; }
+
+	inline void setGameID(const int id) { GameID = id; }
+	inline const int getGameID() { return GameID; }
+
+	inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
+	inline const int getCurrentElementCounter() { return CurrentElementCounter; }
+
 	inline void setGameSizeColumn(const int size) { gameSizeColumn = size; }
 	inline const int getGameSizeColumn() { return gameSizeColumn; }
 
@@ -82,26 +103,23 @@ public:
 	inline void SetGameBoard(const int& row, const int& column,const char& value) { gameCells[row][column].SetCellValue(value);	 }
 
 	inline static int GetCellCounter() { return CellCounter; }
+	inline static int GetGameCounter() { return GameCount; }
 
 	void SetGameBoard(Cell c) {
 		int row = c.GetPosRow();
 		int column = c.GetPosColumn();
 		gameCells[row][column] = c;
 	}
-
 	void Play();
-	void InputValidator();
+	void playGame();
 	void ParseFirstLine(const string& line,int& mode, int& row, int& column, int& play);
-
 	void ReSizeGameBoard(const int& row, const int& column);
 	void InitialBoard(const int& row,const int& column);
-
 	//File Operation
 	void SaveFile(const string& filename);
 	void LoadFile(const string& filename);
 	//End File Operation
 	void PrintGameBoard();	
-
 	bool MoveInputCheck(const string& command);
 	char TakeMove(const int& PlayerID);
 	bool CommandSelector(const string& command);
@@ -113,13 +131,13 @@ public:
 	bool IsGameOverOneSide(const char& User, const char& other);
 	int IsGameOver();
 	int AllMoveOperation(const int& PlayerID);
-
 	bool AnyMoveMore();
-	void GameManager();
+	bool GameManager();
 	void MovePlayer(const int&, const char&);
 	char MoveComputer();
-	void FindComputerMove();
+	int PlayMove();
+	int PlayMove(const string& column,const int& playerID );
 	void NewGame();
-
+	bool IsBetter( ConnectFour& one, ConnectFour& two);
 };
 

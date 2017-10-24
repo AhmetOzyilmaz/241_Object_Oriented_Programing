@@ -539,16 +539,13 @@ void ConnectFour::PrintGameBoard() {
 *	Return Value : no return value
 */
 void ConnectFour::InitialBoard(const int& row, const int& column) {
-	Cell c(0,0,'.');//no parameter contructor 
-	vector <vector<Cell> > temp(row + 10, vector<Cell>(column));
-	for (auto i = 0; i < row; ++i) {
-		for (auto j = 0; j < column; ++j) {
-			c.SetPosRow(i);
-			c.SetPosColumn(j);
-			temp[i][j] =c ;
-		}
+
+	gameCells.resize(row);
+	for (int i = 0; i < row; i++)
+	{
+		gameCells[i].resize(column);
 	}
-	gameCells = temp;
+	CellCounter += row*column;
 	cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
 }
 /*

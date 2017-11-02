@@ -3,22 +3,6 @@
 *	This input file first line 1 element is game mode
 *	second element is game board size and
 *	3 element is which player will play  after loading game*/
-
-ConnectFour::ConnectFour() {
-	++GameCount;
-	setGameID(GameCount);
-	cout << "\n\nGame " << getGameID() << endl;
-	playGame();
-	InitialBoard(5, 5);
-	PrintGameBoard();
-}
-ConnectFour::ConnectFour(int row, int column, int mode) : gameSizeRow(row), gameSizeColumn(column), GameMode(mode) {
-	++GameCount;
-	setGameID(GameCount);
-	cout << "\n\nGame " << getGameID() << endl;
-	InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/
-	PrintGameBoard();
-}
 /*
 *	Desciription : This function saving gameboard status
 *	Input		   : conts string file name
@@ -297,32 +281,6 @@ ConnectFour & ConnectFour::operator=(const ConnectFour& other)
 		delete[] gameCells[i];
 	delete[]gameCells;
 	CopyConnectedFour(other);
-}
-
-ConnectFour::ConnectFour(const string & FileName)
-{
-	LoadFile(FileName);
-	// todo boş hücrelere  taş koyamasın
-}
-
-bool ConnectFour::operator==(const ConnectFour & other)
-{
-	if (gameSizeRow != other.gameSizeRow)
-		return false;
-	if (gameSizeColumn != other.gameSizeColumn)
-		return false;
-	for (int i = 0; i < gameSizeRow; ++i) {
-		for (int j = 0; j < gameSizeColumn; ++j) {
-			if (gameCells[i][j].gameSizeColumn() != other.gameCells[i][j].gameSizeColumn())
-				return false;
-		}
-	}
-	return true;
-}
-
-bool ConnectFour::operator!=(const ConnectFour & other)
-{
-	return !(*this == other);
 }
 
 void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {

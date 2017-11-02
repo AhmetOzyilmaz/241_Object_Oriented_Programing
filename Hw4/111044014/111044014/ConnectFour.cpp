@@ -244,14 +244,49 @@ bool ConnectFour::IsBetter(ConnectFour& one, ConnectFour& two) {
 		return true;
 	return false;
 }
+ConnectFour::~ConnectFour()
+{
+	for (int i = 0; i < getGameSizeRow(); ++i) {
+			delete[] gameCells[i];
+			gameCells[i] = nullptr;
+	}
+	delete[] gameCells;
+	gameCells = nullptr;
+}
+void ConnectFour::CopyConnectedFour(const ConnectFour& other) {
+	gameSizeRow = other.gameSizeRow;
+	gameSizeColumn = other.gameSizeColumn;
+	WhoIsWillPlay = other.WhoIsWillPlay;
+	GameMode = other.GameMode;
+	CurrentElementCounter = other.CurrentElementCounter;
+	isEnded = other.isEnded;
+	GameID = other.GameID;
+
+	ReSizeGameBoard(gameSizeRow, gameSizeColumn);
+
+	for (int i = 0; i < gameSizeRow; ++i) {
+		for (int j = 0; j < gameSizeColumn; ++j) {
+			gameCells[i][j] = other.gameCells[i][j];
+		}
+	}
+}
+ConnectFour::ConnectFour(const ConnectFour & other)
+{
+	CopyConnectedFour(other);
+}
+
+ConnectFour & ConnectFour::operator=(const ConnectFour& other)
+{
+	for (int i = 0; i < gameSizeRow; ++i) 
+		delete[] gameCells[i];
+	delete[]gameCells;
+	CopyConnectedFour(other);
+}
+
 void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {
 	gameCells = new Cell*[row];
 	for (int i = 0; i < row; i++)
 		gameCells[i] = new Cell[column];
-	Cell empth;
-	for (int i = 0; i < row; i++)
-		for (int j = 0; j < column; j++)
-			gameCells[i][j] = empth;
 
 	setGameSizeRow(row);//2.değişken oyunun size ı
 	setGameSizeColumn(column);//2.değişken oyunun size ı

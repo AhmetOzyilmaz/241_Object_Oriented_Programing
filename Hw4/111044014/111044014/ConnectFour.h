@@ -1,9 +1,10 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include<iostream>
 #include <cstdlib>     /* srand, rand */
 #include <ctime>
 #include <string>
 #include <fstream>
+
 
 const int USER1PLAYERID = 1;
 const int USER2PLAYERID = 2;
@@ -34,10 +35,12 @@ private:
 
 		inline void SetPosRow(const int& row) { PosRow = row; }
 		inline void SetPosColumn(const int& col) { PosColumn = col; }
-		inline int GetPosRow() { return PosRow; }
-		inline int GetPosColumn() { return PosColumn; }
+		inline int GetPosRow() const{ return PosRow; }
+		inline int GetPosColumn() const { return PosColumn; }
 		inline void SetCellValue(const char& col) { CellValue = col; }
-		inline const char GetCellValue() { return CellValue; }
+		inline char GetCellValue() const { return CellValue; }
+
+
 	private:
 		int PosColumn = 0;
 		int  PosRow = 0;
@@ -50,9 +53,11 @@ private:
 	int gameSizeColumn = 5; //default size
 	int GameMode = 1; //default game mode
 	int WhoIsWillPlay = 1;
-	int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
+	int CurrentElementCounter = 0;// 4 lÃ¼ yapmaya ne kadar yakÃ½n olduÃ°unu tutan bir  deÃ°iÃ¾ken 
 	bool isEnded = false;
 	int GameID = 0;
+
+	void CopyConnectedFour(const ConnectFour& other);
 public:
 
 	ConnectFour() {
@@ -73,6 +78,12 @@ public:
 	ConnectFour(int row, int column) :ConnectFour(row, column, 2) {
 		//automaticly starting with PLAYER VS COMPUTER
 	}
+
+
+
+	// Todo copy constructor
+	// Todo assignment operator
+
 	//TODO at least 3 constructors
 
 	inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
@@ -85,7 +96,7 @@ public:
 	inline const bool getGameisEnded() { return isEnded; }
 
 	inline void setGameID(const int id) { GameID = id; }
-	inline const int getGameID() { return GameID; }
+	inline int getGameID() const { return GameID; }
 
 	inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
 	inline const int getCurrentElementCounter() { return CurrentElementCounter; }
@@ -138,5 +149,26 @@ public:
 	int PlayMove(const string& column, const int& playerID);
 	void NewGame();
 	bool IsBetter(ConnectFour& one, ConnectFour& two);
+
+	/*
+	operator overload part*/
+	~ConnectFour();
+	ConnectFour(const ConnectFour& other);
+	ConnectFour& operator=(const ConnectFour& other);
+	ConnectFour(const string& FileName);
+
+	friend bool operator ==(const Cell& first, const Cell& second);
+	friend bool operator !=(const Cell& first, const Cell& second);
+
+	friend bool operator ==(const ConnectFour& first, const ConnectFour& second);
+	friend bool operator !=(const ConnectFour& first, const ConnectFour& second);
+
+	Cell operator++(); // prefix  Ã¶nce arttÄ±r 
+	Cell operator++(int);// post fix sonra arttÄ±r 
+
+	friend ostream& operator<<(ostream& output, const Cell& outCell);
+	friend istream& operator>>(istream& input,Cell& outCell);
+
+
 };
 

@@ -9,7 +9,7 @@ int main() {
 
 	ConnectFour GameOne;
 	ConnectFour GameTwo(5, 10);
-	ConnectFour GameThree(8, 8, 2);
+	ConnectFour GameThree("input1.txt");
 	ConnectFour GameFour(4, 7, 2);
 	ConnectFour GameFive;
 

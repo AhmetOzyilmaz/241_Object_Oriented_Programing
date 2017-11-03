@@ -1,9 +1,10 @@
 ﻿#include <iostream>
-#include<iostream>
 #include <cstdlib>     /* srand, rand */
 #include <ctime>
 #include <string>
 #include <fstream>
+
+using namespace std;
 
 
 const int USER1PLAYERID = 1;
@@ -14,7 +15,6 @@ const int ONE_PLAYER_VERSUS_COMPUTER = 2;
 const char USER1 = 'X';
 const char USER2 = 'O';
 const char EMTHY = '.';
-using namespace std;
 
 struct NeigborEnemy
 {
@@ -42,7 +42,8 @@ private:
 
 		inline char gameSizeColumn() const { return CellValue; }
 
-
+		Cell operator++(); // prefix  önce arttır 
+		Cell operator++(int);// post fix sonra arttır 
 	private:
 		int PosColumn = 0;
 		int  PosRow = 0;
@@ -139,18 +140,14 @@ public:
 	ConnectFour& operator=(const ConnectFour& other);
 	ConnectFour(const string& FileName);
 
-	friend bool operator ==(const Cell& first, const Cell& second);
-	friend bool operator !=(const Cell& first, const Cell& second);
-
 	 bool operator ==( const ConnectFour& other);
 	 bool operator !=( const ConnectFour& other);
 
-	Cell operator++(); // prefix  önce arttır 
-	Cell operator++(int);// post fix sonra arttır 
+	 friend ostream& operator<<(ostream& output, const Cell& outCell);
+	 friend istream& operator>>(istream& input, Cell& outCell);
 
-	friend ostream& operator<<(ostream& output, const Cell& outCell);
-	friend istream& operator>>(istream& input,Cell& outCell);
-
+	 friend bool operator ==(const Cell& first, const Cell& second);
+	 friend bool operator !=(const Cell& first, const Cell& second);
 
 };
 

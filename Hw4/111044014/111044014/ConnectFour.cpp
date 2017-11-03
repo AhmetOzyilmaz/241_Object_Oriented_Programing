@@ -297,6 +297,7 @@ ConnectFour & ConnectFour::operator=(const ConnectFour& other)
 		delete[] gameCells[i];
 	delete[]gameCells;
 	CopyConnectedFour(other);
+	return *this;
 }
 
 ConnectFour::ConnectFour(const string & FileName)
@@ -324,6 +325,8 @@ bool ConnectFour::operator!=(const ConnectFour & other)
 {
 	return !(*this == other);
 }
+
+
 
 void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {
 	gameCells = new Cell*[row];

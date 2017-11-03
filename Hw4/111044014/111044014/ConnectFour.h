@@ -38,7 +38,9 @@ private:
 		inline int GetPosRow() const{ return PosRow; }
 		inline int GetPosColumn() const { return PosColumn; }
 		inline void SetCellValue(const char& col) { CellValue = col; }
-		inline char GetCellValue() const { return CellValue; }
+		inline char GetCellValue()const { return CellValue ; }
+
+		inline char gameSizeColumn() const { return CellValue; }
 
 
 	private:
@@ -60,31 +62,11 @@ private:
 	void CopyConnectedFour(const ConnectFour& other);
 public:
 
-	ConnectFour() {
-		++GameCount;
-		setGameID(GameCount);
-		cout << "\n\nGame " << getGameID() << endl;
-		playGame();
-		InitialBoard(5, 5);
-		PrintGameBoard();
-	}
-	ConnectFour(int row, int column, int mode) : gameSizeRow(row), gameSizeColumn(column), GameMode(mode) {
-		++GameCount;
-		setGameID(GameCount);
-		cout << "\n\nGame " << getGameID() << endl;
-		InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/
-		PrintGameBoard();
-	}
+	ConnectFour();
+	ConnectFour(int row, int column, int mode);
 	ConnectFour(int row, int column) :ConnectFour(row, column, 2) {
 		//automaticly starting with PLAYER VS COMPUTER
 	}
-
-
-
-	// Todo copy constructor
-	// Todo assignment operator
-
-	//TODO at least 3 constructors
 
 	inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
 	inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
@@ -160,8 +142,8 @@ public:
 	friend bool operator ==(const Cell& first, const Cell& second);
 	friend bool operator !=(const Cell& first, const Cell& second);
 
-	friend bool operator ==(const ConnectFour& first, const ConnectFour& second);
-	friend bool operator !=(const ConnectFour& first, const ConnectFour& second);
+	 bool operator ==( const ConnectFour& other);
+	 bool operator !=( const ConnectFour& other);
 
 	Cell operator++(); // prefix  önce arttır 
 	Cell operator++(int);// post fix sonra arttır 

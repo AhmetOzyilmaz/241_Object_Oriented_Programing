@@ -19,6 +19,10 @@ ConnectFour::ConnectFour(int row, int column, int mode) : gameSizeRow(row), game
 	InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/
 	PrintGameBoard();
 }
+ConnectFour::ConnectFour(const string& FileName) {
+	
+	LoadFile(FileName);
+}
 /*
 *	Desciription : This function saving gameboard status
 *	Input		   : conts string file name
@@ -46,6 +50,8 @@ void ConnectFour::Play() {
 */
 bool ConnectFour::GameManager() {
 	int control = 0, check = 0;
+	while (1) {
+
 	if (GetWhoIsWillPlay() == 1) {
 		//Player1
 		control = AllMoveOperation(USER1PLAYERID);
@@ -65,9 +71,12 @@ bool ConnectFour::GameManager() {
 	check = IsGameOver();
 	if (check == -1) {
 		setGameisEnded(true);
+		break;
 		return true;
 	}
 	PrintGameBoard();
+
+	}
 	return false;
 }
 /*
@@ -300,11 +309,6 @@ ConnectFour & ConnectFour::operator=(const ConnectFour& other)
 	return *this;
 }
 
-ConnectFour::ConnectFour(const string & FileName)
-{
-	LoadFile(FileName);
-	// todo boş hücrelere  taş koyamasın
-}
 
 bool ConnectFour::operator==(const ConnectFour & other)
 {
@@ -365,8 +369,8 @@ char ConnectFour::MoveComputer() {
 *	Return Value : if return false means move is played
 */
 bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const NeigborEnemy& MaxEnem, int row, int column) {
-	const int rowSize = getGameSizeRow();
-	const int columnSize = getGameSizeColumn();
+	const int rowSize = getGameSizeRow(), columnSize = getGameSizeColumn();
+
 	for (; ; ) {
 		if (row < 0 || row >= rowSize)
 			break;

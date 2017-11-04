@@ -8,7 +8,6 @@ ConnectFour::ConnectFour() {
 	++GameCount;
 	setGameID(GameCount);
 	cout << "\n\nGame " << getGameID() << endl;
-	playGame();
 	InitialBoard(5, 5);
 	PrintGameBoard();
 }
@@ -184,41 +183,54 @@ int  ConnectFour::PlayMove() {
 			}
 		}
 		int row = 0, column = 0;
-		cout << MaxControl << " MaxEnem.posX " << MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY << " MaxEnem.NeighborEnemyCounter\t" << MaxEnem.NeighborEnemyCounter << endl;
-		if (MaxEnem.posX - 1 >= 0)
+		cout <<endl<< MaxControl << " MaxEnem.posX " 
+			<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY 
+			<< " MaxEnem.NeighborEnemyCounter\t" 
+			<< MaxEnem.NeighborEnemyCounter << endl;
+
+		if (MaxEnem.posX - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue()==EMTHY)
 			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
-		if (MaxEnem.posX - 1 >= 0 && MaxEnem.posY - 1 >= 0)
+
+		if (MaxEnem.posX - 1 >= 0 && MaxEnem.posY - 1 >= 0 &&  gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY)
 			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY - 1);
-		if (MaxEnem.posY - 1 >= 0)
+		if (MaxEnem.posY - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY)
 			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(3, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY - 1);
-		if (MaxEnem.posY + 1 < columnSize)
+		if (MaxEnem.posY + 1 < columnSize && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY)
 			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
-		if (true == isPlayeable) {
+		if (true == isPlayeable ) {
 			int  column = 0;
 			time_t t;
 			srand(time(0));
 			while (1) {
+				cout << "While" << endl;
 				column = rand() % columnSize;
 				if (column < 0)
 					column *= -1;
-				for (int row = rowSize - 1; row >= 0, column >= 0, column < columnSize; --row) {
-					if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
-						SetGameBoard(row, column, USER2);
+
+				for (int row = rowSize - 1; ; --row) {
+
+					if (column < 0 || column >= columnSize || row < 0) {
+						break;
+					}
+					if (gameCells[row][column].GetCellValue() == EMTHY && gameCells[row][column].GetCellValue() != ' ') {
+						gameCells[row][column].SetCellValue(USER2);
 						cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 						isPlayeable = false;
 						break;
 					}
+				
 				}
 				if (isPlayeable == false)
 					break;
 			}
+		
 		}
-
 	}
+
 	return 0;
 }
 int ConnectFour::PlayMove(const string& move, const int& PlayerID) {
@@ -371,6 +383,7 @@ bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const 
 	const int rowSize = getGameSizeRow(), columnSize = getGameSizeColumn();
 
 	for (; ; ) {
+		cout << "Sonsuz" << endl;
 		if (row < 0 || row >= rowSize)
 			break;
 		if (column < 0 || column >= columnSize)
@@ -378,7 +391,7 @@ bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const 
 		if (direction != 4) {//özel durum
 			if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
 				SetGameBoard(row, column, USER2);
-				cout << "Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
+				cout << "***** Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
 				return false;
 			}
 		}

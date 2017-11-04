@@ -20,7 +20,6 @@ ConnectFour::ConnectFour(int row, int column, int mode) : gameSizeRow(row), game
 	PrintGameBoard();
 }
 ConnectFour::ConnectFour(const string& FileName) {
-	
 	LoadFile(FileName);
 }
 /*
@@ -91,7 +90,6 @@ int ConnectFour::AllMoveOperation(const int& PlayerID) {
 		move = TakeMove(PlayerID);
 		while (move[0] == '-' || move[0] == '+')
 			move = TakeMove(PlayerID);
-
 		return PlayMove(move, PlayerID);
 	}
 	else if (PlayerID == 3) {
@@ -144,7 +142,8 @@ int  ConnectFour::PlayMove() {
 	MaxEnem.posY = 0;
 	MaxEnem.NeighborEnemyCounter = "00000000";
 	int  control = 0, MaxControl = 0, index = 0;
-	const int rowSize = getGameSizeRow(); const int columnSize = getGameSizeColumn();
+	const int rowSize = getGameSizeRow(); 
+	const int columnSize = getGameSizeColumn();
 	bool flag = true, isPlayeable = true;
 	char pos;
 	string controller = "00000000";
@@ -318,7 +317,7 @@ bool ConnectFour::operator==(const ConnectFour & other)
 		return false;
 	for (int i = 0; i < gameSizeRow; ++i) {
 		for (int j = 0; j < gameSizeColumn; ++j) {
-			if (gameCells[i][j].gameSizeColumn() != other.gameCells[i][j].gameSizeColumn())
+			if (gameCells[i][j].GetCellValue() != other.gameCells[i][j].GetCellValue())
 				return false;
 		}
 	}
@@ -330,9 +329,9 @@ bool ConnectFour::operator!=(const ConnectFour & other)
 	return !(*this == other);
 }
 
-
-
 void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {
+
+	
 	gameCells = new Cell*[row];
 	for (int i = 0; i < row; i++)
 		gameCells[i] = new Cell[column];

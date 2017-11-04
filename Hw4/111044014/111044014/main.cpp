@@ -10,9 +10,7 @@ int main() {
 
 	if (GameThree.getGameisEnded() == false)
 		GameThree.Play();
-
 	int a;
-
 	cin >> a;
 	return 0;
 }

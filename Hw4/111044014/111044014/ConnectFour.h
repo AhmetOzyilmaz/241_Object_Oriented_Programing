@@ -40,8 +40,6 @@ private:
 		inline void SetCellValue(const char& col) { CellValue = col; }
 		inline char GetCellValue()const { return CellValue ; }
 
-		inline char gameSizeColumn() const { return CellValue; }
-
 		Cell operator++(); // prefix  önce arttır 
 		Cell operator++(int);// post fix sonra arttır 
 	private:
@@ -71,22 +69,16 @@ public:
 
 	inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
 	inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
-
 	inline void setGameSizeRow(const int size) { gameSizeRow = size; }
 	inline const int getGameSizeRow() { return gameSizeRow; }
-
 	inline void setGameisEnded(const bool end) { isEnded = end; }
 	inline const bool getGameisEnded() { return isEnded; }
-
 	inline void setGameID(const int id) { GameID = id; }
 	inline int getGameID() const { return GameID; }
-
 	inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
 	inline const int getCurrentElementCounter() { return CurrentElementCounter; }
-
 	inline void setGameSizeColumn(const int size) { gameSizeColumn = size; }
 	inline const int getGameSizeColumn() { return gameSizeColumn; }
-
 	inline void SetGameMode(const int mode) { GameMode = mode; }
 	inline const int GetGameMode() { return GameMode; }
 

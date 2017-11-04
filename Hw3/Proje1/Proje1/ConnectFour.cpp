@@ -31,6 +31,8 @@ void ConnectFour::Play() {
 */
 bool ConnectFour::GameManager() {
 	int control = 0, check = 0;
+
+	
 	if (GetWhoIsWillPlay() == 1) {
 		//Player1
 		control = AllMoveOperation(USER1PLAYERID);
@@ -53,6 +55,8 @@ bool ConnectFour::GameManager() {
 		return true;
 	}
 	PrintGameBoard();
+
+	
 	return false;
 }
 /*

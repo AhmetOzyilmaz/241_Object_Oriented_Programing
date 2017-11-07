@@ -12,16 +12,24 @@ int main() {
 	cout << "Enter Game Mode" << endl;
 	cin >> mode;
 
-	ConnectFour mode1;
-
-	while (mode == 'S') {
-		if (mode1.getGameisEnded() == false) {
-			mode1.Play(mode);
-			break;
+	if (mode == 'S' || mode == 's') {
+		ConnectFour mode1;
+		while (mode == 'S') {
+			if (mode1.getGameisEnded() == false) {
+				mode1.Play(mode);
+				break;
+			}
 		}
 	}
+	
+	const int size = 4;
+	ConnectFour* M = new ConnectFour[size]{mode};
+	
+	
 	int end;
 	cin >> end;
+
+
 	/*while (1) {
 		cout << "Enter Play Mode" << endl;
 		cin >> mode;

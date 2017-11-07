@@ -132,6 +132,7 @@ public:
 	/*
 	operator overload part*/
 	~ConnectFour();
+	ConnectFour(char mode);
 	ConnectFour(const ConnectFour& other);
 	ConnectFour& operator=(const ConnectFour& other);
 	ConnectFour(const string& FileName);

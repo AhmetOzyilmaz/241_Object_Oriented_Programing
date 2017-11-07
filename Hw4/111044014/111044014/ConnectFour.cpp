@@ -4,7 +4,33 @@
 *	second element is game board size and
 *	3 element is which player will play  after loading game*/
 
+ConnectFour::ConnectFour(char mode) {
+	cout << "Mode one paramtere" << endl;
+
+	++GameCount;
+	setGameID(GameCount);
+
+
+	cout << "\n\nGame " << getGameID() << endl;
+	cout << " Enter Board Source File or just double click enter button " << endl;
+	string file;
+	cin >> file;
+
+
+
+	if (file.size() > 4) {
+		LoadFileNew(file, 0);
+	}
+	else
+		PrintGameBoard();
+
+	SetGameMode(mode);
+	SetStartPlayer(mode);
+
+}
 ConnectFour::ConnectFour() {
+	cout << "NO  paramtere" << endl;
+
 	++GameCount;
 	setGameID(GameCount);
 	cout << "\n\nGame " << getGameID() << endl;
@@ -18,8 +44,10 @@ ConnectFour::ConnectFour() {
 	else
 		PrintGameBoard();
 
-	//InitialBoard();
-
+}
+ConnectFour::ConnectFour(const string & FileName)
+{
+	LoadFileNew(FileName,0);
 }
 ConnectFour::ConnectFour(int row, int column, char mode) : gameSizeRow(row), gameSizeColumn(column), GameMode(mode) {
 	++GameCount;
@@ -35,7 +63,8 @@ ConnectFour::ConnectFour(int row, int column, char mode) : gameSizeRow(row), gam
 	*/
 void ConnectFour::Play(char mode) {
 		char command = '.';
-		SetGameMode(mode);
+		
+
 		bool isEnded = GameManager();
 		if (isEnded) {
 			cout << "if you want to quit enter q or enter different character" << endl;
@@ -57,8 +86,7 @@ void ConnectFour::Play(char mode) {
 bool ConnectFour::GameManager() {
 	int control = 0, check = 0;
 	string ask;
-	char mode = GetGameMode();
-	SetStartPlayer(mode);
+	
 
 	while (1) {
 
@@ -297,7 +325,7 @@ void ConnectFour::SetStartPlayer(char mode)
 	if(mode == 'S' ||mode == 's')
 		cout << "Player | Computer: ";
 	else if (mode == 'M' || mode == 'M')
-		cout << "Player | Player";
+		cout << "Player | Player: ";
 	char choise;
 	cin >> choise;
 
@@ -349,6 +377,7 @@ ConnectFour & ConnectFour::operator=(const ConnectFour& other)
 	CopyConnectedFour(other);
 	return *this;
 }
+
 bool ConnectFour::operator==(const ConnectFour & other)
 {
 	if (gameSizeRow != other.gameSizeRow)

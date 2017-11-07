@@ -8,30 +8,38 @@ ConnectFour::ConnectFour() {
 	++GameCount;
 	setGameID(GameCount);
 	cout << "\n\nGame " << getGameID() << endl;
-	InitialBoard(5, 5);
-	PrintGameBoard();
+	cout << " Enter Board Source File or just double click enter button " << endl;
+	string file;
+	cin >> file;
+
+	if (file.size() > 4) {
+		LoadFileNew(file, 0);
+	}
+	else
+		PrintGameBoard();
+
+	//InitialBoard();
+
 }
-ConnectFour::ConnectFour(int row, int column, int mode) : gameSizeRow(row), gameSizeColumn(column), GameMode(mode) {
+ConnectFour::ConnectFour(int row, int column, char mode) : gameSizeRow(row), gameSizeColumn(column), GameMode(mode) {
 	++GameCount;
 	setGameID(GameCount);
 	cout << "\n\nGame " << getGameID() << endl;
 	InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/
 	PrintGameBoard();
 }
-ConnectFour::ConnectFour(const string& FileName) {
-	LoadFile(FileName);
-}
-/*
-*	Desciription : This function saving gameboard status
-*	Input		   : conts string file name
-*	Return Value   : no return value
-*/
-void ConnectFour::Play() {
-	char command = '.';
-	bool isEnded = GameManager();
-	if (isEnded) {
-		cout << "if you want to quit enter q or enter different character" << endl;
-		cin >> command;
+	/*
+	*	Desciription : This function saving gameboard status
+	*	Input		   : conts string file name
+	*	Return Value   : no return value
+	*/
+void ConnectFour::Play(char mode) {
+		char command = '.';
+		SetGameMode(mode);
+		bool isEnded = GameManager();
+		if (isEnded) {
+			cout << "if you want to quit enter q or enter different character" << endl;
+			cin >> command;
 		if (command == 'q' || command == 'Q')
 			--GameCount;
 		else {
@@ -48,6 +56,10 @@ void ConnectFour::Play() {
 */
 bool ConnectFour::GameManager() {
 	int control = 0, check = 0;
+	string ask;
+	char mode = GetGameMode();
+	SetStartPlayer(mode);
+
 	while (1) {
 
 	if (GetWhoIsWillPlay() == 1) {
@@ -111,7 +123,7 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
 			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
 			<< "Enter one grater letter  move A , B, C ...\n"
-			<< "\t For : USER" << PlayerID << endl;
+			<< "\t For : Player " << PlayerID << endl;
 		cin >> command;
 		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
 			cin >> command2;
@@ -156,7 +168,7 @@ int  ConnectFour::PlayMove() {
 		pos = MoveComputer();
 		int column = static_cast<int> (pos - 'A');
 		for (int row = rowSize - 1; row >= 0; --row) {
-			if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
+			if (GetGameBoard(row, column).GetCellValue() == EMTHY || GetGameBoard(row, column).GetCellValue() == SPECIALEMTHY) {
 				SetGameBoard(row, column, 'O');
 				cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 				break;
@@ -188,17 +200,17 @@ int  ConnectFour::PlayMove() {
 			<< " MaxEnem.NeighborEnemyCounter\t" 
 			<< MaxEnem.NeighborEnemyCounter << endl;
 
-		if (MaxEnem.posX - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue()==EMTHY)
+		if (MaxEnem.posX - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue()==EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
 			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
 
-		if (MaxEnem.posX - 1 >= 0 && MaxEnem.posY - 1 >= 0 &&  gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY)
+		if (MaxEnem.posX - 1 >= 0 && MaxEnem.posY - 1 >= 0 &&  gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
 			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY - 1);
-		if (MaxEnem.posY - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY)
+		if (MaxEnem.posY - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
 			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(3, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY - 1);
-		if (MaxEnem.posY + 1 < columnSize && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY)
+		if (MaxEnem.posY + 1 < columnSize && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
 			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
 		if (true == isPlayeable ) {
@@ -216,7 +228,7 @@ int  ConnectFour::PlayMove() {
 					if (column < 0 || column >= columnSize || row < 0) {
 						break;
 					}
-					if (gameCells[row][column].GetCellValue() == EMTHY && gameCells[row][column].GetCellValue() != ' ') {
+					if (gameCells[row][column].GetCellValue() == EMTHY && gameCells[row][column].GetCellValue() != ' ' || gameCells[row][column].GetCellValue() == SPECIALEMTHY) {
 						gameCells[row][column].SetCellValue(USER2);
 						cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 						isPlayeable = false;
@@ -280,6 +292,24 @@ bool ConnectFour::IsBetter(ConnectFour& one, ConnectFour& two) {
 		return true;
 	return false;
 }
+void ConnectFour::SetStartPlayer(char mode)
+{
+	if(mode == 'S' ||mode == 's')
+		cout << "Player | Computer: ";
+	else if (mode == 'M' || mode == 'M')
+		cout << "Player | Player";
+	char choise;
+	cin >> choise;
+
+	if (choise == 'P' || choise == 'p')
+		WhoIsWillPlay = 1;
+	else if (choise == 'c' || choise == 'C')
+		WhoIsWillPlay = 1;
+	else {
+		cout << "Wrong input for who will play " << endl;
+		exit(-1);
+	}
+}
 ConnectFour::~ConnectFour()
 {
 	for (int i = 0; i < getGameSizeRow(); ++i) {
@@ -319,8 +349,6 @@ ConnectFour & ConnectFour::operator=(const ConnectFour& other)
 	CopyConnectedFour(other);
 	return *this;
 }
-
-
 bool ConnectFour::operator==(const ConnectFour & other)
 {
 	if (gameSizeRow != other.gameSizeRow)
@@ -389,7 +417,7 @@ bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const 
 		if (column < 0 || column >= columnSize)
 			break;
 		if (direction != 4) {//özel durum
-			if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
+			if (GetGameBoard(row, column).GetCellValue() == EMTHY || GetGameBoard(row, column).GetCellValue() == SPECIALEMTHY) {
 				SetGameBoard(row, column, USER2);
 				cout << "***** Movement For Computer " << "Position is row ->  " << row << "Column is " << column << endl;
 				return false;
@@ -398,9 +426,13 @@ bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const 
 		else if (direction == 4) {
 			if (MaxEnem.posX + 1 < rowSize && MaxEnem.posX + 1 >= 0) {
 				if (GetGameBoard(MaxEnem.posX, column).GetCellValue() == EMTHY && GetGameBoard(MaxEnem.posX + 1, column).GetCellValue() != EMTHY) {
-					SetGameBoard(MaxEnem.posX, column, USER2);
-					cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
-					return false;
+					if (GetGameBoard(MaxEnem.posX, column).GetCellValue() == SPECIALEMTHY && GetGameBoard(MaxEnem.posX + 1, column).GetCellValue() != SPECIALEMTHY)
+					{	
+						//SetGameBoard(MaxEnem.posX, column, USER2);
+						cout << "Movement For Computer " << "Position is row ->  " << MaxEnem.posX << "Column is " << column << endl;
+						return false;
+					}
+				
 				}
 			}
 		}
@@ -428,11 +460,11 @@ int ConnectFour::IsGameOver() {
 		return -1;
 	}
 	if (IsGameOverOneSide(USER1, USER2)) {
-		cout << "<---------------->USER1 WON<---------------->" << endl;
+		cout << "<---------------->Player 1 WON<---------------->" << endl;
 		return -1;
 	}
 	if (IsGameOverOneSide(USER2, USER1)) {
-		cout << "<---------------->USER2 WON<----------------> " << endl;
+		cout << "<---------------->Player 2 WON<----------------> " << endl;
 		return -1;
 	}
 	cout << "Game is not ended " << endl;
@@ -443,7 +475,7 @@ bool ConnectFour::AnyMoveMore() {
 	int column = getGameSizeColumn();
 	for (int i = row - 1; i >= 0; --i) {
 		for (int j = column - 1; j >= 0; --j) {
-			if (GetGameBoard(i, j).GetCellValue() == EMTHY)
+			if (GetGameBoard(i, j).GetCellValue() == EMTHY || GetGameBoard(i, j).GetCellValue() == SPECIALEMTHY)
 				return true;
 		}
 	}
@@ -585,7 +617,7 @@ int ConnectFour::CheckCounter(const int& CurComp, const int& OtherComp, int coun
 */
 bool ConnectFour::IsPositionPlayable(const int& player_id, const char& pos) {
 	for (int i = getGameSizeRow() - 1; i >= 0; --i) {
-		if (GetGameBoard(i, pos - 'A').GetCellValue() == EMTHY)
+		if (GetGameBoard(i, pos - 'A').GetCellValue() == EMTHY || GetGameBoard(i, pos - 'A').GetCellValue() == SPECIALEMTHY)
 			return true;
 	}
 	return false;
@@ -625,10 +657,45 @@ void ConnectFour::PrintGameBoard() {
 }
 /*
 *	Desciription : This function initial board
-*	Input		   : no input parameter
+*	Input		   : taking row and column value and resize game table
 *	Return Value : no return value
 */
 void ConnectFour::InitialBoard(const int& row, const int& column) {
+	ReSizeGameBoard(row, column);
+}
+/*
+*	Desciription : This function initial board before ask user
+*	Input		   : no input parameter
+*	Return Value : no return value
+*/
+void ConnectFour::InitialBoard() {
+	cout << "Initial board" << endl;
+	int row = 0, column = 0;
+	while (1) {
+		cout << "Enter Row " << endl;
+		cin >> row;
+		if (cin.fail()) {
+			cin.clear(); //This corrects the stream.
+			cin.ignore(); //This skips the left over stream data.
+			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
+		}
+		else
+			break;
+		
+	}
+	while (1) {
+		cout << "Enter Column " << endl;
+		cin >> column;
+		if (cin.fail()) {
+			cin.clear(); //This corrects the stream.
+			cin.ignore(); //This skips the left over stream data.
+			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
+		}
+		else
+			break;
+
+	}
+	
 	ReSizeGameBoard(row, column);
 }
 /*
@@ -656,6 +723,56 @@ void ConnectFour::ParseFirstLine(const string& line, int& mode, int& row, int& c
 		++i;
 	}
 	play = line[line.size() - 1] - '0';
+
+}
+void ConnectFour::LoadFileNew(const string& filename, const int useles) {
+	cout << "Starting Loading file " << endl;
+	ifstream myReadFile;
+	myReadFile.open(filename);
+	string line = "";
+	Cell copy;
+	int size = 0;
+	if (myReadFile.is_open()) {
+		int column = 0, row = 0, WillPlay = 0, mode = 0;
+		getline(myReadFile, line);
+
+		if (!myReadFile.eof()) {
+			while (!myReadFile.eof()) {
+
+				++row;
+				if (line.size() > column)
+					column = line.size();
+			
+				getline(myReadFile, line);
+
+			}
+			//cout << row << " " << column;
+			ReSizeGameBoard(row, column);
+			int wait;
+			myReadFile.close();
+			myReadFile.open(filename);
+			getline(myReadFile, line);
+			int i = 0;
+			while (!myReadFile.eof()) {
+				for (int j = 0; j < column; ++j) {
+					copy.SetPosColumn(j);
+					copy.SetPosRow(i);
+					copy.SetCellValue(line[j]);
+					SetGameBoard(copy);
+				}
+				++i;
+				getline(myReadFile, line);
+			}
+
+			myReadFile.close();
+
+			PrintGameBoard();
+			//cout << "Loading success " << endl;
+			//cout << "Game Board Loaded Correctly\nNew Game Board is " << endl;
+		}
+		else
+			cerr << "<--->ILLEGAL<---> File is EMTHY  Please enter new file or keep going game " << endl;
+	}
 
 }
 void ConnectFour::LoadFile(const string& filename) {
@@ -781,7 +898,7 @@ void ConnectFour::MovePlayer(const int& player_id, const char& CurrentMove) {
 		if (CurrentMove >= 'A' &&  CurrentMove <= ('A' + getGameSizeColumn() - 1)) {
 			int column = static_cast<int> (CurrentMove - 'A');
 			for (auto i = rowSize - 1; i >= 0; --i) {
-				if (GetGameBoard(i, column).GetCellValue() == EMTHY) {
+				if (GetGameBoard(i, column).GetCellValue() == EMTHY || GetGameBoard(i, column).GetCellValue() == SPECIALEMTHY) {
 					Cell temp(column, i, CurrentComparor);
 					SetGameBoard(temp);
 					break;

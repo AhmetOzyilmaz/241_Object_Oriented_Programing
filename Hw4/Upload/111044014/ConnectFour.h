@@ -10,11 +10,12 @@ using namespace std;
 const int USER1PLAYERID = 1;
 const int USER2PLAYERID = 2;
 const int COMPUTERPLAYERID = 3;
-const int TWO_PLAYER = 1;
-const int ONE_PLAYER_VERSUS_COMPUTER = 2;
+const int TWO_PLAYER ='M';
+const int ONE_PLAYER_VERSUS_COMPUTER = 'S';
 const char USER1 = 'X';
 const char USER2 = 'O';
 const char EMTHY = '.';
+const char SPECIALEMTHY = '*';
 
 struct NeigborEnemy
 {
@@ -40,8 +41,6 @@ private:
 		inline void SetCellValue(const char& col) { CellValue = col; }
 		inline char GetCellValue()const { return CellValue ; }
 
-		inline char gameSizeColumn() const { return CellValue; }
-
 		Cell operator++(); // prefix  önce arttır 
 		Cell operator++(int);// post fix sonra arttır 
 	private:
@@ -54,7 +53,7 @@ private:
 	Cell** gameCells;
 	int gameSizeRow = 5; //default size
 	int gameSizeColumn = 5; //default size
-	int GameMode = 1; //default game mode
+	char GameMode = 'S'; //default game mode
 	int WhoIsWillPlay = 1;
 	int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
 	bool isEnded = false;
@@ -64,31 +63,25 @@ private:
 public:
 
 	ConnectFour();
-	ConnectFour(int row, int column, int mode);
-	ConnectFour(int row, int column) :ConnectFour(row, column, 2) {
+	ConnectFour(int row, int column, char mode);
+	ConnectFour(int row, int column) :ConnectFour(row, column, 'S') {
 		//automaticly starting with PLAYER VS COMPUTER
 	}
 
 	inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
 	inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
-
 	inline void setGameSizeRow(const int size) { gameSizeRow = size; }
 	inline const int getGameSizeRow() { return gameSizeRow; }
-
 	inline void setGameisEnded(const bool end) { isEnded = end; }
 	inline const bool getGameisEnded() { return isEnded; }
-
 	inline void setGameID(const int id) { GameID = id; }
 	inline int getGameID() const { return GameID; }
-
 	inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
 	inline const int getCurrentElementCounter() { return CurrentElementCounter; }
-
 	inline void setGameSizeColumn(const int size) { gameSizeColumn = size; }
 	inline const int getGameSizeColumn() { return gameSizeColumn; }
-
-	inline void SetGameMode(const int mode) { GameMode = mode; }
-	inline const int GetGameMode() { return GameMode; }
+	inline void SetGameMode(const char mode) { GameMode = mode; }
+	inline const char GetGameMode() { return GameMode; }
 
 	//inline const Cell** GetGameBoard() { return gameCells; }
 
@@ -103,14 +96,17 @@ public:
 		int column = c.GetPosColumn();
 		gameCells[row][column] = c;
 	}
-	void Play();
+	void Play(const char mode);
 	void playGame();
 	void ParseFirstLine(const string& line, int& mode, int& row, int& column, int& play);
 	void ReSizeGameBoard(const int& row, const int& column);
 	void InitialBoard(const int& row, const int& column);
+	void InitialBoard();
+
 	//File Operation
 	void SaveFile(const string& filename);
 	void LoadFile(const string& filename);
+	void LoadFileNew(const string& filename, const int useles);
 	//End File Operation
 	void PrintGameBoard();
 	bool MoveInputCheck(const string& command);
@@ -132,7 +128,7 @@ public:
 	int PlayMove(const string& column, const int& playerID);
 	void NewGame();
 	bool IsBetter(ConnectFour& one, ConnectFour& two);
-
+	void SetStartPlayer(char mode);
 	/*
 	operator overload part*/
 	~ConnectFour();

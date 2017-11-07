@@ -7,20 +7,26 @@ int ConnectFour::GameCount = 0;
 
 int main() {
 
-	// First Mode 
+	// Single Player Mode 
 	char mode;
-	while (1) {
+	cout << "Enter Game Mode" << endl;
+	cin >> mode;
+
+	ConnectFour mode1;
+
+	while (mode == 'S') {
+		if (mode1.getGameisEnded() == false) {
+			mode1.Play(mode);
+			break;
+		}
+	}
+	int end;
+	cin >> end;
+	/*while (1) {
 		cout << "Enter Play Mode" << endl;
 		cin >> mode;
 
-		if (mode == 'S') {
-			ConnectFour mode1;
-			cout << "Enter Game Mode" << endl;
-			cin >> mode;
-	
-			if (mode1.getGameisEnded() == false)
-				mode1.Play();
-		}
+		
 		else if (mode == 'M') {
 			ConnectFour GameOne;
 			ConnectFour GameTwo(5, 10);
@@ -59,7 +65,7 @@ int main() {
 					cout << " GameTwo is worse than GameThree " << endl;
 			}
 		}
-	}
+	}*/
 
 	return 0;
 }

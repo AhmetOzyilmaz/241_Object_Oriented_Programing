@@ -2,17 +2,17 @@
 
 //Operator == for cell
  bool operator ==( const ConnectFour::Cell& first,const ConnectFour::Cell& second){
-	 if (first.GetCellValue() == second.GetCellValue())
+	 if (first.GetCellValue() == second.GetCellValue()) {
+		 cout << "First Cell equal Second cell" << endl;
 		 return true;
+	  }
+	 cout << "First Cell not equal Second cell" << endl;
 	return false;
 }
  //Operator != for cell
  bool operator !=(const ConnectFour::Cell& first, const ConnectFour::Cell& second) {
 	 return !(first == second);
  }
-
-
-
  ConnectFour::Cell ConnectFour::Cell::operator++()//önce
  {
 	 if (GetCellValue() == EMTHY) {

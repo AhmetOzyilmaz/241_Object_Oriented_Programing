@@ -13,67 +13,39 @@ int main() {
 	cin >> mode;
 
 	if (mode == 'S' || mode == 's') {
-		ConnectFour mode1;
-		while (mode == 'S') {
+		ConnectFour mode1(mode);
+		while (1) {
 			if (mode1.getGameisEnded() == false) {
-				mode1.Play(mode);
-				break;
+				mode1.Play();
 			}
+			else
+				break;
 		}
 	}
+	else	if (mode == 'M' || mode == 'm') {
+		cout << "Multiplayer" << endl;
 	
-	const int size = 4;
-	ConnectFour* M = new ConnectFour[size]{mode};
-	
-	
-	int end;
-	cin >> end;
 
-
-	/*while (1) {
-		cout << "Enter Play Mode" << endl;
-		cin >> mode;
-
-		
-		else if (mode == 'M') {
-			ConnectFour GameOne;
-			ConnectFour GameTwo(5, 10);
-			ConnectFour GameThree("input1.txt");
-			ConnectFour GameFour(4, 7, 2);
-			ConnectFour GameFive;
-
-			while (ConnectFour::GetGameCounter() > 0) {
-				cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
-				cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-				if (GameOne.getGameisEnded() == false)
-					GameOne.Play();
-
-				cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-				if (GameTwo.getGameisEnded() == false)
-					GameTwo.Play();
-
-				cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-				if (GameThree.getGameisEnded() == false)
-					GameThree.Play();
-
-				cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-				if (GameFour.getGameisEnded() == false)
-					GameFour.Play();
-
-				cout << "Game Counter " << ConnectFour::GetGameCounter() << endl;
-				cout << "Cell Counter " << ConnectFour::GetCellCounter() << endl;
-
-				if (GameFour.getGameisEnded() == false)
-					GameFive.Play();
-
-				bool result = GameOne.IsBetter(GameTwo, GameThree);
-				if (result)
-					cout << " GameTwo is better than GameThree " << endl;
-				else
-					cout << " GameTwo is worse than GameThree " << endl;
+		const int size = 5;
+		ConnectFour* M = new ConnectFour[size]{ { mode } ,{ mode } ,{ mode } ,{ mode } ,{ mode } };
+		int gameNum = 0;
+		while (1) {
+			cout << "Enter Game Number to  play : ";
+			cin >> gameNum;
+			gameNum -= 1;
+			if (cin.fail()) {
+				cin.clear(); //This corrects the stream.
+				cin.ignore(); //This skips the left over stream data.
+				cerr << " <--->ILLEGAL<---> Wrong input For game number \n";
 			}
+			if (M[gameNum].getGameisEnded() == false) {
+				M[gameNum].Play();
+			}
+			if (ConnectFour::GetGameCounter()<= 0)
+				break;
 		}
-	}*/
-
+	
+	}
+	
 	return 0;
 }

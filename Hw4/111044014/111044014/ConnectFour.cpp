@@ -3,20 +3,14 @@
 *	This input file first line 1 element is game mode
 *	second element is game board size and
 *	3 element is which player will play  after loading game*/
-
 ConnectFour::ConnectFour(char mode) {
 	cout << "Mode one paramtere" << endl;
-
 	++GameCount;
 	setGameID(GameCount);
-
-
 	cout << "\n\nGame " << getGameID() << endl;
 	cout << " Enter Board Source File or just double click enter button " << endl;
 	string file;
 	cin >> file;
-
-
 
 	if (file.size() > 4) {
 		LoadFileNew(file, 0);
@@ -24,8 +18,7 @@ ConnectFour::ConnectFour(char mode) {
 	else
 		PrintGameBoard();
 
-	SetGameMode(mode);
-	SetStartPlayer(mode);
+	SetStartPlayer();
 
 }
 ConnectFour::ConnectFour() {
@@ -47,7 +40,10 @@ ConnectFour::ConnectFour() {
 }
 ConnectFour::ConnectFour(const string & FileName)
 {
+	++GameCount;
+	setGameID(GameCount);
 	LoadFileNew(FileName,0);
+
 }
 ConnectFour::ConnectFour(int row, int column, char mode) : gameSizeRow(row), gameSizeColumn(column), GameMode(mode) {
 	++GameCount;
@@ -61,20 +57,20 @@ ConnectFour::ConnectFour(int row, int column, char mode) : gameSizeRow(row), gam
 	*	Input		   : conts string file name
 	*	Return Value   : no return value
 	*/
-void ConnectFour::Play(char mode) {
+void ConnectFour::Play() {
 		char command = '.';
-		
-
+	
 		bool isEnded = GameManager();
 		if (isEnded) {
 			cout << "if you want to quit enter q or enter different character" << endl;
 			cin >> command;
+		
+		
+		if (cin.eof()) {
+			exit(-31);//input from file ended
+		}	
 		if (command == 'q' || command == 'Q')
 			--GameCount;
-		else {
-			cout << "\n\n************************************New Game*******************\\n" << endl;
-			NewGame();
-		}
 	}
 }
 /*
@@ -85,35 +81,36 @@ void ConnectFour::Play(char mode) {
 */
 bool ConnectFour::GameManager() {
 	int control = 0, check = 0;
-	string ask;
-	
-
-	while (1) {
-
-	if (GetWhoIsWillPlay() == 1) {
 		//Player1
-		control = AllMoveOperation(USER1PLAYERID);
-		if (control != 2 && control != -1)
-			SetWhoIsWillPlay(2);
+	control = AllMoveOperation(USER1PLAYERID);
+
+	if (control != 2 && control != -1) {
+		SetWhoIsWillPlay(2);
+		PrintGameBoard();
 	}
-	else if (GetWhoIsWillPlay() == 2) {
-		//cout << "GetGameMode\t" << GetGameMode()<< endl;
-		//cout << "GetWhoIsWillPlay()\t" << GetWhoIsWillPlay() << endl;
-		if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
-			control = AllMoveOperation(COMPUTERPLAYERID);
-		else if (TWO_PLAYER == GetGameMode())
-			control = AllMoveOperation(USER2PLAYERID);
-		if (control != 2 && control != -1)
-			SetWhoIsWillPlay(1);
-	}
+
 	check = IsGameOver();
 	if (check == -1) {
 		setGameisEnded(true);
-		break;
 		return true;
 	}
-	PrintGameBoard();
 
+	//cout << "game mode " << GetGameMode() << endl;
+
+	if ('P' == GetGameMode())
+		control = AllMoveOperation(USER2PLAYERID);
+	else if ('C' == GetGameMode())
+		control = AllMoveOperation(COMPUTERPLAYERID);
+			
+	if (control != 2 && control != -1) {
+		SetWhoIsWillPlay(1);
+		PrintGameBoard();
+	}
+
+	check = IsGameOver();
+	if (check == -1) {
+		setGameisEnded(true);
+		return true;
 	}
 	return false;
 }
@@ -136,6 +133,24 @@ int ConnectFour::AllMoveOperation(const int& PlayerID) {
 	}
 	return -1;
 }
+void ConnectFour::SetStartPlayer()
+{
+	cout << "Player | Computer: ";
+	char choise;
+	cin >> choise;
+
+	SetGameMode(choise);
+	/*if (choise == 'P' || choise == 'p')
+		WhoIsWillPlay = TWO_PLAYER;
+	if (choise == 'C' || choise == 'c')
+		WhoIsWillPlay = ONE_PLAYER_VERSUS_COMPUTER;*/
+
+	if (cin.fail()) {
+		cin.clear(); //This corrects the stream.
+		cin.ignore(); //This skips the left over stream data.
+		cerr << " <--->ILLEGAL<---> Wrong choise for who start to play enter 'P' or 'C' \n";
+	}
+}
 /*
 *	Desciription : This function taking move
 *	Input		   : no input
@@ -145,7 +160,6 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 	bool flag = false;
 	string command = "", command2 = "";
 	while (1) {
-
 		cout << "\n\nGAME " << getGameID() << endl;
 		PrintGameBoard();
 		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
@@ -153,6 +167,10 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 			<< "Enter one grater letter  move A , B, C ...\n"
 			<< "\t For : Player " << PlayerID << endl;
 		cin >> command;
+
+		if (cin.eof()) {
+			exit(-31);//input from file ended
+		}
 		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
 			cin >> command2;
 			command2 = command + " " + command2;
@@ -320,24 +338,7 @@ bool ConnectFour::IsBetter(ConnectFour& one, ConnectFour& two) {
 		return true;
 	return false;
 }
-void ConnectFour::SetStartPlayer(char mode)
-{
-	if(mode == 'S' ||mode == 's')
-		cout << "Player | Computer: ";
-	else if (mode == 'M' || mode == 'M')
-		cout << "Player | Player: ";
-	char choise;
-	cin >> choise;
 
-	if (choise == 'P' || choise == 'p')
-		WhoIsWillPlay = 1;
-	else if (choise == 'c' || choise == 'C')
-		WhoIsWillPlay = 1;
-	else {
-		cout << "Wrong input for who will play " << endl;
-		exit(-1);
-	}
-}
 ConnectFour::~ConnectFour()
 {
 	for (int i = 0; i < getGameSizeRow(); ++i) {

@@ -67,7 +67,6 @@ public:
 	ConnectFour(int row, int column) :ConnectFour(row, column, 'S') {
 		//automaticly starting with PLAYER VS COMPUTER
 	}
-
 	inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
 	inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
 	inline void setGameSizeRow(const int size) { gameSizeRow = size; }
@@ -96,7 +95,7 @@ public:
 		int column = c.GetPosColumn();
 		gameCells[row][column] = c;
 	}
-	void Play(const char mode);
+	void Play();
 	void playGame();
 	void ParseFirstLine(const string& line, int& mode, int& row, int& column, int& play);
 	void ReSizeGameBoard(const int& row, const int& column);
@@ -128,7 +127,7 @@ public:
 	int PlayMove(const string& column, const int& playerID);
 	void NewGame();
 	bool IsBetter(ConnectFour& one, ConnectFour& two);
-	void SetStartPlayer(char mode);
+	void SetStartPlayer();
 	/*
 	operator overload part*/
 	~ConnectFour();

@@ -95,7 +95,7 @@ public:
 		int column = c.GetPosColumn();
 		gameCells[row][column] = c;
 	}
-	void Play();
+	bool Play();
 	void playGame();
 	void ParseFirstLine(const string& line, int& mode, int& row, int& column, int& play);
 	void ReSizeGameBoard(const int& row, const int& column);
@@ -111,16 +111,15 @@ public:
 	bool MoveInputCheck(const string& command);
 	char TakeMove(const int& PlayerID);
 	bool CommandSelector(const string& command);
-	int MyStringCompare(const string& s1);
-	int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);
+	int OneCounter(const string& s1);
+	int CheckCounter(const int& CurComp, int count,  int row, int column);
 	string PartnerCheck(const int direction, const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& WinCounter, const bool& flag = false);
 	bool PlayIsPlayeable(const int& direction, bool isPlayeable, const NeigborEnemy& MaxEnem, int row, int column);
 	bool IsPositionPlayable(const int& player_id, const char& pos);
 	bool IsGameOverOneSide(const char& User, const char& other);
-	int IsGameOver();
-	int AllMoveOperation(const int& PlayerID);
+	bool IsGameOver();
+	int MakeMove(const int& PlayerID);
 	bool AnyMoveMore();
-	bool GameManager();
 	void MovePlayer(const int&, const char&);
 	char MoveComputer();
 	int PlayMove();
@@ -139,11 +138,11 @@ public:
 	 bool operator ==( const ConnectFour& other);
 	 bool operator !=( const ConnectFour& other);
 
-	 friend ostream& operator<<(ostream& output, const Cell& outCell);
+	 friend ostream& operator<<(ostream& output, const Cell& outCell); 
 	 friend istream& operator>>(istream& input, Cell& outCell);
-
 	 friend bool operator ==(const Cell& first, const Cell& second);
 	 friend bool operator !=(const Cell& first, const Cell& second);
+	 void JointConstructor();
 
 };
 

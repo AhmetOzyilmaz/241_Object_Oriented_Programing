@@ -1,127 +1,46 @@
 ﻿#include "ConnectFour.h"
+
 /*
-*	This input file first line 1 element is game mode
-*	second element is game board size and
-*	3 element is which player will play  after loading game*/
-ConnectFour::ConnectFour(char mode) {
-	cout << "Mode one paramtere" << endl;
-	++GameCount;
-	setGameID(GameCount);
-	cout << "\n\nGame " << getGameID() << endl;
-	cout << " Enter Board Source File or just double click enter button " << endl;
-	string file;
-	cin >> file;
-
-	if (file.size() > 4) {
-		LoadFileNew(file, 0);
-	}
-	else
-		PrintGameBoard();
-
-	SetStartPlayer();
-
-}
-ConnectFour::ConnectFour() {
-	cout << "NO  paramtere" << endl;
-
-	++GameCount;
-	setGameID(GameCount);
-	cout << "\n\nGame " << getGameID() << endl;
-	cout << " Enter Board Source File or just double click enter button " << endl;
-	string file;
-	cin >> file;
-
-	if (file.size() > 4) {
-		LoadFileNew(file, 0);
-	}
-	else
-		PrintGameBoard();
-
-}
-ConnectFour::ConnectFour(const string & FileName)
-{
-	++GameCount;
-	setGameID(GameCount);
-	LoadFileNew(FileName,0);
-
-}
-ConnectFour::ConnectFour(int row, int column, char mode) : gameSizeRow(row), gameSizeColumn(column), GameMode(mode) {
-	++GameCount;
-	setGameID(GameCount);
-	cout << "\n\nGame " << getGameID() << endl;
-	InitialBoard(gameSizeRow, gameSizeColumn); /*Can Be Emthy	*/
-	PrintGameBoard();
-}
-	/*
-	*	Desciription : This function saving gameboard status
-	*	Input		   : conts string file name
-	*	Return Value   : no return value
-	*/
-void ConnectFour::Play() {
-		char command = '.';
-	
-		bool isEnded = GameManager();
-		if (isEnded) {
-			cout << "if you want to quit enter q or enter different character" << endl;
-			cin >> command;
-		
-		
-		if (cin.eof()) {
-			exit(-31);//input from file ended
-		}	
-		if (command == 'q' || command == 'Q')
-			--GameCount;
-	}
-}
-/*
-*	Desciription : This function playing game respectively until one of the player win or moveable
-*					position when end
+*	Desciription Why wrote ? : To play 1 round of the game
 *	Input		   : no input
 *	Return Value   : if return true game is over if return false game is not ended
 */
-bool ConnectFour::GameManager() {
-	int control = 0, check = 0;
+bool ConnectFour::Play() {
+		int control = 0;	
 		//Player1
-	control = AllMoveOperation(USER1PLAYERID);
-
-	if (control != 2 && control != -1) {
-		SetWhoIsWillPlay(2);
-		PrintGameBoard();
-	}
-
-	check = IsGameOver();
-	if (check == -1) {
-		setGameisEnded(true);
-		return true;
-	}
-
-	//cout << "game mode " << GetGameMode() << endl;
-
-	if ('P' == GetGameMode())
-		control = AllMoveOperation(USER2PLAYERID);
-	else if ('C' == GetGameMode())
-		control = AllMoveOperation(COMPUTERPLAYERID);
-			
-	if (control != 2 && control != -1) {
-		SetWhoIsWillPlay(1);
-		PrintGameBoard();
-	}
-
-	check = IsGameOver();
-	if (check == -1) {
-		setGameisEnded(true);
-		return true;
-	}
-	return false;
+		control = MakeMove(USER1PLAYERID);
+		if (control != 2 && control != -1) {
+			SetWhoIsWillPlay(2);
+			PrintGameBoard();
+		}
+		if (IsGameOver()) {
+			setGameisEnded(true);
+			return true;
+		}
+		if ('P' == GetGameMode())
+			control = MakeMove(USER2PLAYERID);
+		else if ('C' == GetGameMode())
+			control = MakeMove(COMPUTERPLAYERID);
+		if (control != 2 && control != -1) {
+			SetWhoIsWillPlay(1);
+			PrintGameBoard();
+		}
+		if (IsGameOver()) {
+			setGameisEnded(true);
+			return true;
+		}
+		return false;
 }
+
 /*
 *	Desciription : This function managing all player move operation
 *	Input		   : Interger for which player playing
 *	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
 */
-int ConnectFour::AllMoveOperation(const int& PlayerID) {
+int ConnectFour::MakeMove(const int& PlayerID) {
 	bool flag = false;
 	string move = "";
+
 	if (PlayerID != 3) {
 		move = TakeMove(PlayerID);
 		while (move[0] == '-' || move[0] == '+')
@@ -136,15 +55,10 @@ int ConnectFour::AllMoveOperation(const int& PlayerID) {
 void ConnectFour::SetStartPlayer()
 {
 	cout << "Player | Computer: ";
-	char choise;
+	char choise=' ';
 	cin >> choise;
 
 	SetGameMode(choise);
-	/*if (choise == 'P' || choise == 'p')
-		WhoIsWillPlay = TWO_PLAYER;
-	if (choise == 'C' || choise == 'c')
-		WhoIsWillPlay = ONE_PLAYER_VERSUS_COMPUTER;*/
-
 	if (cin.fail()) {
 		cin.clear(); //This corrects the stream.
 		cin.ignore(); //This skips the left over stream data.
@@ -228,7 +142,7 @@ int  ConnectFour::PlayMove() {
 					controller = "";
 					for (int direction = 1; direction <= 8; ++direction)//8 is number of direction
 						controller += PartnerCheck(direction, row, column, 'X', 'O', i, false);
-					control = MyStringCompare(controller);
+					control = OneCounter(controller);
 					if (control > MaxControl) {
 						MaxControl = control;
 						MaxEnem.posX = row;
@@ -279,8 +193,7 @@ int  ConnectFour::PlayMove() {
 						cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 						isPlayeable = false;
 						break;
-					}
-				
+					}			
 				}
 				if (isPlayeable == false)
 					break;
@@ -314,7 +227,7 @@ int ConnectFour::PlayMove(const string& move, const int& PlayerID) {
 /*
 *	Desciription : //This game has 2 type command Load and Save
 *	Input		   : const string& taking command from user
-*	Return Value   :  doing operation correctly returning true else returning false
+*	Return Value   : If a valid file operation its returns true, is not return false 
 */
 bool ConnectFour::CommandSelector(const string& command) {
 	string filename = command.substr(5, command.size());
@@ -338,16 +251,6 @@ bool ConnectFour::IsBetter(ConnectFour& one, ConnectFour& two) {
 		return true;
 	return false;
 }
-
-ConnectFour::~ConnectFour()
-{
-	for (int i = 0; i < getGameSizeRow(); ++i) {
-			delete[] gameCells[i];
-			gameCells[i] = nullptr;
-	}
-	delete[] gameCells;
-	gameCells = nullptr;
-}
 void ConnectFour::CopyConnectedFour(const ConnectFour& other) {
 	gameSizeRow = other.gameSizeRow;
 	gameSizeColumn = other.gameSizeColumn;
@@ -365,43 +268,8 @@ void ConnectFour::CopyConnectedFour(const ConnectFour& other) {
 		}
 	}
 }
-ConnectFour::ConnectFour(const ConnectFour & other)
-{
-	CopyConnectedFour(other);
-}
-
-ConnectFour & ConnectFour::operator=(const ConnectFour& other)
-{
-	for (int i = 0; i < gameSizeRow; ++i) 
-		delete[] gameCells[i];
-	delete[]gameCells;
-	CopyConnectedFour(other);
-	return *this;
-}
-
-bool ConnectFour::operator==(const ConnectFour & other)
-{
-	if (gameSizeRow != other.gameSizeRow)
-		return false;
-	if (gameSizeColumn != other.gameSizeColumn)
-		return false;
-	for (int i = 0; i < gameSizeRow; ++i) {
-		for (int j = 0; j < gameSizeColumn; ++j) {
-			if (gameCells[i][j].GetCellValue() != other.gameCells[i][j].GetCellValue())
-				return false;
-		}
-	}
-	return true;
-}
-
-bool ConnectFour::operator!=(const ConnectFour & other)
-{
-	return !(*this == other);
-}
-
 void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {
 
-	
 	gameCells = new Cell*[row];
 	for (int i = 0; i < row; i++)
 		gameCells[i] = new Cell[column];
@@ -409,7 +277,7 @@ void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {
 	setGameSizeRow(row);//2.değişken oyunun size ı
 	setGameSizeColumn(column);//2.değişken oyunun size ı
 
-	cout << "New Game Size" << getGameSizeRow() << " X " << getGameSizeColumn() << endl; 
+	cout <<endl <<  "New Game Size" << getGameSizeRow() << " X " << getGameSizeColumn() << endl; 
 }
 void ConnectFour::NewGame() {
 	playGame();
@@ -481,24 +349,23 @@ bool ConnectFour::PlayIsPlayeable(const int& direction, bool isPlayeable, const 
 /*
 *	Desciription : This function checking is game ended or not
 *	Input		   : no input
-*	Return Value : return interger if 1 user one won if  2 user2 won  if -1 game is not ender
+*	Return Value : If the game is over, it returns false if it is not done returns true
 */
-int ConnectFour::IsGameOver() {
+bool ConnectFour::IsGameOver() {
 	if (false == AnyMoveMore()) {
 		cout << "Game is Ended " << endl;
 		cout << "Game is draw play new game" << endl;
-		return -1;
+		return true;
 	}
 	if (IsGameOverOneSide(USER1, USER2)) {
 		cout << "<---------------->Player 1 WON<---------------->" << endl;
-		return -1;
+		return true;
 	}
 	if (IsGameOverOneSide(USER2, USER1)) {
 		cout << "<---------------->Player 2 WON<----------------> " << endl;
-		return -1;
+		return true;
 	}
-	cout << "Game is not ended " << endl;
-	return 0;
+	return false;
 }
 bool ConnectFour::AnyMoveMore() {
 	int row = getGameSizeRow();
@@ -526,7 +393,7 @@ string ConnectFour::PartnerCheck(const int direction, const int& posX, const int
 			break;
 		if (j < 0 || j >= column)
 			break;
-		counter = CheckCounter(comparator, othercomparator, counter, i, j);
+		counter = CheckCounter(comparator, counter, i, j);
 		if (counter == WinCounter) {
 			if (flag) {
 				int t = 0;
@@ -624,7 +491,7 @@ bool ConnectFour::IsGameOverOneSide(const char& User, const char& other) {
 *	Input		   : const string& s1
 *	Return Value   : intger counter of "1"
 */
-int ConnectFour::MyStringCompare(const string& s1) {
+int ConnectFour::OneCounter(const string& s1) {
 	int counter = 0;
 	string temp = "1";
 	for (int i = 0; i < s1.size(); i++) {
@@ -633,10 +500,10 @@ int ConnectFour::MyStringCompare(const string& s1) {
 	}
 	return counter;
 }
-int ConnectFour::CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j) {
-	if (GetGameBoard(i, j).GetCellValue() == CurComp)
+int ConnectFour::CheckCounter(const int& CurComp, int count, int row, int column) {
+	if (GetGameBoard(row, column).GetCellValue() == CurComp)
 		++count;
-	if (GetGameBoard(i, j).GetCellValue() == OtherComp)
+	else 
 		count = 0;
 	return count;
 }
@@ -663,205 +530,6 @@ bool ConnectFour::MoveInputCheck(const string& command) {
 	if (!isalpha(command[0]))
 		return false;
 	return true;
-}
-/*	Desciription : Printing screen current status of game board
-*	Input		 : no input parameter
-*	Return Value : no return value
-*/
-void ConnectFour::PrintGameBoard() {
-	char a = 'A', b = 'A';
-	int row = getGameSizeRow();
-	int column = getGameSizeColumn();
-	//cout << "GameBoard row -> " << row << endl;
-	//cout << "GameBoard column -> " << column << endl;
-	while (a < b + column) {
-		cout << "  " << a << " ";
-		a++;
-	}
-	cout << endl;
-	for (auto i = 0; i < row; i++) {
-		for (auto j = 0; j < column; j++)
-			cout << "  " << GetGameBoard(i, j).GetCellValue() << " ";
-		cout << "\n";
-	}
-}
-/*
-*	Desciription : This function initial board
-*	Input		   : taking row and column value and resize game table
-*	Return Value : no return value
-*/
-void ConnectFour::InitialBoard(const int& row, const int& column) {
-	ReSizeGameBoard(row, column);
-}
-/*
-*	Desciription : This function initial board before ask user
-*	Input		   : no input parameter
-*	Return Value : no return value
-*/
-void ConnectFour::InitialBoard() {
-	cout << "Initial board" << endl;
-	int row = 0, column = 0;
-	while (1) {
-		cout << "Enter Row " << endl;
-		cin >> row;
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else
-			break;
-		
-	}
-	while (1) {
-		cout << "Enter Column " << endl;
-		cin >> column;
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else
-			break;
-
-	}
-	
-	ReSizeGameBoard(row, column);
-}
-/*
-*	Desciription : This function loading saved gameboard from file
-*	Input		   : conts string file name
-*	Return Value   : no return value
-*/
-void ConnectFour::ParseFirstLine(const string& line, int& mode, int& row, int& column, int& play) {
-	string s = "";
-	mode = line[0] - '0';
-	int i = 2;
-	cout << "line->" << line.size();
-	for (int t = 0; t < 2; ++t) {
-		s = "";
-		while (1) {
-			s += line[i];
-			++i;
-			if (line[i] == ' ')
-				break;
-		}
-		if (t == 0)
-			row = stoi(s);
-		else if (t == 1)
-			column = stoi(s);
-		++i;
-	}
-	play = line[line.size() - 1] - '0';
-
-}
-void ConnectFour::LoadFileNew(const string& filename, const int useles) {
-	cout << "Starting Loading file " << endl;
-	ifstream myReadFile;
-	myReadFile.open(filename);
-	string line = "";
-	Cell copy;
-	int size = 0;
-	if (myReadFile.is_open()) {
-		int column = 0, row = 0, WillPlay = 0, mode = 0;
-		getline(myReadFile, line);
-
-		if (!myReadFile.eof()) {
-			while (!myReadFile.eof()) {
-
-				++row;
-				if (line.size() > column)
-					column = line.size();
-			
-				getline(myReadFile, line);
-
-			}
-			//cout << row << " " << column;
-			ReSizeGameBoard(row, column);
-			int wait;
-			myReadFile.close();
-			myReadFile.open(filename);
-			getline(myReadFile, line);
-			int i = 0;
-			while (!myReadFile.eof()) {
-				for (int j = 0; j < column; ++j) {
-					copy.SetPosColumn(j);
-					copy.SetPosRow(i);
-					copy.SetCellValue(line[j]);
-					SetGameBoard(copy);
-				}
-				++i;
-				getline(myReadFile, line);
-			}
-
-			myReadFile.close();
-
-			PrintGameBoard();
-			//cout << "Loading success " << endl;
-			//cout << "Game Board Loaded Correctly\nNew Game Board is " << endl;
-		}
-		else
-			cerr << "<--->ILLEGAL<---> File is EMTHY  Please enter new file or keep going game " << endl;
-	}
-
-}
-void ConnectFour::LoadFile(const string& filename) {
-	ifstream myReadFile;
-	myReadFile.open(filename);
-	string line = "";
-	Cell copy;
-	int size = 0;
-	if (myReadFile.is_open()) {
-		int column = 0, row = 0, WillPlay = 0, mode = 0;
-		getline(myReadFile, line);
-		if (!myReadFile.eof()) {
-			if (line.size() >= 6) {
-				ParseFirstLine(line, mode, row, column, WillPlay);
-				SetGameMode(mode);//ilk eleman oyun modu
-				SetWhoIsWillPlay(WillPlay);//3.değişken oyunu şimdi kimin oynaması gerektiği	
-				ReSizeGameBoard(row, column);
-			}
-			row = 0;
-			while (!myReadFile.eof()) {
-				getline(myReadFile, line);
-				for (int column = 0; column < getGameSizeColumn(); ++column) {
-					copy.SetPosColumn(column);
-					copy.SetPosRow(row);
-					copy.SetCellValue(line[column]);
-					SetGameBoard(copy);
-				}
-				++row;
-			}
-			cout << "Game Board Loaded Correctly\nNew Game Board is " << endl;
-			PrintGameBoard();
-		}
-		else
-			cerr << "<--->ILLEGAL<---> File is EMTHY  Please enter new file or keep going game " << endl;
-	}
-	myReadFile.close();
-}
-/*
-*	Desciription : This function saving gameboard status
-*	Input		   : conts string file name
-*	Return Value   : no return value
-*/
-void ConnectFour::SaveFile(const string& filename) {
-	ofstream myfile;
-	myfile.open(filename, std::ofstream::out | std::ofstream::app);
-	if (myfile.is_open()) {
-		//Oyun modu 1 se  user vs user 2 ise user vs computer 
-		//ikinci eleman oyunun size ı 
-		myfile << GetGameMode() << " " << getGameSizeRow() << " " << getGameSizeColumn() << " " << WhoIsWillPlay << endl;
-		for (int row = 0; row < getGameSizeRow(); ++row) {
-			for (int column = 0; column < getGameSizeColumn(); ++column)
-				myfile << GetGameBoard(row, column).GetCellValue();
-			if (row < getGameSizeRow() - 1)
-				myfile << "\n";
-		}
-		myfile.close();
-	}
-	else cerr << " <--->ILLEGAL<---> Unable to open file";
-	//cout << "Game Board Saved Correctly" << endl;
 }
 /*
 *	Desciription : This function checking game board size and game mode

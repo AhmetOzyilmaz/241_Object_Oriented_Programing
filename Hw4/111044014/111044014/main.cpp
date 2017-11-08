@@ -6,8 +6,6 @@ int ConnectFour::CellCounter = 0;
 int ConnectFour::GameCount = 0;
 
 int main() {
-
-	// Single Player Mode 
 	char mode;
 	cout << "Enter Game Mode" << endl;
 	cin >> mode;
@@ -46,6 +44,5 @@ int main() {
 		}
 	
 	}
-	
 	return 0;
 }

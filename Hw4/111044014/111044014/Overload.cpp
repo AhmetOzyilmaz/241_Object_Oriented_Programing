@@ -1,6 +1,5 @@
 #include "ConnectFour.h"
 
-
 ConnectFour & ConnectFour::operator=(const ConnectFour& other)
 {
 	for (int i = 0; i < gameSizeRow; ++i)
@@ -9,7 +8,6 @@ ConnectFour & ConnectFour::operator=(const ConnectFour& other)
 	CopyConnectedFour(other);
 	return *this;
 }
-
 bool ConnectFour::operator==(const ConnectFour & other)
 {
 	if (gameSizeRow != other.gameSizeRow)
@@ -24,7 +22,6 @@ bool ConnectFour::operator==(const ConnectFour & other)
 	}
 	return true;
 }
-
 bool ConnectFour::operator!=(const ConnectFour & other)
 {
 	return !(*this == other);

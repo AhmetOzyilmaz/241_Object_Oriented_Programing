@@ -46,10 +46,8 @@
 	 output << "This Cell Row" << outCell.GetPosRow() << endl;
 	 output << "This Cell Column" << outCell.GetPosColumn() << endl;
 	 output << "This Cell Value" << outCell.GetCellValue() << endl;
-
 	 return output;
  }
-
  istream & operator>>(istream & input, ConnectFour::Cell & outCell)
  {
 	 int value;

@@ -108,7 +108,7 @@ public:
 	void LoadFileNew(const string& filename, const int useles);
 	//End File Operation
 	void PrintGameBoard();
-	bool MoveInputCheck(const string& command);
+	bool MoveInputCheck(char command);
 	char TakeMove(const int& PlayerID);
 	bool CommandSelector(const string& command);
 	int OneCounter(const string& s1);
@@ -118,12 +118,12 @@ public:
 	bool IsPositionPlayable(const int& player_id, const char& pos);
 	bool IsGameOverOneSide(const char& User, const char& other);
 	bool IsGameOver();
-	int MakeMove(const int& PlayerID);
+	bool MakeMove(const int& PlayerID);
 	bool AnyMoveMore();
 	void MovePlayer(const int&, const char&);
 	char MoveComputer();
-	int PlayMove();
-	int PlayMove(const string& column, const int& playerID);
+	bool PlayMove();
+	bool PlayMove(char column, const int& playerID);
 	void NewGame();
 	bool IsBetter(ConnectFour& one, ConnectFour& two);
 	void SetStartPlayer();

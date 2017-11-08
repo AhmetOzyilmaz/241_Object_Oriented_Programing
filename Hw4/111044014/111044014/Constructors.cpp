@@ -4,7 +4,6 @@ void ConnectFour::JointConstructor() {
 	++GameCount;
 	setGameID(GameCount);
 	cout << "\n\nGame " << getGameID() << endl;
-
 }
 /*
 *	This input file first line 1 element is game mode
@@ -27,16 +26,17 @@ ConnectFour::ConnectFour(char mode) {
 }
 ConnectFour::ConnectFour() {
 	JointConstructor();
-	cout << " Enter Board Source File or just double click enter button " << endl;
+	cout << " Enter Board Source File or enter " << endl;
 	string file;
 	cin >> file;
 
 	if (file.size() > 4) {
 		LoadFileNew(file, 0);
 	}
-	else
-		PrintGameBoard();
-
+	else {
+		NewGame();
+	}
+	
 }
 ConnectFour::ConnectFour(const string & FileName)
 {

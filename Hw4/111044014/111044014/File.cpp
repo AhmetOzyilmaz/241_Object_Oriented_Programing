@@ -27,7 +27,6 @@ void ConnectFour::ParseFirstLine(const string& line, int& mode, int& row, int& c
 	play = line[line.size() - 1] - '0';
 
 }
-
 void ConnectFour::LoadFileNew(const string& filename, const int useles) {
 	cout << "Starting Loading file " << endl;
 	ifstream myReadFile;

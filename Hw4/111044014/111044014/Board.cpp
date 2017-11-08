@@ -35,30 +35,16 @@ void ConnectFour::InitialBoard(const int& row, const int& column) {
 *	Return Value : no return value
 */
 void ConnectFour::InitialBoard() {
-	cout << "Initial board" << endl;
-	int row = 0, column = 0;
-	while (1) {
-		cout << "Enter Row " << endl;
-		cin >> row;
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else
-			break;
-	}
-	while (1) {
-		cout << "Enter Column " << endl;
-		cin >> column;
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else
-			break;
+	playGame();
+	ReSizeGameBoard(getGameSizeRow(), getGameSizeColumn());
+}
+void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {
 
-	}
-	ReSizeGameBoard(row, column);
+	gameCells = new Cell*[row];
+	for (int i = 0; i < row; i++)
+		gameCells[i] = new Cell[column];
+	setGameSizeRow(row);//2.deðiþken oyunun size ý
+	setGameSizeColumn(column);//2.deðiþken oyunun size ý
+
+	cout << endl << " New Game Size " << getGameSizeRow() << " X " << getGameSizeColumn() << endl;
 }

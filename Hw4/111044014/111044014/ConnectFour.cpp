@@ -1,35 +1,62 @@
 ﻿#include "ConnectFour.h"
 
 /*
+*	Desciription : This function take row and column
+*					Cheking game mode  should be 1 or 2
+*	Input		 : no input parameter
+*	Return Value : no return value */
+void ConnectFour::playGame() {
+	int row = 0, column = 0;
+	while (1) {
+		cout << "Enter Game Row Size  \n" << "Game board can be any size \n";
+		cin >> row;
+		cout << "Enter Game Column Size  \n" << "Game board can be any size \n";
+		cin >> column;
+		if (cin.fail()) {
+			cin.clear(); //This corrects the stream.
+			cin.ignore(); //This skips the left over stream data.
+			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
+		}
+		else {
+			setGameSizeColumn(column);
+			setGameSizeRow(row);
+			break;
+		}
+	}
+	return;
+}
+
+/*
 *	Desciription Why wrote ? : To play 1 round of the game
 *	Input		   : no input
 *	Return Value   : if return true game is over if return false game is not ended
 */
 bool ConnectFour::Play() {
-		int control = 0;	
-		//Player1
+	int control = 0;		
+	if (1 == GetWhoIsWillPlay()) {
 		control = MakeMove(USER1PLAYERID);
-		if (control != 2 && control != -1) {
-			SetWhoIsWillPlay(2);
-			PrintGameBoard();
-		}
+		SetWhoIsWillPlay(2);
+		PrintGameBoard();
 		if (IsGameOver()) {
 			setGameisEnded(true);
 			return true;
 		}
+	}
+	if (2 == GetWhoIsWillPlay()) {
 		if ('P' == GetGameMode())
 			control = MakeMove(USER2PLAYERID);
 		else if ('C' == GetGameMode())
 			control = MakeMove(COMPUTERPLAYERID);
-		if (control != 2 && control != -1) {
+		if (control == true) {
 			SetWhoIsWillPlay(1);
 			PrintGameBoard();
 		}
-		if (IsGameOver()) {
+		else if (IsGameOver()) {
 			setGameisEnded(true);
 			return true;
 		}
-		return false;
+	}
+	return false;
 }
 
 /*
@@ -37,39 +64,18 @@ bool ConnectFour::Play() {
 *	Input		   : Interger for which player playing
 *	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
 */
-int ConnectFour::MakeMove(const int& PlayerID) {
+bool ConnectFour::MakeMove(const int& PlayerID) {
 	bool flag = false;
-	string move = "";
-
 	if (PlayerID != 3) {
-		move = TakeMove(PlayerID);
-		while (move[0] == '-' || move[0] == '+')
-			move = TakeMove(PlayerID);
-		return PlayMove(move, PlayerID);
+		char move = TakeMove(PlayerID);
+		if (true == PlayMove(move, PlayerID))
+			return true;			
 	}
 	else if (PlayerID == 3) {
 		return PlayMove();
 	}
-	return -1;
+	return false;
 }
-void ConnectFour::SetStartPlayer()
-{
-	cout << "Player | Computer: ";
-	char choise=' ';
-	cin >> choise;
-
-	SetGameMode(choise);
-	if (cin.fail()) {
-		cin.clear(); //This corrects the stream.
-		cin.ignore(); //This skips the left over stream data.
-		cerr << " <--->ILLEGAL<---> Wrong choise for who start to play enter 'P' or 'C' \n";
-	}
-}
-/*
-*	Desciription : This function taking move
-*	Input		   : no input
-*	Return Value   : returing legal move if return '-' move is not legal taking new move
-*/
 char ConnectFour::TakeMove(const int& PlayerID) {
 	bool flag = false;
 	string command = "", command2 = "";
@@ -89,31 +95,38 @@ char ConnectFour::TakeMove(const int& PlayerID) {
 			cin >> command2;
 			command2 = command + " " + command2;
 			CommandSelector(command2);
-			return '+';
+			return '-1';
 		}
 		else {
+			cout << command.size() << endl;
 			if (command.size() == 1) {
-				if (MoveInputCheck(command))
+				//cout << command << endl;
+
+				if (true == MoveInputCheck(command[0])) {
+					//cout << MoveInputCheck(command[0]) << endl;
 					return command[0];
+
+				}
+
 			}
 			else
 				cerr << "<--->ILLEGAL<---> ERROR COMMAND ENTER NEW  COMMAND " << endl;
 		}
 	}
-	return '-';
+	return '-1';
 }
 /*
-*	Desciription : This function it dont take parameter playing for computer is taking parameter will play for user
+*	Desciription :
 *	Input		   : no parameter
-*	Return Value   : no return value
+*	Return Value   : return bool if make move return true if no return false
 */
-int  ConnectFour::PlayMove() {
+bool  ConnectFour::PlayMove() {
 	NeigborEnemy MaxEnem;
 	MaxEnem.posX = 0;
 	MaxEnem.posY = 0;
 	MaxEnem.NeighborEnemyCounter = "00000000";
 	int  control = 0, MaxControl = 0, index = 0;
-	const int rowSize = getGameSizeRow(); 
+	const int rowSize = getGameSizeRow();
 	const int columnSize = getGameSizeColumn();
 	bool flag = true, isPlayeable = true;
 	char pos;
@@ -155,16 +168,16 @@ int  ConnectFour::PlayMove() {
 			}
 		}
 		int row = 0, column = 0;
-		cout <<endl<< MaxControl << " MaxEnem.posX " 
-			<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY 
-			<< " MaxEnem.NeighborEnemyCounter\t" 
+		cout << endl << MaxControl << " MaxEnem.posX "
+			<< MaxEnem.posX << " MaxEnem.posY " << MaxEnem.posY
+			<< " MaxEnem.NeighborEnemyCounter\t"
 			<< MaxEnem.NeighborEnemyCounter << endl;
 
-		if (MaxEnem.posX - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue()==EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
+		if (MaxEnem.posX - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
 			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
 
-		if (MaxEnem.posX - 1 >= 0 && MaxEnem.posY - 1 >= 0 &&  gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
+		if (MaxEnem.posX - 1 >= 0 && MaxEnem.posY - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
 			if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY - 1);
 		if (MaxEnem.posY - 1 >= 0 && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
@@ -173,7 +186,7 @@ int  ConnectFour::PlayMove() {
 		if (MaxEnem.posY + 1 < columnSize && gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == EMTHY || gameCells[MaxEnem.posX][MaxEnem.posY].GetCellValue() == SPECIALEMTHY)
 			if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &&  isPlayeable)
 				isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
-		if (true == isPlayeable ) {
+		if (true == isPlayeable) {
 			int  column = 0;
 			time_t t;
 			srand(time(0));
@@ -192,37 +205,49 @@ int  ConnectFour::PlayMove() {
 						gameCells[row][column].SetCellValue(USER2);
 						cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 						isPlayeable = false;
+						return true;
 						break;
-					}			
+					}
 				}
 				if (isPlayeable == false)
-					break;
+					return true;
 			}
-		
+
 		}
 	}
 
-	return 0;
+	return false;
 }
-int ConnectFour::PlayMove(const string& move, const int& PlayerID) {
+bool ConnectFour::PlayMove(char move, const int& PlayerID) {
 	bool flag = false;
-	if (move[0] == '+')
-		return 2;// 
 	flag = MoveInputCheck(move);
 	if (flag) {
-		cout << "MoveInputCheck is correct\n";
 		//if flag true this can true input i will checking position is playable
-		if (IsPositionPlayable(PlayerID, move[0])) {// play move
-			MovePlayer(PlayerID, move[0]);
-			return 0;
+		if (IsPositionPlayable(PlayerID, move)) {// play move
+			MovePlayer(PlayerID, move);
+			return true;
 		}
 		else {
 			cerr << " <--->ILLEGAL<---> Position Cannot play enter another move " << endl;
-			return -1;
+			return false;
 		}
 	}
 	else
 		cerr << "<--->ILLEGAL<---> MoveInputCheck function return false\n\n\n PLEASE ENTER CORRECT MOVE";
+	return false;
+}
+void ConnectFour::SetStartPlayer()
+{
+	cout << "Player | Computer: ";
+	char choise=' ';
+	cin >> choise;
+
+	SetGameMode(choise);
+	if (cin.fail()) {
+		cin.clear(); //This corrects the stream.
+		cin.ignore(); //This skips the left over stream data.
+		cerr << " <--->ILLEGAL<---> Wrong choise for who start to play enter 'P' or 'C' \n";
+	}
 }
 /*
 *	Desciription : //This game has 2 type command Load and Save
@@ -268,19 +293,7 @@ void ConnectFour::CopyConnectedFour(const ConnectFour& other) {
 		}
 	}
 }
-void ConnectFour::ReSizeGameBoard(const int& row, const int& column) {
-
-	gameCells = new Cell*[row];
-	for (int i = 0; i < row; i++)
-		gameCells[i] = new Cell[column];
-
-	setGameSizeRow(row);//2.değişken oyunun size ı
-	setGameSizeColumn(column);//2.değişken oyunun size ı
-
-	cout <<endl <<  "New Game Size" << getGameSizeRow() << " X " << getGameSizeColumn() << endl; 
-}
 void ConnectFour::NewGame() {
-	playGame();
 	InitialBoard(gameSizeRow, gameSizeColumn);
 	PrintGameBoard();
 	SetWhoIsWillPlay(USER1PLAYERID);
@@ -524,57 +537,14 @@ bool ConnectFour::IsPositionPlayable(const int& player_id, const char& pos) {
 *	Input			: char move = entered move
 *	Return Value	: if move is legal  return true  or return false
 */
-bool ConnectFour::MoveInputCheck(const string& command) {
-	if (command[0] >= 'A' + getGameSizeColumn() || command[0] < 'A')
+bool ConnectFour::MoveInputCheck(char command) {
+	if (command >= 'A' + getGameSizeColumn() || command < 'A')
 		return false;
-	if (!isalpha(command[0]))
+	if (!isalpha(command))
 		return false;
 	return true;
 }
-/*
-*	Desciription : This function checking game board size and game mode
-*					Cheking interger or not and for size 6x6, 8x8, 10x10, 20x20
-*					Cheking game mode  should be 1 or 2
-*	Input		 : no input parameter
-*	Return Value : no return value */
-void ConnectFour::playGame() {
-	int row = 0, column = 0;
-	while (1) {
-		cout << "Enter Game Row Size  \n" << "Game board can be any size \n";
-		cin >> row;
-		cout << "Enter Game Column Size  \n" << "Game board can be any size \n";
-		cin >> column;
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else {
-			setGameSizeColumn(column);
-			setGameSizeRow(row);
-			break;
-		}
-	}
-	int mode = 0;
-	while (1) {
-		cout << "Enter Game mode \n" << "Game mode  1 : two player game \n 2: User versus computer game \n";
-		cin >> mode;
-		if (cin.fail()) {
-			cin.clear(); //This corrects the stream.
-			cin.ignore(); //This skips the left over stream data.
-			cerr << " <--->ILLEGAL<---> Wrong input enter integer \n";
-		}
-		else {
-			if (mode == 1 || mode == 2) {
-				SetGameMode(mode);
-				break;
-			}
-			else
-				cerr << "<--->ILLEGAL<---> Wrong Game Mode \n";
-		}
-	}
-	return;
-}
+
 /*
 *	Desciription : This function taking one move without computer and make a move
 *	Input		   : int curren player id

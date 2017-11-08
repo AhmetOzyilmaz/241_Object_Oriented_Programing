@@ -7,7 +7,9 @@ int ConnectFour::GameCount = 0;
 
 int main() {
 	char mode;
-	cout << "Enter Game Mode" << endl;
+	cout << "Enter Game Mode: " << endl;
+	cout << "Multiplayer Mode -> 'M': " << endl;
+	cout << "Single player Mode -> 'S': " << endl;
 	cin >> mode;
 
 	if (mode == 'S' || mode == 's') {
@@ -21,9 +23,7 @@ int main() {
 		}
 	}
 	else	if (mode == 'M' || mode == 'm') {
-		cout << "Multiplayer" << endl;
 	
-
 		const int size = 5;
 		ConnectFour* M = new ConnectFour[size]{ { mode } ,{ mode } ,{ mode } ,{ mode } ,{ mode } };
 		int gameNum = 0;

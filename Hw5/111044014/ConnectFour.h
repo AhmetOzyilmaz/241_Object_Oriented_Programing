@@ -26,15 +26,7 @@ struct NeigborEnemy
 
 class ConnectFour
 {
-	static int GameCount;
-	Cell** gameCells;
-	int BoardRow = 5; //default size
-	int BoardColumn = 5; //default size
-	char GameMode = 'S'; //default game mode
-	int WhoIsWillPlay = 1;
-	int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
-	bool isEnded = false;
-	int GameID = 0;
+
 
 	void CopyConnectedFour(const ConnectFour& other);
 public:
@@ -44,34 +36,12 @@ public:
 	ConnectFour(int row, int column) :ConnectFour(row, column, 'S') {
 		//automaticly starting with PLAYER VS COMPUTER
 	}
-	inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
-	inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
-	inline void setBoardRow(const int size) { BoardRow = size; }
-	inline const int getBoardRow() { return BoardRow; }
-	inline void setGameisEnded(const bool end) { isEnded = end; }
-	inline const bool getGameisEnded() { return isEnded; }
-	inline void setGameID(const int id) { GameID = id; }
-	inline int getGameID() const { return GameID; }
-	inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
-	inline const int getCurrentElementCounter() { return CurrentElementCounter; }
-	inline void setBoardColumn(const int size) { BoardColumn = size; }
-	inline const int getBoardColumn() { return BoardColumn; }
-	inline void SetGameMode(const char mode) { GameMode = mode; }
-	inline const char GetGameMode() { return GameMode; }
-
+	
 	//inline const Cell** GetCell() { return gameCells; }
 
-	inline Cell GetCell(const int& row, const int& column) { return gameCells[row][column]; }
-	inline void SetGameBoard(const int& row, const int& column, const char& value) { gameCells[row][column].SetCellValue(value); }
 
-	inline static int GetCellCounter() { return CellCounter; }
-	inline static int GetGameCounter() { return GameCount; }
 
-	void SetGameBoard(Cell c) {
-		int row = c.GetPosRow();
-		int column = c.GetPosColumn();
-		gameCells[row][column] = c;
-	}
+	
 	void Play();
 	void playGame();
 	void ParseFirstLine(const string& line, int& mode, int& row, int& column, int& play);
@@ -79,10 +49,6 @@ public:
 	void InitialBoard(const int& row, const int& column);
 	void InitialBoard();
 
-	//File Operation
-	void SaveFile(const string& filename);
-	void LoadFile(const string& filename);
-	void LoadFileNew(const string& filename, const int useles);
 	//End File Operation
 	void PrintBoard();
 	bool MoveInputCheck(const string& command);

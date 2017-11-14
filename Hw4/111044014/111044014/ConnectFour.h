@@ -97,6 +97,7 @@ public:
 	}
 	bool Play();
 	void playGame();
+
 	void ParseFirstLine(const string& line, int& mode, int& row, int& column, int& play);
 	void ReSizeGameBoard(const int& row, const int& column);
 	void InitialBoard(const int& row, const int& column);

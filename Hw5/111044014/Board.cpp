@@ -12,12 +12,13 @@ void ConnectFour::PrintGameBoard() {
 	//cout << "GameBoard column -> " << column << endl;
 	while (a < b + column) {
 		cout << "  " << a << " ";
-		a++;
 	}
 	cout << endl;
+		a++;
+
 	for (auto i = 0; i < row; i++) {
 		for (auto j = 0; j < column; j++)
-			cout << "  " << GetGameBoard(i, j).GetCellValue() << " ";
+			cout << "  " << GetCell(i, j).GetCellValue() << " ";
 		cout << "\n";
 	}
 }

@@ -59,9 +59,9 @@ public:
 	inline void SetGameMode(const char mode) { GameMode = mode; }
 	inline const char GetGameMode() { return GameMode; }
 
-	//inline const Cell** GetGameBoard() { return gameCells; }
+	//inline const Cell** GetCell() { return gameCells; }
 
-	inline Cell GetGameBoard(const int& row, const int& column) { return gameCells[row][column]; }
+	inline Cell GetCell(const int& row, const int& column) { return gameCells[row][column]; }
 	inline void SetGameBoard(const int& row, const int& column, const char& value) { gameCells[row][column].SetCellValue(value); }
 
 	inline static int GetCellCounter() { return CellCounter; }

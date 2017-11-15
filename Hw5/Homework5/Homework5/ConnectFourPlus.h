@@ -9,7 +9,6 @@ namespace Ozyilmaz_Ahmet_111044014 {
 	public:
 		ConnectFourPlus();
 		~ConnectFourPlus();
-		
 		void playGame();
 		bool IsEndOneSide(const char& User, const char& other);
 

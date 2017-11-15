@@ -13,6 +13,7 @@ namespace Ozyilmaz_Ahmet_111044014 {
 	class ConnectFourAbstract {
 
 	public:
+		ConnectFourAbstract();
 		virtual void Play();
 		void LoadFileNew(const string& filename, const int useles) ;
 		void LoadFile(const string& filename);

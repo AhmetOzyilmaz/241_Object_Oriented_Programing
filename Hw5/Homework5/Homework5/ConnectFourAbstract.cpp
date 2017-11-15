@@ -24,6 +24,23 @@ void  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::playGame() {
 	}
 
 }
+Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::ConnectFourAbstract() {
+	InitialBoard();
+	PrintBoard();
+	while (1) {
+		cout << "Please Enter Game mode Player | Computer  - > P | C" << endl;
+		char mode = ' ';
+		cin >> mode;
+		if (mode == 'P' || mode == 'p' || mode == 'C' || mode == 'c') {
+			setMode(mode);
+			break;
+		}
+		else
+		{
+			cout << "<-----> Error mode Enter Correct Mode <-----> " << endl;
+		}
+	}
+}
 /*
 *	Desciription Why wrote ? : To play 1 round of the game
 *	Input		   : no input

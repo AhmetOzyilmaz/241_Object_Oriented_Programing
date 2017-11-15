@@ -8,11 +8,8 @@ namespace Ozyilmaz_Ahmet_111044014 {
 	class ConnectFourPlusUndo : public ConnectFourPlus
 	{
 	public:
-		ConnectFourPlusUndo();
-		~ConnectFourPlusUndo();
-		void Play();
-		void IsEndOneSide();
+		bool CommandSelector(const string& command);
+		void UndoMove();
 	};
-
 }
 #endif

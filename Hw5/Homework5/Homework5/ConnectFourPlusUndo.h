@@ -5,13 +5,13 @@
 namespace Ozyilmaz_Ahmet_111044014 {
 
 
-	class ConnectFourPlusUndo : ConnectFourPlus
+	class ConnectFourPlusUndo : public ConnectFourPlus
 	{
 	public:
 		ConnectFourPlusUndo();
 		~ConnectFourPlusUndo();
-		bool IsEnd();
 		void Play();
+		void IsEndOneSide();
 	};
 
 }

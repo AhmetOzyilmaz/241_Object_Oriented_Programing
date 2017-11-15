@@ -1,9 +1,7 @@
 #include <iostream>
-#include "ConnectFourPlus.h"
 #include "ConnectFourPlusUndo.h"
 #include "ConnectFourDiag.h"
 
-using namespace std;
 using namespace Ozyilmaz_Ahmet_111044014;
 
 int main() {

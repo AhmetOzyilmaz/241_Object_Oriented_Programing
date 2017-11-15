@@ -4,15 +4,15 @@
 
 namespace Ozyilmaz_Ahmet_111044014 {
 
-	class ConnectFourPlus : ConnectFourAbstract
+	class ConnectFourPlus :public ConnectFourAbstract
 	{
 	public:
 		ConnectFourPlus();
 		~ConnectFourPlus();
 		
-		bool IsEnd();
-		void Play();
 		void playGame();
+		bool IsEndOneSide(const char& User, const char& other);
+
 	};
 }
 #endif

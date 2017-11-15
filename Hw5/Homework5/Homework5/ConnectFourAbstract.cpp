@@ -1,7 +1,4 @@
 ﻿#include "ConnectFourAbstract.h"
-
-
-
 /*
 *	Desciription : This function take row and column
 *					Cheking game mode  should be 1 or 2
@@ -25,6 +22,7 @@ void  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::playGame() {
 			break;
 		}
 	}
+
 }
 /*
 *	Desciription Why wrote ? : To play 1 round of the game
@@ -32,7 +30,6 @@ void  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::playGame() {
 *	Return Value   : if return true game is over if return false game is not ended
 */
 void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
-	cout << "GAME IS STARTED" << endl;
 	int control = 0;
 	while (1) {
 		if (1 == GetWhoIsWillPlay()) {
@@ -40,7 +37,6 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
 			SetWhoIsWillPlay(2);
 			PrintBoard();
 			if (true ==IsEnd()) {
-				cout << "GAME IS ENDED " << endl;
 				setGameisEnded(true);
 				break;
 			}
@@ -55,14 +51,11 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
 				PrintBoard();
 			}
 			else if (true == IsEnd()) {
-				cout << "GAME IS ENDED " << endl;
 				setGameisEnded(true);
 				break;
 			}
 		}
 	}
-	cout << "GAME IS END" << endl;
-
 }
 /*
 *	Desciription : This function loading saved gameboard from file
@@ -265,6 +258,24 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::MakeMove(const int& PlayerID
 	else if (PlayerID == 3) {
 		return PlayMove();
 	}
+	return false;
+}
+bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::IsEnd()
+{
+	if (false == AnyMoveMore()) {
+		cout << "Game is Ended " << endl;
+		cout << "Game is draw play new game" << endl;
+		return true;
+	}
+	if (IsEndOneSide(USER1, USER2)) {
+		cout << "<---------------->Player 1 WON<---------------->" << endl;
+		return true;
+	}
+	if (IsEndOneSide(USER2, USER1)) {
+		cout << "<---------------->Player 2 WON<----------------> " << endl;
+		return true;
+	}
+	cout << "Game is not ended " << endl;
 	return false;
 }
 char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID) {
@@ -624,26 +635,7 @@ string Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PartnerCheck(const int dir
 	}
 	return "0";
 }
-/*
-*	Desciription : This function checking is game ended for one side
-*	Input		   : no input
-*	Return Value : return interger if 1 user one won if  2 user2 won  if -1 game is not ender
-*/
-bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::IsEndOneSide(const char& User, const char& other) {
-	int row = getColumn();
-	int column = getColumn();
-	string controller = "";
-	for (int i = row - 1; i >= 0; --i) {
-		for (int j = column - 1; j >= 0; --j) {
-			controller = "";
-			for (int direction = 1; direction <= 8; direction++)//8 is number of direction
-				controller += PartnerCheck(direction, i, j, User, other, 4, true);
-			if (controller != "00000000")
-				return true;
-		}
-	}
-	return false;
-}
+
 /*
 *	Desciription : This function returnin number of '1' in your string
 *	Input		   : const string& s1

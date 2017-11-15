@@ -25,6 +25,27 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourPlus::playGame() {
 	}
 
 }
+/*
+*	Desciription : This function checking is game ended for one side
+*	Input		   : no input
+*	Return Value : return interger if 1 user one won if  2 user2 won  if -1 game is not ender
+*/
+bool Ozyilmaz_Ahmet_111044014::ConnectFourPlus::IsEndOneSide(const char & User, const char & other)
+{
+	int row = getRow();
+	int column = getColumn();
+	string controller = "0000";
+	for (int i = row - 1; i >= 0; --i) {
+		for (int j = column - 1; j >= 0; --j) {
+			controller = "0000";
+			for (int direction = 5; direction <= 8; direction++)//8 is number of direction
+				controller += PartnerCheck(direction, i, j, User, other, 4, true);
+			if (controller != "00000000")
+				return true;
+		}
+	}
+	return false;
+}
 Ozyilmaz_Ahmet_111044014::ConnectFourPlus::ConnectFourPlus()
 {
 	InitialBoard(); 
@@ -47,50 +68,4 @@ Ozyilmaz_Ahmet_111044014::ConnectFourPlus::ConnectFourPlus()
 Ozyilmaz_Ahmet_111044014::ConnectFourPlus::~ConnectFourPlus()
 {
 	cout << "ConnectFourPlus constructor" << endl;
-}
-bool Ozyilmaz_Ahmet_111044014::ConnectFourPlus::IsEnd()
-{
-	cout << "Is end  func" << endl;
-	return false;
-}
-/*
-*	Desciription Why wrote ? : To play 1 round of the game
-*	Input		   : no input
-*	Return Value   : if return true game is over if return false game is not ended
-*/
-void Ozyilmaz_Ahmet_111044014::ConnectFourPlus::Play() {
-	cout << "GAME IS STARTED" << endl;
-	int control = 0;
-	while (1) {
-		cout << " Time to play for " << GetWhoIsWillPlay() << endl;
-		if (1 == GetWhoIsWillPlay()) {
-			cout << "*********** 1 "<< endl;
-
-			control = MakeMove(USER1PLAYERID);
-			PrintBoard();
-			if (true == IsEnd()) {
-				cout << "GAME IS ENDED " << endl;
-				setGameisEnded(true);
-				break;
-
-			}
-			SetWhoIsWillPlay(2);
-		}
-		if (2 == GetWhoIsWillPlay()) {
-			cout << "*********** 2 " << endl;
-
-			if ('P' == GetGameMode())
-				control = MakeMove(USER2PLAYERID);
-			else if ('C' == GetGameMode())
-				control = MakeMove(COMPUTERPLAYERID);
-			else if (true == IsEnd()) {
-				cout << "GAME IS ENDED " << endl;
-				setGameisEnded(true);
-				break;
-			}
-			SetWhoIsWillPlay(1);
-			PrintBoard();
-		}
-	}
-	cout << "GAME IS END" << endl;
 }

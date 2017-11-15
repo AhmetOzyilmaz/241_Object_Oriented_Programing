@@ -1,4 +1,9 @@
+#ifndef CONNECTFOURABSTRACT_H
+#define CONNECTFOURABSTRACT_H
+
+
 #include "Cell.h"
+
 
 namespace Ozyilmaz_Ahmet_111044014 {
 	struct NeigborEnemy
@@ -12,15 +17,12 @@ namespace Ozyilmaz_Ahmet_111044014 {
 
 	public:
 		ConnectFourAbstract();
-		~ConnectFourAbstract();
 
 		void LoadFileNew(const string& filename, const int useles) ;
 		void LoadFile(const string& filename);
 		void SaveFile(const string& filename);
 
 		void PrintBoard();
-		virtual void PlayMove(char move, const int& PlayerID) = 0;
-		virtual void PlayMove() = 0;
 		virtual void IsEnd() = 0;
 		virtual void playGame() = 0;
 		virtual void Play() = 0;
@@ -40,7 +42,7 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		inline const int getColumn() { return BoardColumn; }
 		inline void SetGameMode(const char mode) { GameMode = mode; }
 		inline const char GetGameMode() { return GameMode; }
-		inline Cell GetCell(const int& row, const int& column) { return gameCells[row][column]; }
+		inline Cell getCell(const int& row, const int& column) { return gameCells[row][column]; }
 		inline void SetGameBoard(const int& row, const int& column, const char& value) { gameCells[row][column].SetCellValue(value); }
 
 		void SetGameBoard(Cell c) {
@@ -54,23 +56,23 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		void InitialBoard(const int& row, const int& column);
 		void InitialBoard();
 
-		bool MoveInputCheck(const string& command);
+		bool MoveInputCheck(char command);
 		char TakeMove(const int& PlayerID);
 		bool CommandSelector(const string& command);
-		int MyStringCompare(const string& s1);
-		int CheckCounter(const int& CurComp, const int& OtherComp, int count, const int& i, const int& j);
+		int CheckCounter(const int& CurComp, int count, int row, int column);
 		string PartnerCheck(const int direction, const int& posX, const int& posY, const char& comparator, const char& othercomparator, const int& WinCounter, const bool& flag = false);
 		bool PlayIsPlayeable(const int& direction, bool isPlayeable, const NeigborEnemy& MaxEnem, int row, int column);
 		bool IsPositionPlayable(const int& player_id, const char& pos);
 		bool IsEndOneSide(const char& User, const char& other);
-		int AllMoveOperation(const int& PlayerID);
 		bool AnyMoveMore();
-		bool GameManager();
 		void MovePlayer(const int&, const char&);
 		char MoveComputer();
 		void NewGame();
 		void SetStartPlayer();
-
+		bool MakeMove(const int& PlayerID);
+		bool PlayMove();
+		bool PlayMove(char move, const int& PlayerID);
+		int OneCounter(const string& s1); // change it
 	private:
 		Cell** gameCells;
 		int BoardRow = 5;
@@ -83,3 +85,5 @@ namespace Ozyilmaz_Ahmet_111044014 {
 
 	};
 }
+
+#endif

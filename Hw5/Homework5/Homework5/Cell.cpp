@@ -1,7 +1,7 @@
 #include "Cell.h"
 
 //Operator == for cell
-bool operator ==(const Cell& first, const Cell& second) {
+bool operator ==(const Ozyilmaz_Ahmet_111044014::Cell& first, const Ozyilmaz_Ahmet_111044014::Cell& second) {
 	if (first.GetCellValue() == second.GetCellValue()) {
 		cout << "First Cell equal Second cell" << endl;
 		return true;
@@ -10,10 +10,10 @@ bool operator ==(const Cell& first, const Cell& second) {
 	return false;
 }
 //Operator != for cell
-bool operator !=(const Cell& first, const Cell& second) {
+bool operator !=(const Ozyilmaz_Ahmet_111044014::Cell& first, const Ozyilmaz_Ahmet_111044014::Cell& second) {
 	return !(first == second);
 }
-Cell Cell::operator++()//önce
+Ozyilmaz_Ahmet_111044014::Cell Ozyilmaz_Ahmet_111044014::Cell::operator++()//önce
 {
 	if (GetCellValue() == EMTHY) {
 		SetCellValue(USER1);
@@ -26,7 +26,7 @@ Cell Cell::operator++()//önce
 	}
 	return *this;
 }
-Cell Cell::operator++(int)//sonra
+Ozyilmaz_Ahmet_111044014::Cell Ozyilmaz_Ahmet_111044014::Cell::operator++(int)//sonra
 {
 	Cell temp = *this;
 
@@ -41,14 +41,14 @@ Cell Cell::operator++(int)//sonra
 	}
 	return temp;
 }
-ostream & operator<<(ostream & output, const Cell& outCell)
+ostream & operator<<(ostream & output, const Ozyilmaz_Ahmet_111044014::Cell& outCell)
 {
 	output << "This Cell Row" << outCell.GetPosRow() << endl;
 	output << "This Cell Column" << outCell.GetPosColumn() << endl;
 	output << "This Cell Value" << outCell.GetCellValue() << endl;
 	return output;
 }
-istream & operator>>(istream & input, Cell & outCell)
+istream & operator>>(istream & input, Ozyilmaz_Ahmet_111044014::Cell & outCell)
 {
 	int value;
 	char val;

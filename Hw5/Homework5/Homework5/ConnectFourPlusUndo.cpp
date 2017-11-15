@@ -2,8 +2,7 @@
 
 Ozyilmaz_Ahmet_111044014::ConnectFourPlusUndo::ConnectFourPlusUndo()
 {
-	cout << "ConnectFourPlusUndo" << endl;
-
+	playGame();
 }
 
 Ozyilmaz_Ahmet_111044014::ConnectFourPlusUndo::~ConnectFourPlusUndo()
@@ -16,11 +15,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourPlusUndo::IsEnd()
 	cout << "Is end  func" << endl;
 }
 
-void Ozyilmaz_Ahmet_111044014::ConnectFourPlusUndo::playGame()
-{
-	cout << "playGame  func" << endl;
 
-}
 
 void Ozyilmaz_Ahmet_111044014::ConnectFourPlusUndo::Play()
 {

@@ -1,10 +1,13 @@
 ﻿#include "ConnectFourAbstract.h"
+
+
+
 /*
 *	Desciription : This function take row and column
 *					Cheking game mode  should be 1 or 2
 *	Input		 : no input parameter
 *	Return Value : no return value */
-void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::playGame() {
+void  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::playGame() {
 	int row = 0, column = 0;
 	while (1) {
 		cout << "Enter Game Row Size  \n" << "Game board can be any size \n";
@@ -24,7 +27,38 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::playGame() {
 	}
 	return;
 }
-
+/*
+*	Desciription Why wrote ? : To play 1 round of the game
+*	Input		   : no input
+*	Return Value   : if return true game is over if return false game is not ended
+*/
+bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
+	int control = 0;
+	if (1 == GetWhoIsWillPlay()) {
+		control = MakeMove(USER1PLAYERID);
+		SetWhoIsWillPlay(2);
+		PrintBoard();
+		if (IsEnd()) {
+			setGameisEnded(true);
+			return true;
+		}
+	}
+	if (2 == GetWhoIsWillPlay()) {
+		if ('P' == GetGameMode())
+			control = MakeMove(USER2PLAYERID);
+		else if ('C' == GetGameMode())
+			control = MakeMove(COMPUTERPLAYERID);
+		if (control == true) {
+			SetWhoIsWillPlay(1);
+			PrintBoard();
+		}
+		else if (IsEnd()) {
+			setGameisEnded(true);
+			return true;
+		}
+	}
+	return false;
+}
 /*
 *	Desciription : This function loading saved gameboard from file
 *	Input		   : conts string file name
@@ -79,10 +113,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::InitialBoard() {
 	playGame();
 	ReSizeGameBoard(getRow(), getColumn());
 }
-Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::ConnectFourAbstract()
-{
-	playGame();
-}
+
 void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::LoadFileNew(const string& filename, const int useles) {
 	cout << "Starting Loading file " << endl;
 	ifstream myReadFile;

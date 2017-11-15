@@ -13,13 +13,15 @@ int main() {
 	cin >> choise;
 	if (choise == 'P') {
 		ConnectFourPlus cp;
+		cp.Play();
 	}
 	else if (choise == 'D') {
 		ConnectFourDiag cd;
+		cd.Play();
 
 	}else if (choise == 'U') {
 		ConnectFourPlusUndo cu;
-
+		cu.Play();
 	}
 
 	int a; 

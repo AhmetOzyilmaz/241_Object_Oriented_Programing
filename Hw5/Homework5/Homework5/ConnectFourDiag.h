@@ -2,7 +2,6 @@
 #define CONNECTFOURDIAG_H
 #include "ConnectFourAbstract.h"
 
-
 namespace Ozyilmaz_Ahmet_111044014 {
 
 	class ConnectFourDiag : ConnectFourAbstract
@@ -11,8 +10,7 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		ConnectFourDiag();
 		~ConnectFourDiag();
 
-		void IsEnd();
-		void playGame();
+		bool IsEnd();
 		void Play();
 	private:
 

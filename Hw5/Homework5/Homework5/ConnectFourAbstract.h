@@ -1,9 +1,6 @@
 #ifndef CONNECTFOURABSTRACT_H
 #define CONNECTFOURABSTRACT_H
-
-
 #include "Cell.h"
-
 
 namespace Ozyilmaz_Ahmet_111044014 {
 	struct NeigborEnemy
@@ -16,30 +13,24 @@ namespace Ozyilmaz_Ahmet_111044014 {
 	class ConnectFourAbstract {
 
 	public:
-		ConnectFourAbstract();
-
 		void LoadFileNew(const string& filename, const int useles) ;
 		void LoadFile(const string& filename);
 		void SaveFile(const string& filename);
-
 		void PrintBoard();
-		virtual void IsEnd() = 0;
-		virtual void playGame() = 0;
-		virtual void Play() = 0;
-
-	private:
-		inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
-		inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
+		inline void setColumn(const int size) { BoardColumn = size; }
+		inline const int getColumn() { return BoardColumn; }
 		inline void setRow(const int size) { BoardRow = size; }
 		inline const int getRow() { return BoardRow; }
+		inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
+		inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
+
 		inline void setGameisEnded(const bool end) { isEnded = end; }
 		inline const bool getGameisEnded() { return isEnded; }
 		inline void setGameID(const int id) { GameID = id; }
 		inline int getGameID() const { return GameID; }
 		inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
 		inline const int getCurrentElementCounter() { return CurrentElementCounter; }
-		inline void setColumn(const int size) { BoardColumn = size; }
-		inline const int getColumn() { return BoardColumn; }
+
 		inline void SetGameMode(const char mode) { GameMode = mode; }
 		inline const char GetGameMode() { return GameMode; }
 		inline Cell getCell(const int& row, const int& column) { return gameCells[row][column]; }
@@ -50,6 +41,11 @@ namespace Ozyilmaz_Ahmet_111044014 {
 			int column = c.GetPosColumn();
 			gameCells[row][column] = c;
 		}
+		void playGame();
+		bool Play();
+		virtual bool IsEnd() = 0;
+
+	private:
 		void ParseFirstLine(const string& line, int& mode, int& row, int& column, int& play);
 
 		void ReSizeGameBoard(const int& row, const int& column);

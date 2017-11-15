@@ -25,39 +25,44 @@ void  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::playGame() {
 			break;
 		}
 	}
-	return;
 }
 /*
 *	Desciription Why wrote ? : To play 1 round of the game
 *	Input		   : no input
 *	Return Value   : if return true game is over if return false game is not ended
 */
-bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
+void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
+	cout << "GAME IS STARTED" << endl;
 	int control = 0;
-	if (1 == GetWhoIsWillPlay()) {
-		control = MakeMove(USER1PLAYERID);
-		SetWhoIsWillPlay(2);
-		PrintBoard();
-		if (IsEnd()) {
-			setGameisEnded(true);
-			return true;
-		}
-	}
-	if (2 == GetWhoIsWillPlay()) {
-		if ('P' == GetGameMode())
-			control = MakeMove(USER2PLAYERID);
-		else if ('C' == GetGameMode())
-			control = MakeMove(COMPUTERPLAYERID);
-		if (control == true) {
-			SetWhoIsWillPlay(1);
+	while (1) {
+		if (1 == GetWhoIsWillPlay()) {
+			control = MakeMove(USER1PLAYERID);
+			SetWhoIsWillPlay(2);
 			PrintBoard();
+			if (true ==IsEnd()) {
+				cout << "GAME IS ENDED " << endl;
+				setGameisEnded(true);
+				break;
+			}
 		}
-		else if (IsEnd()) {
-			setGameisEnded(true);
-			return true;
+		if (2 == GetWhoIsWillPlay()) {
+			if ('P' == GetGameMode())
+				control = MakeMove(USER2PLAYERID);
+			else if ('C' == GetGameMode())
+				control = MakeMove(COMPUTERPLAYERID);
+			if (control == true) {
+				SetWhoIsWillPlay(1);
+				PrintBoard();
+			}
+			else if (true == IsEnd()) {
+				cout << "GAME IS ENDED " << endl;
+				setGameisEnded(true);
+				break;
+			}
 		}
 	}
-	return false;
+	cout << "GAME IS END" << endl;
+
 }
 /*
 *	Desciription : This function loading saved gameboard from file
@@ -176,7 +181,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::LoadFile(const string& filen
 		if (!myReadFile.eof()) {
 			if (line.size() >= 6) {
 				ParseFirstLine(line, mode, row, column, WillPlay);
-				SetGameMode(mode);//ilk eleman oyun modu
+				setMode(mode);//ilk eleman oyun modu
 				SetWhoIsWillPlay(WillPlay);//3.değişken oyunu şimdi kimin oynaması gerektiği	
 				ReSizeGameBoard(row, column);
 			}
@@ -227,19 +232,22 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PrintBoard()
 	char a = 'A', b = 'A';
 	int row = getRow();
 	int column = getColumn();
-	//cout << "GameBoard row -> " << row << endl;
-	//cout << "GameBoard column -> " << column << endl;
+
+	cout << "GameBoard row -> " << row << endl;
+	cout << "GameBoard column -> " << column << endl;
+	
 	while (a < b + column) {
 		cout << "  " << a << " ";
+		a++;
 	}
 	cout << endl;
-	a++;
 
 	for (auto i = 0; i < row; i++) {
 		for (auto j = 0; j < column; j++)
 			cout << "  " << getCell(i, j).GetCellValue() << " ";
 		cout << "\n";
 	}
+
 }
 
 /*
@@ -425,7 +433,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::SetStartPlayer()
 	char choise = ' ';
 	cin >> choise;
 
-	SetGameMode(choise);
+	setMode(choise);
 	if (cin.fail()) {
 		cin.clear(); //This corrects the stream.
 		cin.ignore(); //This skips the left over stream data.

@@ -23,27 +23,74 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourPlus::playGame() {
 			break;
 		}
 	}
-	return;
-
 
 }
 Ozyilmaz_Ahmet_111044014::ConnectFourPlus::ConnectFourPlus()
 {
-	playGame();
+	InitialBoard(); 
+	PrintBoard();
+	while (1) {
+		cout << "Please Enter Game mode Player | Computer  - > P | C" << endl;
+		char mode = ' ';
+		cin >> mode;
+		if (mode == 'P' || mode == 'p' || mode == 'C' || mode == 'c') {
+			setMode(mode);
+			break;
+		}
+		else
+		{
+			cout << "<-----> Error mode Enter Correct Mode <-----> " << endl;
+		}
+	}
 }
 
 Ozyilmaz_Ahmet_111044014::ConnectFourPlus::~ConnectFourPlus()
 {
 	cout << "ConnectFourPlus constructor" << endl;
 }
-void Ozyilmaz_Ahmet_111044014::ConnectFourPlus::IsEnd()
+bool Ozyilmaz_Ahmet_111044014::ConnectFourPlus::IsEnd()
 {
 	cout << "Is end  func" << endl;
+	return false;
 }
+/*
+*	Desciription Why wrote ? : To play 1 round of the game
+*	Input		   : no input
+*	Return Value   : if return true game is over if return false game is not ended
+*/
+void Ozyilmaz_Ahmet_111044014::ConnectFourPlus::Play() {
+	cout << "GAME IS STARTED" << endl;
+	int control = 0;
+	while (1) {
+		cout << " Time to play for " << GetWhoIsWillPlay() << endl;
+		if (1 == GetWhoIsWillPlay()) {
+			cout << "*********** 1 "<< endl;
 
+			control = MakeMove(USER1PLAYERID);
+			PrintBoard();
+			if (true == IsEnd()) {
+				cout << "GAME IS ENDED " << endl;
+				setGameisEnded(true);
+				break;
 
-void Ozyilmaz_Ahmet_111044014::ConnectFourPlus::Play()
-{
-	cout << "Play  func" << endl;
+			}
+			SetWhoIsWillPlay(2);
+		}
+		if (2 == GetWhoIsWillPlay()) {
+			cout << "*********** 2 " << endl;
 
+			if ('P' == GetGameMode())
+				control = MakeMove(USER2PLAYERID);
+			else if ('C' == GetGameMode())
+				control = MakeMove(COMPUTERPLAYERID);
+			else if (true == IsEnd()) {
+				cout << "GAME IS ENDED " << endl;
+				setGameisEnded(true);
+				break;
+			}
+			SetWhoIsWillPlay(1);
+			PrintBoard();
+		}
+	}
+	cout << "GAME IS END" << endl;
 }

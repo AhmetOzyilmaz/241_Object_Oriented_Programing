@@ -21,8 +21,8 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		inline const int getColumn() { return BoardColumn; }
 		inline void setRow(const int size) { BoardRow = size; }
 		inline const int getRow() { return BoardRow; }
-		inline void SetWhoIsWillPlay(const int who) { WhoIsWillPlay = who; }
-		inline const int GetWhoIsWillPlay() { return WhoIsWillPlay; }
+		inline void SetWhoIsWillPlay(int who) { WhoIsWillPlay = who; }
+		inline int GetWhoIsWillPlay() const { return WhoIsWillPlay; }
 
 		inline void setGameisEnded(const bool end) { isEnded = end; }
 		inline const bool getGameisEnded() { return isEnded; }
@@ -31,7 +31,7 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
 		inline const int getCurrentElementCounter() { return CurrentElementCounter; }
 
-		inline void SetGameMode(const char mode) { GameMode = mode; }
+		inline void setMode(const char mode) { GameMode = mode; }
 		inline const char GetGameMode() { return GameMode; }
 		inline Cell getCell(const int& row, const int& column) { return gameCells[row][column]; }
 		inline void SetGameBoard(const int& row, const int& column, const char& value) { gameCells[row][column].SetCellValue(value); }
@@ -42,7 +42,9 @@ namespace Ozyilmaz_Ahmet_111044014 {
 			gameCells[row][column] = c;
 		}
 		void playGame();
-		bool Play();
+		void Play();
+		void InitialBoard();
+		bool MakeMove(const int& PlayerID);
 		virtual bool IsEnd() = 0;
 
 	private:
@@ -50,7 +52,6 @@ namespace Ozyilmaz_Ahmet_111044014 {
 
 		void ReSizeGameBoard(const int& row, const int& column);
 		void InitialBoard(const int& row, const int& column);
-		void InitialBoard();
 
 		bool MoveInputCheck(char command);
 		char TakeMove(const int& PlayerID);
@@ -65,7 +66,7 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		char MoveComputer();
 		void NewGame();
 		void SetStartPlayer();
-		bool MakeMove(const int& PlayerID);
+		
 		bool PlayMove();
 		bool PlayMove(char move, const int& PlayerID);
 		int OneCounter(const string& s1); // change it
@@ -73,7 +74,7 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		Cell** gameCells;
 		int BoardRow = 5;
 		int BoardColumn = 5;
-		char GameMode = 'S';
+		char GameMode = ' ';
 		int WhoIsWillPlay = 1;
 		int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
 		bool isEnded = false;

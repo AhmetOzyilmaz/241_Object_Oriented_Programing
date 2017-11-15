@@ -9,7 +9,6 @@ namespace Ozyilmaz_Ahmet_111044014 {
 	public:
 		ConnectFourDiag();
 		~ConnectFourDiag();
-
 		bool IsEnd();
 		void Play();
 	private:

@@ -57,3 +57,5 @@ Ozyilmaz_Ahmet_111044014::ConnectFourPlus::~ConnectFourPlus()
 {
 	cout << "ConnectFourPlus constructor" << endl;
 }
+
+

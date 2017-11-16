@@ -269,7 +269,6 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PrintBoard()
 			cout << "  " << getCell(i, j).GetCellValue() << " ";
 		cout << "\n";
 	}
-
 }
 
 /*
@@ -313,7 +312,6 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::IsEnd()
 char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID) {
 	bool flag = false;
 	string command = "", command2 = "";
-		cout << "\n\nGAME " << getGameID() << endl;
 		PrintBoard();
 		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
 			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
@@ -324,11 +322,14 @@ char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID
 		if (cin.eof()) {
 			exit(-31);//input from file ended
 		}
-		cout <<"***** Command --> "<< command << endl;
-		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
-			cin >> command2;
-			command2 = command + " " + command2;
-			CommandSelector(command2);
+		if (command.size() >= 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
+			if (command != "UNDO") {
+				cin >> command2;
+				command2 = command + " " + command2;
+				CommandSelector(command2);
+			}
+			else
+				CommandSelector(command);
 			return '0';
 		}
 		else {
@@ -374,6 +375,9 @@ bool  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PlayMove() {
 		for (int row = rowSize - 1; row >= 0; --row) {
 			if (getCell(row, column).GetCellValue() == EMTHY || getCell(row, column).GetCellValue() == SPECIALEMTHY) {
 				SetGameBoard(row, column, 'O');
+				allMoves += static_cast<char>( column + 65);
+				allMoves += static_cast<char>('O');
+
 				cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 				break;
 			}
@@ -422,7 +426,6 @@ bool  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PlayMove() {
 			time_t t;
 			srand(time(0));
 			while (1) {
-				cout << "While" << endl;
 				column = rand() % columnSize;
 				if (column < 0)
 					column *= -1;
@@ -434,6 +437,9 @@ bool  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PlayMove() {
 					}
 					if (gameCells[row][column].GetCellValue() == EMTHY && gameCells[row][column].GetCellValue() != ' ' || gameCells[row][column].GetCellValue() == SPECIALEMTHY) {
 						gameCells[row][column].SetCellValue(USER2);
+						allMoves += static_cast<char>(column + 65);
+						allMoves += static_cast<char>(USER2);
+
 						cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
 						isPlayeable = false;
 						return true;
@@ -486,13 +492,23 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::SetStartPlayer()
 *	Return Value   : If a valid file operation its returns true, is not return false
 */
 bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::CommandSelector(const string& command) {
-	string filename = command.substr(5, command.size());
+	string filename = "";
+	cout << "CommandSelector" << command << endl;
+	int a;
+	cin >> a;
+	if (command.size() >= 5)
+		filename = command.substr(5, command.size());
+
 	if (command.substr(0, 4).compare("SAVE") == 0) {
 		SaveFile(filename);
 		return true;
 	}
 	else if (command.substr(0, 4).compare("LOAD") == 0) {
 		LoadFile(filename);
+		return true;
+	}
+	else if (command.substr(0, 4).compare("UNDO") == 0) {
+		UndoMove();
 		return true;
 	}
 	return false;
@@ -735,6 +751,9 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::MovePlayer(const int& player
 				if (getCell(i, column).GetCellValue() == EMTHY || getCell(i, column).GetCellValue() == SPECIALEMTHY) {
 					Cell temp(column, i, CurrentComparor);
 					SetGameBoard(temp);
+					allMoves += static_cast<char>(column + 65);
+					allMoves += static_cast<char>(CurrentComparor);
+
 					break;
 				}
 			}

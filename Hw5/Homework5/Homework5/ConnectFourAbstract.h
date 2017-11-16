@@ -13,6 +13,8 @@ namespace Ozyilmaz_Ahmet_111044014 {
 	class ConnectFourAbstract {
 	public:
 		virtual void Play();
+		virtual void UndoMove()=0;
+
 	protected:
 		ConnectFourAbstract();
 		~ConnectFourAbstract();
@@ -29,8 +31,6 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		inline int GetWhoIsWillPlay() const { return WhoIsWillPlay; }
 		inline void setGameisEnded(const bool end) { isEnded = end; }
 		inline const bool getGameisEnded() { return isEnded; }
-		inline void setGameID(const int id) { GameID = id; }
-		inline int getGameID() const { return GameID; }
 		inline void setCurrentElementCounter(const int count) { CurrentElementCounter = count; }
 		inline const int getCurrentElementCounter() { return CurrentElementCounter; }
 		inline void setMode(const char mode) { GameMode = mode; }
@@ -68,7 +68,9 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		bool PlayMove();
 		bool PlayMove(char move, const int& PlayerID);
 		int OneCounter(const string& s1); // change it
-	
+	protected:
+		string allMoves = "";
+
 	private:
 		Cell** gameCells;
 		int BoardRow = 5;
@@ -77,7 +79,6 @@ namespace Ozyilmaz_Ahmet_111044014 {
 		int WhoIsWillPlay = 1;
 		int CurrentElementCounter = 0;// 4 lü yapmaya ne kadar yakýn olduðunu tutan bir  deðiþken 
 		bool isEnded = false;
-		int GameID = 0;
 
 	};
 }

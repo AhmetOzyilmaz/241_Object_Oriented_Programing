@@ -41,6 +41,15 @@ Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::ConnectFourAbstract() {
 		}
 	}
 }
+Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::~ConnectFourAbstract()
+{
+	for (int i = 0; i < getRow(); ++i) {
+		delete[] gameCells[i];
+		gameCells[i] = nullptr;
+	}
+	delete[] gameCells;
+	gameCells = nullptr;
+}
 /*
 *	Desciription Why wrote ? : To play 1 round of the game
 *	Input		   : no input
@@ -140,8 +149,8 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::LoadFileNew(const string& fi
 		int column = 0, row = 0, WillPlay = 0, mode = 0;
 		getline(myReadFile, line);
 
-		if (!myReadFile.eof()) {
-			while (!myReadFile.eof()) {
+		if (false == myReadFile.eof()) {
+			while (false == myReadFile.eof()) {
 
 				++row;
 				if (line.size() > column)
@@ -184,17 +193,20 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::LoadFile(const string& filen
 	myReadFile.open(filename);
 	string line = "";
 	Cell copy;
+	int go;
 	int size = 0;
 	if (myReadFile.is_open()) {
 		int column = 0, row = 0, WillPlay = 0, mode = 0;
 		getline(myReadFile, line);
 		if (!myReadFile.eof()) {
 			if (line.size() >= 6) {
+
 				ParseFirstLine(line, mode, row, column, WillPlay);
 				setMode(mode);//ilk eleman oyun modu
 				SetWhoIsWillPlay(WillPlay);//3.değişken oyunu şimdi kimin oynaması gerektiği	
 				ReSizeGameBoard(row, column);
 			}
+
 			row = 0;
 			while (!myReadFile.eof()) {
 				getline(myReadFile, line);
@@ -269,6 +281,9 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::MakeMove(const int& PlayerID
 	bool flag = false;
 	if (PlayerID != 3) {
 		char move = TakeMove(PlayerID);
+		while (move == '0') {
+			move = TakeMove(PlayerID);
+		}
 		if (true == PlayMove(move, PlayerID))
 			return true;
 	}
@@ -298,7 +313,6 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::IsEnd()
 char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID) {
 	bool flag = false;
 	string command = "", command2 = "";
-	while (1) {
 		cout << "\n\nGAME " << getGameID() << endl;
 		PrintBoard();
 		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
@@ -310,29 +324,27 @@ char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID
 		if (cin.eof()) {
 			exit(-31);//input from file ended
 		}
+		cout <<"***** Command --> "<< command << endl;
 		if (command.size() > 3) { // "LOAD X.txt" minumum kabul edilen kýsým 
 			cin >> command2;
 			command2 = command + " " + command2;
 			CommandSelector(command2);
-			return '-1';
+			return '0';
 		}
 		else {
 			cout << command.size() << endl;
 			if (command.size() == 1) {
 				//cout << command << endl;
-
 				if (true == MoveInputCheck(command[0])) {
 					//cout << MoveInputCheck(command[0]) << endl;
 					return command[0];
-
 				}
 
 			}
 			else
 				cerr << "<--->ILLEGAL<---> ERROR COMMAND ENTER NEW  COMMAND " << endl;
 		}
-	}
-	return '-1';
+	return '0';
 }
 /*
 *	Desciription :

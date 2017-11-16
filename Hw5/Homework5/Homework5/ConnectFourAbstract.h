@@ -11,10 +11,12 @@ namespace Ozyilmaz_Ahmet_111044014 {
 	};
 
 	class ConnectFourAbstract {
-
 	public:
-		ConnectFourAbstract();
 		virtual void Play();
+	protected:
+		ConnectFourAbstract();
+		~ConnectFourAbstract();
+
 		void LoadFileNew(const string& filename, const int useles) ;
 		void LoadFile(const string& filename);
 		void SaveFile(const string& filename);

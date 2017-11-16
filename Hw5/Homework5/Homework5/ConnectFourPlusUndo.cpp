@@ -1,6 +1,4 @@
 #include "ConnectFourPlusUndo.h"
-
-
 /*
 *	Desciription : //This game has 2 type command Load and Save
 *	Input		   : const string& taking command from user
@@ -8,7 +6,7 @@
 */
 void Ozyilmaz_Ahmet_111044014::ConnectFourPlusUndo::UndoMove()
 {
-	cout << "ALL MOVES -> " << allMoves << endl;
+	//cout << "ALL MOVES -> " << allMoves << endl;
 
 	allMoves.pop_back();
 	char column = allMoves[allMoves.size() - 1];
@@ -20,11 +18,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourPlusUndo::UndoMove()
 			break;
 		}
 	}
-	//ask please
-	if (GetWhoIsWillPlay() == 1)
-		SetWhoIsWillPlay(2);
-	else
-		SetWhoIsWillPlay(1);
+	
 
 }
 

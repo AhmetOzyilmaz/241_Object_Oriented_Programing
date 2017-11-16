@@ -7,7 +7,7 @@ Ozyilmaz_Ahmet_111044014::ConnectFourDiag::ConnectFourDiag()
 }
 Ozyilmaz_Ahmet_111044014::ConnectFourDiag::~ConnectFourDiag()
 {
-	cout << "destructor ConnectFourDiag" << endl;
+	//
 }
 /*
 *	Desciription : This function checking is game ended for one side

@@ -67,7 +67,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
 				break;
 			}
 		}
-		if (2 == GetWhoIsWillPlay()) {
+		else if (2 == GetWhoIsWillPlay()) {
 			if ('P' == GetGameMode())
 				control = MakeMove(USER2PLAYERID);
 			else if ('C' == GetGameMode())
@@ -279,9 +279,11 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PrintBoard()
 bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::MakeMove(const int& PlayerID) {
 	bool flag = false;
 	if (PlayerID != 3) {
-		char move = TakeMove(PlayerID);
-		while (move == '0') {
+		char move = '0';
+		while (move == '-1' || move == '0') {
 			move = TakeMove(PlayerID);
+			if (move == '0')
+				return false;
 		}
 		if (true == PlayMove(move, PlayerID))
 			return true;
@@ -345,7 +347,7 @@ char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID
 			else
 				cerr << "<--->ILLEGAL<---> ERROR COMMAND ENTER NEW  COMMAND " << endl;
 		}
-	return '0';
+	return '-1';
 }
 /*
 *	Desciription :
@@ -377,9 +379,8 @@ bool  Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::PlayMove() {
 				SetGameBoard(row, column, 'O');
 				allMoves += static_cast<char>( column + 65);
 				allMoves += static_cast<char>('O');
-
 				cout << "Movement For Computer " << "Position is row ->  " << row << "\tColumn is " << column << endl;
-				break;
+				return true;
 			}
 		}
 	}
@@ -493,9 +494,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::SetStartPlayer()
 */
 bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::CommandSelector(const string& command) {
 	string filename = "";
-	cout << "CommandSelector" << command << endl;
-	int a;
-	cin >> a;
+
 	if (command.size() >= 5)
 		filename = command.substr(5, command.size());
 
@@ -509,6 +508,12 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::CommandSelector(const string
 	}
 	else if (command.substr(0, 4).compare("UNDO") == 0) {
 		UndoMove();
+
+		if (GetWhoIsWillPlay() == 1)
+			SetWhoIsWillPlay(2);
+		else
+			SetWhoIsWillPlay(1);
+
 		return true;
 	}
 	return false;

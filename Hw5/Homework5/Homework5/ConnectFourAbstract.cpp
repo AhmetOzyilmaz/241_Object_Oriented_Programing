@@ -63,6 +63,7 @@ void Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::Play() {
 			SetWhoIsWillPlay(2);
 			PrintBoard();
 			if (true ==IsEnd()) {
+				
 				setGameisEnded(true);
 				break;
 			}
@@ -280,7 +281,7 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::MakeMove(const int& PlayerID
 	bool flag = false;
 	if (PlayerID != 3) {
 		char move = '0';
-		while (move == '-1' || move == '0') {
+		while (move == '1' || move == '0') {
 			move = TakeMove(PlayerID);
 			if (move == '0')
 				return false;
@@ -314,6 +315,7 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::IsEnd()
 char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID) {
 	bool flag = false;
 	string command = "", command2 = "";
+	while (1) {
 		PrintBoard();
 		cout << "if want to Save Gameboard enter 'SAVE FILE.txt' \n "
 			<< "if you want to  load gameboard  from file enter 'LOAD FILE.txt' \n "
@@ -332,7 +334,6 @@ char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID
 			}
 			else
 				CommandSelector(command);
-			return '0';
 		}
 		else {
 			cout << command.size() << endl;
@@ -347,7 +348,8 @@ char Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::TakeMove(const int& PlayerID
 			else
 				cerr << "<--->ILLEGAL<---> ERROR COMMAND ENTER NEW  COMMAND " << endl;
 		}
-	return '-1';
+	}
+	return '1';
 }
 /*
 *	Desciription :
@@ -504,6 +506,8 @@ bool Ozyilmaz_Ahmet_111044014::ConnectFourAbstract::CommandSelector(const string
 	}
 	else if (command.substr(0, 4).compare("LOAD") == 0) {
 		LoadFile(filename);
+		cout << "Enteger int " << endl;
+		
 		return true;
 	}
 	else if (command.substr(0, 4).compare("UNDO") == 0) {

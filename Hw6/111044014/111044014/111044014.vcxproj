@@ -112,10 +112,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GTUIterator.h" />
+    <ClInclude Include="GTUMap.h" />
+    <ClInclude Include="GTUSet.h" />
     <ClInclude Include="GTUSetBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GTUIterator.cpp" />
+    <ClCompile Include="GTUMap.cpp" />
+    <ClCompile Include="GTUSet.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

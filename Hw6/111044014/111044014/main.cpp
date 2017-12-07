@@ -1,5 +1,7 @@
 #include <iostream>
 #include "GTUSetBase.h"
+#include "GTUMap.h"
+#include "GTUIterator.h"
 
 using namespace GTU_NS;
 

@@ -3,7 +3,7 @@
 #include "GTUSetBase.h"
 
 #include <memory>
-
+using namespace std;
 namespace GTU_NS {
 	template <class T>
 	class GTUSet : public GTUSetBase<T>
@@ -42,33 +42,48 @@ namespace GTU_NS {
 		}
 
 		void erase(const T element) override {
-
-		}
-
-		void clear() override {
-
-		}
-
-		T& GET(int index) {
-			if (index < used && index > -1) {
-				return contents.get()[index];
+			int i = 0, j = 0;
+			auto oldData = contents.get();
+			int cpyUsed = used;
+			used = 0;
+			for (; i < cpyUsed; ++i) {
+				if (element != oldData[i]) {
+					insert(oldData[i]);
+				}
 			}
-			throw;
 		}
+			void clear() override {
+				Resize(cap);
+				used = 0;
+			}
 
-		T find(const GTUIterator<T> it) const override {
-			throw;
-		}
-		int count(const T e) const override {
-			return 0;
-		}
+			T GET(int index) const {
+				if (index < used && index > -1) {
+					return contents.get()[index];
+				}
+				throw std::out_of_range("contents.get()[index] : index is out of range");
+			}
 
-		GTUIterator<T> begin() const override {
-			throw;
-		}
-		GTUIterator<T> end() const override {
-			throw;
-		}
+
+			T find(const GTUIterator<T> it) const override {//TODO
+				throw;
+			}
+			int count(const T e) const override {
+				int counter = 0;
+
+				for (int i = 0; i < used; ++i) {
+					if (e == GET(i))
+						counter++;
+				}
+				return counter;
+			}
+
+			GTUIterator<T> begin() const override {//TODO
+				throw;
+			}
+			GTUIterator<T> end() const override {//TODO
+				throw;
+			}
 
 	private:
 		void Resize(int newcap) {
@@ -93,10 +108,7 @@ namespace GTU_NS {
 	private:
 		int cap;
 		int used;
-
 		std::shared_ptr<T> contents;
-	};
-
-
+		};
 }
 #endif // !GTUSET_H

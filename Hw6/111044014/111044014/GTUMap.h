@@ -12,9 +12,13 @@ namespace GTU_NS {
 	class GTUMap : public GTUSet < std::pair<K,V> >
 	{
 	public:
-		GTUMap();
-		~GTUMap();
-		V& operator[](const K& k);// returns reference to ites mapped value
+		GTUMap(){}
+		~GTUMap(){}
+		V& operator[](const K& k) {
+			
+		}// returns reference to ites mapped value
+	private:
+
 
 	};
 

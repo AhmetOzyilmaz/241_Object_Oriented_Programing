@@ -32,14 +32,5 @@
     <ClCompile Include="main.cpp">
       <Filter>Kaynak Dosyalar</Filter>
     </ClCompile>
-    <ClCompile Include="GTUIterator.cpp">
-      <Filter>Kaynak Dosyalar</Filter>
-    </ClCompile>
-    <ClCompile Include="GTUMap.cpp">
-      <Filter>Kaynak Dosyalar</Filter>
-    </ClCompile>
-    <ClCompile Include="GTUSet.cpp">
-      <Filter>Kaynak Dosyalar</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

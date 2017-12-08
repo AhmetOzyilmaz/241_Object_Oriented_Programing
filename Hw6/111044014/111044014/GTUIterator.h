@@ -2,11 +2,17 @@
 #define GTUITERATOR_H
 namespace GTU_NS {
 
+	template <class T >
 	class GTUIterator
 	{
 	public:
-		GTUIterator();
-		~GTUIterator();
+		GTUIterator() {
+
+		}
+
+		~GTUIterator() {
+
+		}
 	};
 
 }

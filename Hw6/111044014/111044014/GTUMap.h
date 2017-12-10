@@ -15,8 +15,14 @@ namespace GTU_NS {
 		GTUMap(){}
 		~GTUMap(){}
 		V& operator[](const K& k) {
-			
-		}// returns reference to ites mapped value
+			for (auto it = begin(); it != end(); it++)
+			{
+				if (k == (*it).first) {
+					return (*it).second;
+				}
+			}
+			throw std::out_of_range("GTUMap key doesnt exist");
+		}
 	private:
 
 

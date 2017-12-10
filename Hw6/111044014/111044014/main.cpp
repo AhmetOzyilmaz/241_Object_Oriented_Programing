@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "GTUSetBase.h"
 #include "GTUMap.h"
 #include "GTUIterator.h"
@@ -8,6 +9,16 @@ using namespace std;
 //template <class T>
 //shared_ptr<GTUSetBase<T> >setIntersection<T>(const GTUSetBase<T>&  first, const GTUSetBase<T>&  second);
 int main() {
+	GTUMap<int, string> plakalar;
+	plakalar.insert( pair<int, string>(34, "istanbul") );
+	plakalar.insert(pair<int, string>(35, "izmir"));
+	plakalar.insert(pair<int, string>(12, "ahmet"));
+
+	cout << "plhaka of 43: " << plakalar[34] << endl;
+
+	system("PAUSE");
+
+
 	//TEST insert 
 	GTUSet<int> myset;
 	myset.insert(3);

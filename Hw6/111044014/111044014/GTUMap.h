@@ -21,7 +21,9 @@ namespace GTU_NS {
 					return (*it).second;
 				}
 			}
-			throw std::out_of_range("GTUMap key doesnt exist");
+			V obj = V();
+			insert( std::pair<K,V>(k, obj) );
+			return (*this)[k];
 		}
 	private:
 
@@ -29,4 +31,5 @@ namespace GTU_NS {
 	};
 
 }
+
 #endif

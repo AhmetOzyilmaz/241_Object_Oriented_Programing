@@ -6,15 +6,36 @@
 
 using namespace GTU_NS;
 using namespace std;
-//template <class T>
-//shared_ptr<GTUSetBase<T> >setIntersection<T>(const GTUSetBase<T>&  first, const GTUSetBase<T>&  second);
+
+
+
+template <class T>
+shared_ptr<GTUSetBase<T>> setIntersection(const GTUSetBase<T>&  first, const GTUSetBase<T>&  second) {
+	throw;
+}
+
+
 int main() {
 	GTUMap<int, string> plakalar;
 	plakalar.insert( pair<int, string>(34, "istanbul") );
 	plakalar.insert(pair<int, string>(35, "izmir"));
 	plakalar.insert(pair<int, string>(12, "ahmet"));
 
-	cout << "plhaka of 43: " << plakalar[34] << endl;
+	plakalar[36] = "Gumushane";
+
+	cout << "plhaka of 36: " << plakalar[36] << endl;
+
+	plakalar[36] = "NotGumushane";
+
+	cout << "plhaka of 36: " << plakalar[36] << endl;
+
+	plakalar[1] = "Ankara";
+	plakalar[2] = "Second";
+	plakalar[3] = "Third";
+
+	cout << "plaka of 1: " << plakalar[1] << endl;
+	cout << "plaka of 2: " << plakalar[2] << endl;
+	cout << "plaka of 3: " << plakalar[3] << endl;
 
 	system("PAUSE");
 

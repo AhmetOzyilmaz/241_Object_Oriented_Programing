@@ -79,10 +79,10 @@ namespace GTU_NS {
 		}
 
 		GTUIterator<T> begin() const override {//TODO
-			return GTUIterator<T>(contents.get());
+			return GTUIterator<T>(contents, 0);
 		}
 		GTUIterator<T> end() const override {//TODO
-			return GTUIterator<T>(contents.get() + used);
+			return GTUIterator<T>(contents, size());
 		}
 
 	private:

@@ -16,8 +16,8 @@ namespace GTU_NS {
 		class GTUIterator
 		{
 		public:
-			GTUIterator(T* _ptr) {
-				ptr = _ptr;
+			GTUIterator(std::shared_ptr<T> _contents, int _index) : contents(_contents), index(_index) {
+
 			}
 
 			GTUIterator<T> operator++(){
@@ -26,7 +26,7 @@ namespace GTU_NS {
 			}
 
 			GTUIterator<T> operator++ (int) { // post-increment 
-				ptr++;
+				index++;
 				return *this;
 			}
 			GTUIterator<T> operator--() {
@@ -42,18 +42,19 @@ namespace GTU_NS {
 				return *this;
 			}
 			bool operator == (const GTUIterator<T>& other) {
-				return other.ptr == ptr;
+				return other.index == index;
 			}
 			bool operator != (const GTUIterator<T>& other) {
-				return other.ptr != ptr;
+				return other.index != index;
 			}
 
 			T& operator*() {
-				return *ptr;
+				return *(contents.get() + index);
 			}
 
 		private:
-			T* ptr;
+			int index;
+			std::shared_ptr<T> contents;
 		};
 
 		virtual ~GTUSetBase() {};

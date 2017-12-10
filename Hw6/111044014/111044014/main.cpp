@@ -4,7 +4,9 @@
 #include "GTUIterator.h"
 
 using namespace GTU_NS;
-
+using namespace std;
+//template <class T>
+//shared_ptr<GTUSetBase<T> >setIntersection<T>(const GTUSetBase<T>&  first, const GTUSetBase<T>&  second);
 int main() {
 	//TEST insert 
 	GTUSet<int> myset;

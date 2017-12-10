@@ -66,6 +66,7 @@ namespace GTU_NS {
 
 
 			T find(const GTUIterator<T> it) const override {//TODO
+
 				throw;
 			}
 			int count(const T e) const override {

@@ -9,7 +9,7 @@
 namespace GTU_NS {
 
 	template <class K, class V>
-	class GTUMap : public GTUSet < std::pair<K,V> >
+	class GTUMap : public GTUSet<std::pair<K,V>>
 	{
 	public:
 		GTUMap(){}

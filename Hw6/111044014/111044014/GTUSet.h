@@ -2,7 +2,6 @@
 #define GTUSET_H
 #include "GTUSetBase.h"
 
-#include <memory>
 using namespace std;
 namespace GTU_NS {
 	template <class T>
@@ -20,15 +19,15 @@ namespace GTU_NS {
 
 		}
 
-		bool empty() override {
+		bool empty() const override {
 			return used == 0;
 		}
 
-		int size() override {
+		int size() const override {
 			return used;
 		}
 
-		int max_size() override {
+		int max_size() const override {
 			return cap;
 		}
 
@@ -52,39 +51,39 @@ namespace GTU_NS {
 				}
 			}
 		}
-			void clear() override {
-				Resize(cap);
-				used = 0;
-			}
+		void clear() override {
+			Resize(cap);
+			used = 0;
+		}
 
-			T GET(int index) const {
-				if (index < used && index > -1) {
-					return contents.get()[index];
-				}
-				throw std::out_of_range("contents.get()[index] : index is out of range");
+		T GET(int index) const {
+			if (index < used && index > -1) {
+				return contents.get()[index];
 			}
+			throw std::out_of_range("contents.get()[index] : index is out of range");
+		}
 
 
-			T find(const GTUIterator<T> it) const override {//TODO
+		T find(const GTUIterator<T> it) const override {
+			//TODO
+			throw;
+		}
+		int count(const T e) const override {
+			int counter = 0;
 
-				throw;
+			for (int i = 0; i < used; ++i) {
+				if (e == GET(i))
+					counter++;
 			}
-			int count(const T e) const override {
-				int counter = 0;
+			return counter;
+		}
 
-				for (int i = 0; i < used; ++i) {
-					if (e == GET(i))
-						counter++;
-				}
-				return counter;
-			}
-
-			GTUIterator<T> begin() const override {//TODO
-				throw;
-			}
-			GTUIterator<T> end() const override {//TODO
-				throw;
-			}
+		GTUIterator<T> begin() const override {//TODO
+			return GTUIterator<T>(contents.get());
+		}
+		GTUIterator<T> end() const override {//TODO
+			return GTUIterator<T>(contents.get() + used);
+		}
 
 	private:
 		void Resize(int newcap) {
@@ -105,11 +104,6 @@ namespace GTU_NS {
 
 			contents = std::shared_ptr<T>(d, std::default_delete<T[]>());
 		}
-
-	private:
-		int cap;
-		int used;
-		std::shared_ptr<T> contents;
-		};
+	};
 }
 #endif // !GTUSET_H

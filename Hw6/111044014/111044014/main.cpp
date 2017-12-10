@@ -23,6 +23,13 @@ int main() {
 	myset.insert(7);
 	myset.insert(18);
 
+	for (auto i = myset.begin(); i != myset.end(); i++)
+	{
+		std::cout << *i << " ";
+	}
+
+	system("PAUSE");
+
 	cout <<"Count test for  5 -> "<<  myset.count(5)<< endl;
 	for (int i = 0; i < myset.size(); i++) {
 		cout << myset.GET(i) << endl;

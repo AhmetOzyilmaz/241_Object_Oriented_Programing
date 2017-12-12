@@ -18,9 +18,6 @@
     <ClInclude Include="GTUSetBase.h">
       <Filter>Üst Bilgi Dosyaları</Filter>
     </ClInclude>
-    <ClInclude Include="GTUIterator.h">
-      <Filter>Üst Bilgi Dosyaları</Filter>
-    </ClInclude>
     <ClInclude Include="GTUMap.h">
       <Filter>Üst Bilgi Dosyaları</Filter>
     </ClInclude>

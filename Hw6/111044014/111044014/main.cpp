@@ -13,27 +13,55 @@ shared_ptr<GTUSetBase<T>> setIntersection(const GTUSetBase<T>&  first, const GTU
 
 
 int main() {
-	GTUMap<int, string> plakalar;
-	plakalar.insert( pair<int, string>(34, "istanbul") );
-	plakalar.insert(pair<int, string>(35, "izmir"));
-	plakalar.insert(pair<int, string>(45, "Manisa"));
-	plakalar.insert(pair<int, string>(06, "Ankara"));
+	GTUMap<string, string> plakalar;
 
-	plakalar[29] = "Gumushane";
+	cout << "GTUMap - emthy()-->" << plakalar.empty() << endl;
+	cout << "GTUMap - size()-->" << plakalar.size() << endl;
+	cout << "GTUMap - max_size()-->" << plakalar.max_size() << endl;
 
-	cout << "plhaka of 36: " << plakalar[36] << endl;
+	plakalar.insert(pair<string, string>("34", "istanbul"));
+	plakalar.insert(pair<string, string>("35", "izmir"));
+	plakalar.insert(pair<string, string>("45", "Manisa"));
+	plakalar.insert(pair<string, string>("06", "Ankara"));
+	plakalar.insert(pair<string, string>("01", "Adana"));
 
-	plakalar[29] = "NotGumushane";
+	cout << "GTUMAP - erase() Before -->(01, Adana)" << endl;
+	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
+		cout << (*i).first << "  " << (*i).second << " " << endl;
 
-	cout << "plhaka of 36: " << plakalar[36] << endl;
+	plakalar.erase(pair<string, string>("01", "Adana"));
+	cout << "GTUMAP - erase() After -->(01, Adana)" << endl;
+	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
+		cout << (*i).first << "  " << (*i).second << " " << endl;
 
-	plakalar[1] = "Ankara";
-	plakalar[2] = "Second";
-	plakalar[3] = "Third";
+	cout << endl << "GTUMAP - clear() Before -->" << endl;
+	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
+		cout << (*i).first << "  " << (*i).second << " " << endl;
+	plakalar.clear();
 
-	cout << "plaka of 1: " << plakalar[1] << endl;
-	cout << "plaka of 2: " << plakalar[2] << endl;
-	cout << "plaka of 3: " << plakalar[3] << endl;
+	cout << "GTUMAP - erase() After -->" << endl;
+	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
+		cout << (*i).first << "  " << (*i).second << " " << endl;
+
+	cout << "GTUMAP - find()  -->" << endl;
+	//TODO find
+	
+
+	plakalar["29"] = "Gumushane";
+
+	cout << "plaka of 36: " << plakalar["36"] << endl;
+
+	plakalar["29"] = "NotGumushane";
+
+	cout << "plaka of 36: " << plakalar["36"] << endl;
+
+	plakalar["1"] = "Ankara";
+	plakalar["2"] = "Second";
+	plakalar["3"] = "Third";
+
+	cout << "plaka of 1: " << plakalar["1"] << endl;
+	cout << "plaka of 2: " << plakalar["2"] << endl;
+	cout << "plaka of 3: " << plakalar["3"] << endl;
 
 	system("PAUSE");
 
@@ -94,29 +122,5 @@ int main() {
 	cout << "Size: " << myset.size() << endl;
 	cout << "Max size: " << myset.max_size() << endl;
 
-	/*GTUMap<int, int> mymap;
-	pair<int, int> p(4, 5);
-
-	mymap.insert(p);
-
-	pair<int, int> p1(14, 5);
-
-	mymap.insert(p1);
-
-	/*for (int i = 0; i < mymap.size(); i++) {
-		cout << "KEY -> " << mymap.GET(i).first << " Value "<<  mymap.GET(i).second << endl;
-	}
-	cout << "Size: " << mymap.size() << endl;
-	cout << "Max size: " << mymap.max_size() << endl;
-
-	mymap.erase(p1);
-
-	for (int i = 0; i < mymap.size(); i++) {
-		cout << "KEY -> " << mymap.GET(i).first << " Value " << mymap.GET(i).second << endl;
-	}
-	cout << "Size: " << mymap.size() << endl;
-	cout << "Max size: " << mymap.max_size() << endl;
-	*/
-	system("PAUSE");
 	return  0;
 }

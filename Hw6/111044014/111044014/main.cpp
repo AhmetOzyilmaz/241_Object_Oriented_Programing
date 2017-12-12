@@ -46,15 +46,6 @@ int main() {
 	cout << "GTUMAP - find()  -->" << endl;
 	//TODO find
 	
-
-	plakalar["29"] = "Gumushane";
-
-	cout << "plaka of 36: " << plakalar["36"] << endl;
-
-	plakalar["29"] = "NotGumushane";
-
-	cout << "plaka of 36: " << plakalar["36"] << endl;
-
 	plakalar["1"] = "Ankara";
 	plakalar["2"] = "Second";
 	plakalar["3"] = "Third";

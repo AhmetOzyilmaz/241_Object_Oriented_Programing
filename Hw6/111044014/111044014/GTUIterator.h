@@ -11,7 +11,9 @@ namespace GTU_NS {
 	class GTUIterator
 	{
 	public:
-		GTUIterator(std::shared_ptr<T> _contents, int _index) : contents(_contents), index(_index) {
+		GTUIterator(std::shared_ptr<T> _contents, int _index) : contents(_contents), index(_index) 
+		{
+			
 		}
 
 		GTUIterator<T> operator++() {

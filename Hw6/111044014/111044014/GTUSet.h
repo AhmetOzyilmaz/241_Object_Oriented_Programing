@@ -24,6 +24,10 @@ namespace GTU_NS {
 			return this->cap;
 		}
 		void insert( const T element)  override {
+			if( this->count(element) > 0 ){
+				throw std::invalid_argument("Element is already in set");
+			}
+
 			if (this->used >= this->cap) {
 				Resize(this->cap * 2);
 			}
@@ -40,7 +44,6 @@ namespace GTU_NS {
 			}
 		}
 		void clear() override {
-			Resize(this->cap);
 			this->used = 0;
 		}
 		T GET(int index)const  {
@@ -52,8 +55,9 @@ namespace GTU_NS {
 		T find( GTUIterator<T> it)const  override {
 			for (auto i = begin(); i != end(); ++i) {
 				if (i == it)
-					return *i;
+					return *it;
 			}
+			return *it;
 			throw runtime_error("Item not found");
 		}
 		int count( const T e) const override {

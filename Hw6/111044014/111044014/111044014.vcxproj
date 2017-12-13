@@ -111,6 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GTUIterator.h" />
     <ClInclude Include="GTUMap.h" />
     <ClInclude Include="GTUSet.h" />
     <ClInclude Include="GTUSetBase.h" />

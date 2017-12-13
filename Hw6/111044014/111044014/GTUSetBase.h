@@ -2,8 +2,6 @@
 #define GTUSETBASE_H
 
 #include <iostream>
-#include <utility>
-#include <memory>
 #include "GTUIterator.h"
 
 using namespace std;

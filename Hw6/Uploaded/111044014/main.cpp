@@ -8,12 +8,20 @@ using namespace std;
 
 template <class T>
 shared_ptr<GTUSetBase<T>> setIntersection(const GTUSetBase<T>&  first, const GTUSetBase<T>&  second) {
-	throw;
+	auto intersect = shared_ptr<GTUSetBase<T>>(new GTUSet<T>());
+
+	for (auto i = first.begin(); i != first.end(); i++)
+	{
+		if( second.count(*i) > 0 ){
+			intersect->insert(*i);
+		}
+	}
+
+	return intersect;
 }
-
-
 int main() {
 	GTUMap<string, string> plakalar;
+	GTUMap<string, string> plakalar2;
 
 	cout << "GTUMap - emthy()-->" << plakalar.empty() << endl;
 	cout << "GTUMap - size()-->" << plakalar.size() << endl;
@@ -43,11 +51,13 @@ int main() {
 	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
 		cout << (*i).first << "  " << (*i).second << " " << endl;
 
-	cout << "GTUMAP - find()  -->" << endl;
-	//TODO find
+	cout << "GTUMAP - find() used in count function -->" << endl;
+
+	plakalar.insert(pair<string, string>("35", "izmir"));
+
+	cout << "GTUMAP - count(value)  -->" << endl;
+	cout << "counter --> " << plakalar.count(pair<string, string>("35", "izmir"))<<endl;
 	
-
-
 	plakalar["1"] = "Ankara";
 	plakalar["2"] = "Second";
 	plakalar["3"] = "Third";
@@ -56,30 +66,47 @@ int main() {
 	cout << "plaka of 2: " << plakalar["2"] << endl;
 	cout << "plaka of 3: " << plakalar["3"] << endl;
 
-	system("PAUSE");
-
-
+	plakalar2.insert(pair<string, string>("34", "istanbul"));
+	plakalar2.insert(pair<string, string>("35", "izmir"));
+	plakalar2.insert(pair<string, string>("45", "Manisa"));
+	plakalar2.insert(pair<string, string>("06", "Ankara"));
+	
 	//TEST insert 
 	GTUSet<int> myset;
 	myset.insert(3);
 	myset.insert(5);
 	myset.insert(7);
 	myset.insert(18);
-	myset.insert(3);
-	myset.insert(5);
-	myset.insert(7);
-	myset.insert(18);
-	myset.insert(3);
-	myset.insert(5);
-	myset.insert(7);
-	myset.insert(18);
 
-	for (auto i = myset.begin(); i != myset.end(); i++)
-	{
-		std::cout << *i << " ";
+	GTUSet<int> myset2;
+	myset2.insert(4);
+	myset2.insert(6);
+	myset2.insert(7);
+	myset2.insert(19);
+
+	shared_ptr<GTUSetBase<int>> intersection = setIntersection(myset, myset2);
+	cout << endl << endl << "Intersection Test" << endl;
+	cout << "Size: " << intersection->size() << endl << "Elements:" << endl;
+	for (auto i = intersection->begin(); i != intersection->end(); i++)
+		cout << *i << endl;
+
+
+
+	cout << endl << endl << "Element already in set test" << endl;
+
+	try{
+		GTUSet<int> overloadedSet;
+		overloadedSet.insert(3);
+		overloadedSet.insert(5);
+		overloadedSet.insert(7);
+		overloadedSet.insert(18);
+		cout << endl << endl << "Now trying to add same element to the set [" << 7 << "] " << endl;
+		overloadedSet.insert(7);
+	}
+	catch(std::invalid_argument e){
+		cout << "Expection chached (Was expected) : " << e.what() << endl;
 	}
 
-	system("PAUSE");
 
 	cout <<"Count test for  5 -> "<<  myset.count(5)<< endl;
 	for (int i = 0; i < myset.size(); i++) {
@@ -98,7 +125,6 @@ int main() {
 	cout << "Count test for  5 -> " << myset.count(5) << endl;
 
 	myset.erase(3);	//TEST SET ERASE 
-
 
 	for (int i = 0; i < myset.size(); i++) {
 		cout << myset.GET(i) << endl;

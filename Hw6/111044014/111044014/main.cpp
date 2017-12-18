@@ -34,12 +34,13 @@ int main() {
 	plakalar.insert(pair<string, string>("01", "Adana"));
 
 	cout << "GTUMAP - erase() Before -->(01, Adana)" << endl;
+
 	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
 		cout << (*i).first << "  " << (*i).second << " " << endl;
 
 	plakalar.erase(pair<string, string>("01", "Adana"));
 	cout << "GTUMAP - erase() After -->(01, Adana)" << endl;
-	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
+	for (auto i = plakalar.end(); i != plakalar.begin(); i--)
 		cout << (*i).first << "  " << (*i).second << " " << endl;
 
 	cout << endl << "GTUMAP - clear() Before -->" << endl;
@@ -51,7 +52,6 @@ int main() {
 	for (auto i = plakalar.begin(); i != plakalar.end(); i++)
 		cout << (*i).first << "  " << (*i).second << " " << endl;
 
-	cout << "GTUMAP - find() used in count function -->" << endl;
 
 	plakalar.insert(pair<string, string>("35", "izmir"));
 
@@ -84,9 +84,14 @@ int main() {
 	myset2.insert(7);
 	myset2.insert(19);
 
+
+	cout << "GTUSet - find() used in count function -->" << endl;
+	cout << "find() method " << " " << (*myset.find(18));
+
 	shared_ptr<GTUSetBase<int>> intersection = setIntersection(myset, myset2);
 	cout << endl << endl << "Intersection Test" << endl;
 	cout << "Size: " << intersection->size() << endl << "Elements:" << endl;
+
 	for (auto i = intersection->begin(); i != intersection->end(); i++)
 		cout << *i << endl;
 

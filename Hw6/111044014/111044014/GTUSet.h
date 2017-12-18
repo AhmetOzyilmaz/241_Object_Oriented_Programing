@@ -52,13 +52,11 @@ namespace GTU_NS {
 			}
 			throw std::out_of_range("contents.get()[index] : index is out of range");
 		}
-		T find( GTUIterator<T> it)const  override {
+		GTUIterator<T> find( T element)const  override {
 			for (auto i = begin(); i != end(); ++i) {
-				if (i == it)
-					return *it;
+				if (*i == element)
+					return i;
 			}
-			return *it;
-			throw runtime_error("Item not found");
 		}
 		int count( const T e) const override {
 			int counter = 0;

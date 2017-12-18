@@ -15,14 +15,12 @@ namespace GTU_NS {
 		{
 			
 		}
-
 		GTUIterator<T> operator++() {
 			//OTOD
 			++index;
 			auto old = *this;
 			return old;
 		}
-
 		GTUIterator<T> operator++ (int) { // post-increment 
 			index++;
 			return *this;
@@ -45,7 +43,6 @@ namespace GTU_NS {
 		bool operator != (const GTUIterator<T>& other) {
 			return other.index != index;
 		}
-
 		T& operator*() {
 			return *(contents.get() + index);
 		}

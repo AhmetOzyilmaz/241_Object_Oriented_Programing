@@ -1,11 +1,16 @@
+import java.lang.reflect.Array;
+import java.security.InvalidParameterException;
 
-public class GTUSet<T> implements GTUSetBase<T>{
+public class GTUSet<T> implements GTUSetInt<T>{
 
     public int cap=10;
     public int used=0 ;
-    public T[] contents=null;
+    public T[] contents ;
+
 
     GTUSet() {
+        contents = (T[]) new Object[cap];
+
         Resize(cap);
     }
     @Override
@@ -26,7 +31,7 @@ public class GTUSet<T> implements GTUSetBase<T>{
     @Override
     public void insert(T element) {
         if( count(element) > 0 ){
-            //TODOthrow("Element is already in set");
+            throw  new InvalidParameterException();
         }
 
         if (used >= cap) {
@@ -38,18 +43,27 @@ public class GTUSet<T> implements GTUSetBase<T>{
 
     @Override
     public void erase(T element) {
-        T[] oldData = contents;
+        T[] curDate = contents;
         int cpyUsed = used;
-        used = 0;
+
+        //this.Resize(cap);
         for (int i = 0; i < cpyUsed; ++i) {
-            if (element != oldData[i])
-                insert(oldData[i]);
+            if (!element.equals(curDate[i])){
+                contents[i] = curDate[i];
+            }else {
+                used--;
+            }
         }
+
     }
 
     @Override
     public void clear() {
+        for (int i = 0; i< cap; ++ i) {
+            contents[i] = (T) new GTUSet<T>();
+        }
         used = 0;
+
     }
 
     T GET(int index){
@@ -65,8 +79,10 @@ public class GTUSet<T> implements GTUSetBase<T>{
         GTUIterator<T> it = new GTUIterator<T>(contents,-1);
 
         for (; it.hasNext() != true; ) {
-            if (it.next() == element)
-            return it;
+            if (equals(element,it.next())){
+                return it;
+
+            }
         }
         return null;
     }
@@ -76,7 +92,7 @@ public class GTUSet<T> implements GTUSetBase<T>{
         int counter = 0;
         for (int i = 0; i < used; ++i) {
             if (e == GET(i))
-                counter++;
+                ++counter;
         }
         return counter;
     }
@@ -90,6 +106,23 @@ public class GTUSet<T> implements GTUSetBase<T>{
     public GTUIterator<T> end() {
         return new GTUIterator<T>(contents, size());
     }
+
+    @Override
+    public GTUSetInt<T> intersection(GTUSetInt<T> other) {
+        GTUSet<T> intersect = (GTUSet<T>)new Object();
+        for (GTUIterator<T> it = this.begin(); it.hasNext() !=true;)
+        {
+            for (GTUIterator<T> it2 = this.begin(); it.hasNext() !=true;)
+            {
+                T cur  =it2.next();
+                if( other.count(cur) > 0 ){
+                    intersect.insert(cur);
+                }
+            }
+        }
+        return intersect;
+    }
+
     public void Resize(int newcap) {
         cap = newcap;
         if (contents != null) {
@@ -101,5 +134,17 @@ public class GTUSet<T> implements GTUSetBase<T>{
         }
         System.gc();
     }
+    public String toString(){
+        String returnValue= new String();
+        for(int i = 0; i < used ; ++i){
+            System.out.println( contents[i].toString() +  "\n");
 
+        }
+        return returnValue;
+    }
+    public boolean equals(T element,T element2){
+        if(element == element2)
+            return  true;
+        return false;
+    }
 }

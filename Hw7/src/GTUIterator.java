@@ -29,4 +29,5 @@ public class GTUIterator<T> {
         --index;
         return contents[index];
     }
+
 }

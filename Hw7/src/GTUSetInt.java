@@ -1,4 +1,4 @@
-public interface GTUSetBase<T> {
+public interface GTUSetInt<T> {
 
     public Boolean empty();
     public int size() ;
@@ -10,4 +10,5 @@ public interface GTUSetBase<T> {
     public int count(  T e) ;
     public GTUIterator<T> begin();
     public GTUIterator<T> end();
+    public GTUSetInt<T> intersection(GTUSetInt<T> other);
 }

@@ -1,74 +1,73 @@
 import javafx.util.*;
 public class Base<T> {
 
-    GTUSetBase<T>[] setIntersection( GTUSetBase<T> first,  GTUSetBase<T> second) {
-        GTUSetBase<T>[] intersect = new GTUSetBase[first.size()+second.size()];
-
-        for (GTUIterator<T> it = first.begin(); it.hasNext() !=true;)
-        {
-             T cur  =it.next();
-            if( second.count(cur) > 0 ){
-            //TODO intersect.insert(cur);
-            }
-        }
-
-        return intersect;
-    }
 
     public static void main(String[] args){
-        GTUMap<String, String> plakalar;
-        GTUMap<String, String> plakalar2;
+        GTUMap<String, String> plakalar = new GTUMap<String, String>();
 
         System.out.println( "GTUMap - emthy()-." + plakalar.empty() );
         System.out.println( "GTUMap - size()-." + plakalar.size() );
         System.out.println( "GTUMap - max_size()-." + plakalar.max_size() );
 
-        plakalar.insert(Pair<String, String>("34", "istanbul"));
-        plakalar.insert(Pair<String, String>("35", "izmir"));
-        plakalar.insert(Pair<String, String>("45", "Manisa"));
-        plakalar.insert(Pair<String, String>("06", "Ankara"));
-        plakalar.insert(Pair<String, String>("01", "Adana"));
+        plakalar.insert(new Pair<String, String>("34", "istanbul"));
+        plakalar.insert(new Pair<String, String>("35", "izmir"));
+        plakalar.insert(new Pair<String, String>("45", "Manisa"));
+        plakalar.insert(new Pair<String, String>("06", "Ankara"));
+        plakalar.insert(new Pair<String, String>("01", "Adana"));
 
         System.out.println( "GTUMAP - erase() Before -.(01, Adana)" );
 
-        for (auto i = plakalar.begin(); i != plakalar.end(); i++)
-            System.out.println( (i).first + "  " + (i).second + " " );
 
-        plakalar.erase(Pair<String, String>("01", "Adana"));
+        System.out.println(plakalar.toString() + " " );
+
+        plakalar.erase(new Pair<String, String>("01", "Adana"));
+
         System.out.println( "GTUMAP - erase() After -.(01, Adana)" );
-        for (auto i = plakalar.end(); i != plakalar.begin(); i--)
-            System.out.println( (i).first + "  " + (i).second + " " );
 
-        System.out.println(  + "GTUMAP - clear() Before -." );
-        for (auto i = plakalar.begin(); i != plakalar.end(); i++)
-            System.out.println( (i) + "  " + (i).second + " " );
+        System.out.println( "GTUMAP - insert() Before -.(45, Manisa)" );
+
+        System.out.println(plakalar.toString() + " " );
+
+
+
+        System.out.println(  "GTUMAP - clear() Before -." );
+
+        System.out.println(plakalar.toString() + " " );
         plakalar.clear();
 
+
         System.out.println( "GTUMAP - erase() After -." );
-        for (auto i = plakalar.begin(); i != plakalar.end(); i++)
-            System.out.println( (i).first + "  " + (i).second + " " );
+        plakalar.clear();
 
-
-        plakalar.insert(Pair<String, String>("35", "izmir"));
+        plakalar.insert(new Pair<String, String>("35", "izmir"));
+        System.out.println(plakalar.toString() + " " );
 
         System.out.println( "GTUMAP - count(value)  -." );
-        System.out.println( "counter -. " + plakalar.count(Pair<String, String>("35", "izmir"))+;
 
-        plakalar["1"] = "Ankara";
-        plakalar["2"] = "Second";
-        plakalar["3"] = "Third";
+        System.out.println( "counter -> " + plakalar.count(new Pair<String, String>("35", "izmir")));
 
-        System.out.println( "plaka of 1: " + plakalar["1"] );
-        System.out.println( "plaka of 2: " + plakalar["2"] );
-        System.out.println( "plaka of 3: " + plakalar["3"] );
+        plakalar.insert(new Pair<String, String>("45", "Manisa"));
+        plakalar.insert(new Pair<String, String>("06", "Ankara"));
+        plakalar.insert(new Pair<String, String>("01", "Adana"));
 
-        plakalar2.insert(Pair<String, String>("34", "istanbul"));
-        plakalar2.insert(Pair<String, String>("35", "izmir"));
-        plakalar2.insert(Pair<String, String>("45", "Manisa"));
-        plakalar2.insert(Pair<String, String>("06", "Ankara"));
+        GTUIterator it = plakalar.find(new Pair<String, String>("45", "Manisa") );
 
+        System.out.println( "find -> " + it);//TODO
+
+        for (it = plakalar.begin(); it != plakalar.end();  ){
+            System.out.println("Begin End Test --> " +it.next().toString());
+        }
+        GTUMap<String, String> plakalar2= new GTUMap<>();
+        plakalar2.insert(new Pair<String, String>("45", "Manisa"));
+        plakalar2.insert(new Pair<String, String>("06", "Ankara"));
+        plakalar2.insert(new Pair<String, String>("01", "Adana"));
+
+
+        GTUSetInt<Pair<String, String>> intersect = plakalar.intersection(plakalar2);
+
+        System.out.println(intersect.toString());
         //TEST insert 
-        GTUSet<int> myset;
+       /* GTUSet<int> myset;
         myset.insert(3);
         myset.insert(5);
         myset.insert(7);
@@ -84,7 +83,7 @@ public class Base<T> {
         System.out.println( "GTUSet - find() used in count function -." );
         System.out.println( "find() method " + " " + (myset.find(18));
 
-        shared_ptr<GTUSetBase<int>> intersection = setIntersection(myset, myset2);
+        shared_ptr<GTUSetInt<int>> intersection = setIntersection(myset, myset2);
         System.out.println("Intersection Test" );
         System.out.println( "Size: " + intersection.size() + + "Elements:" );
 
@@ -140,7 +139,7 @@ public class Base<T> {
             System.out.println( myset.GET(i) );
         }
         System.out.println( "Size: " + myset.size() );
-        System.out.println( "Max size: " + myset.max_size() );
+        System.out.println( "Max size: " + myset.max_size() );*/
 
     }
 }

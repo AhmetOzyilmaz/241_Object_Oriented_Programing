@@ -1,10 +1,11 @@
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 
 public class GTUSet<T> implements GTUSetInt<T>{
 
     public int cap=10;
     public int used=0 ;
-    public T[] contents ;
+    public T[] contents = (T[]) new Object[cap] ;
 
 
     public class GTUIterator<T> {
@@ -44,7 +45,7 @@ public class GTUSet<T> implements GTUSetInt<T>{
     }
 
     GTUSet() {
-        contents= (T[]) new Object[cap];
+
         Resize(cap);
     }
     @Override
@@ -111,15 +112,18 @@ public class GTUSet<T> implements GTUSetInt<T>{
     @Override
     public GTUIterator<T> find(T element) {
         GTUIterator<T> it = new GTUIterator<T>(0);
-        if(size() == 0)
+
+        if(size() == 0) // TODO arrayin basindan aramayi duzelt -1 den baslama
             return null;
         for (int i = 0;i< size() ; ++i) {
             if (isSame(element,contents[i])){
                 return it;
+
             }
         }
         return null;
     }
+
     @Override
     public int count(T e) {
         if(find(e) !=  null)
@@ -128,6 +132,7 @@ public class GTUSet<T> implements GTUSetInt<T>{
             return 0;
 
     }
+
     @Override
     public GTUIterator<T> begin() {
         return new GTUIterator<T>( 0);
@@ -141,12 +146,13 @@ public class GTUSet<T> implements GTUSetInt<T>{
     @Override
     public GTUSetInt<T> intersection(GTUSetInt<T> other) {
         GTUSet<T> intersect = new GTUSet<>();
-      for (int i = 0; i < this.size() ;++i ) {
-
-          if (other.find(this.contents[i]) != null) {
-              intersect.insert(this.contents[i]);
-          }
-      }
+        for (GTUIterator<T> it = this.begin(); it.next() !=end(); )
+        {
+           T cur  =it.next();
+            if( other.find(cur) != null ){
+            intersect.insert(cur);
+        }
+        }
         return intersect;
     }
 

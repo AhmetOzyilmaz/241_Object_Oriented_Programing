@@ -1,6 +1,4 @@
 import javafx.util.*;
-
-
 public class Base<T> {
 
 
@@ -61,6 +59,7 @@ public class Base<T> {
         plakalar2.insert(new Pair<String, String>("45", "Manisa"));
         plakalar2.insert(new Pair<String, String>("06", "Ankara"));
         plakalar2.insert(new Pair<String, String>("01", "Adana"));
+        plakalar2.insert(new Pair<String, String>("35", "izmir"));
 
 
 
@@ -76,12 +75,13 @@ public class Base<T> {
         System.out.println("Intersect Second   ");
         System.out.println(plakalar2.toString());
         System.out.println("Intersect Result Test  ");
+
         System.out.println(result.toString());
         //GTUSetInt<Pair<String, String>> intersect = plakalar.intersection(plakalar2);
 
         //System.out.println(intersect.toString())
 
-        //TEST insert
+        //TEST insert 
        /* GTUSet<int> myset;
         myset.insert(3);
         myset.insert(5);
@@ -139,14 +139,14 @@ public class Base<T> {
         System.out.println( "Max size: " + myset.max_size() );
         System.out.println( "Count test for  5 . " + myset.count(5) );
 
-        myset.erase(3);	//TEST SET ERASE
+        myset.erase(3);	//TEST SET ERASE 
 
         for (int i = 0; i < myset.size(); i++) {
             System.out.println( myset.GET(i) );
         }
         System.out.println( "Size: " + myset.size() );
         System.out.println( "Max size: " + myset.max_size() );
-        //TEST SET clear
+        //TEST SET clear  
 
         myset.clear();
 

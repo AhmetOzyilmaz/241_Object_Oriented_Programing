@@ -50,22 +50,37 @@ public class Base<T> {
         plakalar.insert(new Pair<String, String>("06", "Ankara"));
         plakalar.insert(new Pair<String, String>("01", "Adana"));
 
-        GTUIterator it = plakalar.find(new Pair<String, String>("45", "Manisa") );
+        //GTUIterator it = plakalar.find(new Pair<String, String>("45", "Manisa") );
 
-        System.out.println( "find -> " + it);//TODO
+        //System.out.println( "find -> " + it);//TODO
 
-        for (it = plakalar.begin(); it != plakalar.end();  ){
-            System.out.println("Begin End Test --> " +it.next().toString());
-        }
+
         GTUMap<String, String> plakalar2= new GTUMap<>();
         plakalar2.insert(new Pair<String, String>("45", "Manisa"));
         plakalar2.insert(new Pair<String, String>("06", "Ankara"));
         plakalar2.insert(new Pair<String, String>("01", "Adana"));
+        plakalar2.insert(new Pair<String, String>("35", "izmir"));
 
 
-        GTUSetInt<Pair<String, String>> intersect = plakalar.intersection(plakalar2);
 
-        System.out.println(intersect.toString());
+        System.out.println("**Founded -> " + plakalar2.find(new Pair<String, String>("45", "Manisa")).toString());
+
+        GTUSetInt<Pair<String, String>> result ;
+
+        result = plakalar.intersection(plakalar2);
+
+        System.out.println("Intersect First  ");
+
+        System.out.println(plakalar.toString());
+        System.out.println("Intersect Second   ");
+        System.out.println(plakalar2.toString());
+        System.out.println("Intersect Result Test  ");
+
+        System.out.println(result.toString());
+        //GTUSetInt<Pair<String, String>> intersect = plakalar.intersection(plakalar2);
+
+        //System.out.println(intersect.toString())
+
         //TEST insert 
        /* GTUSet<int> myset;
         myset.insert(3);

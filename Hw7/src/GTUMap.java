@@ -20,7 +20,7 @@ public class GTUMap<K,V> extends GTUSet<Pair<K,V>>{
         String returnValue= new String();
         returnValue += "size() " + size() + "  " + "MaxSize() -> " + max_size() + "\n";
         for(int i = 0; i < used ; ++i){
-          System.out.println( "Key -> " + contents[i].getKey() +"  Value -> " +contents[i].getValue()+"\n");
+            returnValue += "Key -> " + contents[i].getKey() +"  Value -> " +contents[i].getValue() +"\n" ;
 
         }
         return returnValue;
@@ -41,11 +41,22 @@ public class GTUMap<K,V> extends GTUSet<Pair<K,V>>{
         used = 0;
 
     }
-    public boolean equals(Pair first,Pair second){
-        System.out.println("MAPP***********************");
-        if (first.getKey() == second.getKey() && first.getValue() == second.getValue() )
+
+    @Override
+    public GTUIterator<T> find(Pair element) {
+        GTUIterator<T> it = new GTUIterator<T>(0);
+        if(size() == 0)
+            return null;
+        for (int i = 0;i< size() ; ++i) {
+            if (isSame(element,contents[i])){
+                return it;
+            }
+        }
+        return null;
+    }
+    public boolean isSame(Pair element, Pair element2){
+        if(element.getKey() == element2.getKey())
             return  true;
         return false;
     }
-
 }

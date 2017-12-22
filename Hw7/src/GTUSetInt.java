@@ -6,9 +6,9 @@ public interface GTUSetInt<T> {
     public void insert(  T element) ;
     public void erase( T element) ;
     public void clear();
-    public GTUIterator<T> find( T element) ;
+    public GTUSet<T>.GTUIterator<T> find(T element) ;
     public int count(  T e) ;
-    public GTUIterator<T> begin();
-    public GTUIterator<T> end();
+    public GTUSet<T>.GTUIterator<T> begin();
+    public GTUSet<T>.GTUIterator<T> end();
     public GTUSetInt<T> intersection(GTUSetInt<T> other);
 }

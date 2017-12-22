@@ -71,7 +71,6 @@ public class Base<T> {
         result = plakalar.intersection(plakalar2);
 
         System.out.println("Intersect First  ");
-
         System.out.println(plakalar.toString());
         System.out.println("Intersect Second   ");
         System.out.println(plakalar2.toString());
@@ -79,43 +78,46 @@ public class Base<T> {
         System.out.println(result.toString());
         //GTUSetInt<Pair<String, String>> intersect = plakalar.intersection(plakalar2);
 
-        //System.out.println(intersect.toString())
-
         //TEST insert
-       /* GTUSet<int> myset;
+        GTUSet<Integer> myset = new GTUSet<>();
         myset.insert(3);
         myset.insert(5);
         myset.insert(7);
+        myset.insert(1);
+        myset.insert( 288);
         myset.insert(18);
 
-        GTUSet<int> myset2;
+       GTUSet<Integer> myset2 = new GTUSet<>();
         myset2.insert(4);
         myset2.insert(6);
         myset2.insert(7);
         myset2.insert(19);
 
-        );
-        System.out.println( "GTUSet - find() used in count function -." );
-        System.out.println( "find() method " + " " + (myset.find(18));
 
-        shared_ptr<GTUSetInt<int>> intersection = setIntersection(myset, myset2);
+         System.out.println( "GTUSet - find() used in count function -." );
+         System.out.println( "find() method " + " " + (myset.find(288)));
+
+/*      GTUSetInt<Integer> intersection = myset.intersection( myset2);
+
         System.out.println("Intersection Test" );
-        System.out.println( "Size: " + intersection.size() + + "Elements:" );
 
-        for (auto i = intersection.begin(); i != intersection.end(); i++)
-            System.out.println( i );
+        System.out.println( "Size: " + intersection.size() + "Elements:" );
 
+        System.out.println("Intersect First  ");
+        System.out.println(myset.toString());
+        System.out.println("Intersect Second   ");
+        System.out.println(myset2.toString());
+        System.out.println("Intersect Result Test  ");
+        System.out.println(intersection.toString());
 
-
-        System.out.println(  +  + "Element already in set test" );
 
         try{
-            GTUSet<int> overloadedSet;
+            GTUSet<Integer> overloadedSet = null;
             overloadedSet.insert(3);
             overloadedSet.insert(5);
             overloadedSet.insert(7);
             overloadedSet.insert(18);
-            System.out.println(  +  + "Now trying to add same element to the set [" + 7 + "] " );
+            System.out.println(  "Now trying to add same element to the set [" + 7 + "] " );
             overloadedSet.insert(7);
         }
         catch(Exception e){//TODO std::invalid_argument e
@@ -154,8 +156,8 @@ public class Base<T> {
             System.out.println( myset.GET(i) );
         }
         System.out.println( "Size: " + myset.size() );
-        System.out.println( "Max size: " + myset.max_size() );*/
-
+        System.out.println( "Max size: " + myset.max_size() );
+            */
     }
 }
 

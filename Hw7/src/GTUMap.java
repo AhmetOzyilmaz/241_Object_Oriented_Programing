@@ -44,9 +44,11 @@ public class GTUMap<K,V> extends GTUSet<Pair<K,V>>{
 
     @Override
     public GTUIterator<T> find(Pair element) {
+        System.out.printf("MAP");
         GTUIterator<T> it = new GTUIterator<T>(0);
         if(size() == 0)
             return null;
+
         for (int i = 0;i< size() ; ++i) {
             if (isSame(element,contents[i])){
                 return it;

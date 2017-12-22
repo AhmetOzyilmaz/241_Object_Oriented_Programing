@@ -38,7 +38,9 @@ public class GTUSet<T> implements GTUSetInt<T>{
         }
 
         public String toString(){
-            return contents[index].toString();
+            String str= new String();
+            str+="Index is "  + index ;
+            return  str;
         }
 
     }
@@ -111,14 +113,20 @@ public class GTUSet<T> implements GTUSetInt<T>{
     @Override
     public GTUIterator<T> find(T element) {
         GTUIterator<T> it = new GTUIterator<T>(0);
-        if(size() == 0)
-            return null;
-        for (int i = 0;i< size() ; ++i) {
-            if (isSame(element,contents[i])){
-                return it;
+
+
+        for (int i = 0; i< used ; ++i) {
+
+            System.out.println(element);
+            System.out.println(contents[i]);
+
+            if (element == contents[i]){
+                it.index = i;
+                break;
             }
+
         }
-        return null;
+        return it;
     }
     @Override
     public int count(T e) {

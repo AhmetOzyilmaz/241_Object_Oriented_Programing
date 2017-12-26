@@ -161,6 +161,54 @@ public class Base<T> {
         System.out.println( "Size: " + myset.size() );
         System.out.println( "Max size: " + myset.max_size() );
 
+
+        //TEST insert
+        System.out.println("\nTEST SET FOR GTUSet<Integer> mysetInt  insert");
+
+        GTUSet<Integer> mysetInt = new GTUSet<>();
+        System.out.println( "GTUSet - Before insert()" );
+
+        System.out.println( "GTUSet - emthy()-." + mysetInt.empty() );
+        System.out.println( "GTUSet - size()-." + mysetInt.size() );
+        System.out.println( "GTUSet - max_size()-." + mysetInt.max_size() );
+
+        mysetInt.insert(3);
+        mysetInt.insert(5);
+        mysetInt.insert(7);
+        mysetInt.insert(1);
+        mysetInt.insert(288);
+        mysetInt.insert(18);
+
+        System.out.println( "\n\nGTUSet - After insert()" );
+        System.out.println( "GTUSet - emthy()-." + mysetInt.empty() );
+        System.out.println( "GTUSet - size()-." + mysetInt.size() );
+        System.out.println( "GTUSet - max_size()-." + mysetInt.max_size() );
+        System.out.println(mysetInt.toString());
+
+
+        System.out.println( "GTUSet - After erase() 3 " );
+        mysetInt.erase(3);
+        System.out.println( "GTUSet - emthy()-." + mysetInt.empty() );
+        System.out.println( "GTUSet - size()-." + mysetInt.size() );
+        System.out.println( "GTUSet - max_size()-." + mysetInt.max_size() );
+        System.out.println(mysetInt.toString());
+
+
+
+        //TEST insert
+        System.out.println("\nTEST SET FOR GTUSet<Integer> mysetInt2  insert");
+
+        GTUSet<Integer> mysetInt2 = new GTUSet<>();
+        mysetInt2.insert(3);
+        mysetInt2.insert(55);
+        mysetInt2.insert(7);
+        mysetInt2.insert(1);
+        mysetInt2.insert(125);
+        mysetInt2.insert(18);
+
+        System.out.println(mysetInt2.toString());
+
+
     }
 }
 

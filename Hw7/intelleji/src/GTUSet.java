@@ -108,7 +108,7 @@ public class GTUSet<T> implements GTUSetInt<T>{
             return contents[index];
         }
         //TODOthrow ::out_of_range("contents.get()[index] : index is out of range");
-        return null;
+        return (T)new Object();
     }
 
     @Override

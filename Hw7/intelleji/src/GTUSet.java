@@ -66,12 +66,13 @@ public class GTUSet<T> implements GTUSetInt<T>{
 
     @Override
     public void insert(T element) {
-        if( count(element) > 0 ){
+
+        if( find(element) != null ){
             throw  new InvalidParameterException();
         }
 
         if (used >= cap) {
-            Resize(cap +1);
+            Resize(cap *2);
         }
         contents[used] = element;
         used++;
@@ -112,21 +113,13 @@ public class GTUSet<T> implements GTUSetInt<T>{
 
     @Override
     public GTUIterator<T> find(T element) {
-        GTUIterator<T> it = new GTUIterator<T>(0);
-
-
-        for (int i = 0; i< used ; ++i) {
-
-            System.out.println(element);
-            System.out.println(contents[i]);
-
+        int i =0;
+        for(; i <used ; ++ i) {
             if (element == contents[i]){
-                it.index = i;
-                break;
+                return new GTUIterator<>(i);
             }
-
         }
-        return it;
+        return null;
     }
     @Override
     public int count(T e) {
@@ -172,7 +165,7 @@ public class GTUSet<T> implements GTUSetInt<T>{
     public String toString(){
         String returnValue= new String();
         for(int i = 0; i < used ; ++i){
-            System.out.println( contents[i].toString() +  "\n");
+            System.out.println( contents[i].toString());
 
         }
         return returnValue;

@@ -286,3 +286,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+/Hw7/Netbeans/111044014/nbproject/private/
+/Hw7/Netbeans/111044014/build/
+/Hw7/Netbeans/111044014/dist/

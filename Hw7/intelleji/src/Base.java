@@ -68,36 +68,39 @@ public class Base<T> {
 
         GTUSetInt<Pair<String, String>> result ;
 
-        result = plakalar.intersection(plakalar2);
+       // result = plakalar.intersection(plakalar2);
 
         System.out.println("Intersect First  ");
         System.out.println(plakalar.toString());
         System.out.println("Intersect Second   ");
         System.out.println(plakalar2.toString());
         System.out.println("Intersect Result Test  ");
-        System.out.println(result.toString());
+      //  System.out.println(result.toString());
         //GTUSetInt<Pair<String, String>> intersect = plakalar.intersection(plakalar2);
 
         //TEST insert
-        GTUSet<Integer> myset = new GTUSet<>();
-        myset.insert(3);
-        myset.insert(5);
-        myset.insert(7);
-        myset.insert(1);
-        myset.insert( 288);
-        myset.insert(18);
+        GTUSet<String> myset = new GTUSet<>();
+        myset.insert("3");
+        myset.insert("5");
+        myset.insert("7");
+        myset.insert("1");
+        myset.insert("288");
+        myset.insert("18");
 
-       GTUSet<Integer> myset2 = new GTUSet<>();
-        myset2.insert(4);
-        myset2.insert(6);
-        myset2.insert(7);
-        myset2.insert(19);
+       GTUSet<String> myset2 = new GTUSet<>();
+        myset2.insert("4");
+        myset2.insert("6");
+        myset2.insert("7");
+        myset2.insert("19");
 
+        System.out.println( "myset - elements ");
+        System.out.println(myset.toString());
 
-         System.out.println( "GTUSet - find() used in count function -." );
-         System.out.println( "find() method " + " " + (myset.find(288)));
+        System.out.println( "GTUSet - find() used in count function -." );
 
-/*      GTUSetInt<Integer> intersection = myset.intersection( myset2);
+         System.out.println( "find() method " + " " + (myset.find("288")));
+
+       GTUSetInt<String> intersection = myset.intersection( myset2);
 
         System.out.println("Intersection Test" );
 
@@ -112,52 +115,52 @@ public class Base<T> {
 
 
         try{
-            GTUSet<Integer> overloadedSet = null;
-            overloadedSet.insert(3);
-            overloadedSet.insert(5);
-            overloadedSet.insert(7);
-            overloadedSet.insert(18);
-            System.out.println(  "Now trying to add same element to the set [" + 7 + "] " );
-            overloadedSet.insert(7);
+            GTUSet<String> overloadedSet = null;
+            overloadedSet.insert("3");
+            overloadedSet.insert("5");
+            overloadedSet.insert("7");
+            overloadedSet.insert("18");
+            System.out.println(  "Now trying to add same element to the set [" + "7" + "] " );
+            overloadedSet.insert("7");
         }
         catch(Exception e){//TODO std::invalid_argument e
             System.out.println( "Expection chached (Was expected) : " + e.getMessage() );
         }
 
 
-        System.out.println("Count test for  5 . "+  myset.count(5));
-        for (int i = 0; i < myset.size(); i++) {
-            System.out.println( myset.GET(i) );
-        }
+        System.out.println("Count test MySet for  5 . "+  myset.count("5"));
+        System.out.println( myset.toString() );
 
         System.out.println( "Size: " + myset.size());
         System.out.println( "Max size: " + myset.max_size() );
 
-        myset.erase(5);
-        for (int i = 0; i < myset.size(); i++) {
-            System.out.println( myset.GET(i) );
-        }
+        System.out.println("Erase for   5 . ");
+
+        myset.erase("5");
+
+        System.out.println( myset.toString() );
+
         System.out.println( "Size: " + myset.size() );
         System.out.println( "Max size: " + myset.max_size() );
-        System.out.println( "Count test for  5 . " + myset.count(5) );
+        System.out.println( "Count test for  5 . " + myset.count("5") );
 
-        myset.erase(3);	//TEST SET ERASE
+        myset.erase("3");	//TEST SET ERASE
 
-        for (int i = 0; i < myset.size(); i++) {
-            System.out.println( myset.GET(i) );
-        }
+        System.out.println( myset.toString() );
+
         System.out.println( "Size: " + myset.size() );
         System.out.println( "Max size: " + myset.max_size() );
         //TEST SET clear
 
+        System.out.println( "After Clear myset " );
+
         myset.clear();
 
-        for (int i = 0; i < myset.size(); i++) {
-            System.out.println( myset.GET(i) );
-        }
+        System.out.println( myset.toString() );
+
         System.out.println( "Size: " + myset.size() );
         System.out.println( "Max size: " + myset.max_size() );
-            */
+
     }
 }
 

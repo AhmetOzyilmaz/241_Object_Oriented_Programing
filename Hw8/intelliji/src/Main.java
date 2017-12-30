@@ -6,22 +6,15 @@ import java.awt.event.*;
 
 public class Main {
     final static String[] gameMode = {"PLAYER VS PLAYER", "PLAYER VS COMPUTER"};
-    final static String[] sizeOption = {"2 X 2","3 X 3","4 X 4","6 X 6","10 X 10","11 X 11","20 X 20"};
+    final static String[] sizeOption = {"2 X 2","3 X 3","4 X 4","5 X 5","6 X 6","7 X 7","8 X 8"};
 
     private JFrame frame = new JFrame("connect four");
 
     private JLabel[][] slots;
     private JButton[] buttons;
-    //variables used in grid
+
     private int xsize = 8;//
     private int ysize = 7;
-    private int currentPlayer = 1;
-
-    //game variables to communicate with top program
-    private boolean hasWon = false;
-    private boolean hasDraw = false;
-    private boolean quit = false;
-    private boolean newGame = false;
 
     public Main() {
 
@@ -50,11 +43,13 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                //Game game= new Game(size.getSelectedIndex(),gOptions.getSelectedIndex());
-                //System.out.println("SİZE " +  size.getSelectedIndex() +" game mode " + gOptions.getSelectedIndex());
-               // System.out.println("SİZE " +  size.getSelectedItem() +" game mode " + gOptions.getSelectedItem());
+                System.out.println("SİZE " +  size.getSelectedIndex() +" game mode " + gOptions.getSelectedIndex());
+                System.out.println("SİZE " +  size.getSelectedItem() +" game mode " + gOptions.getSelectedItem());
+                xsize = (size.getSelectedIndex() + 2 );
+                ysize = (size.getSelectedIndex() + 2 ) ;
 
-                //JPanel panel = (JPanel) frame.getContentPane();
+                Game game= new Game(xsize,ysize, gOptions.getSelectedIndex() + 1);
+
                 gamePanel.setBackground(Color.red);
 
                 gamePanel.setLayout(new GridLayout(xsize+1, ysize+1));
@@ -97,7 +92,6 @@ public class Main {
         frame.add(start,BorderLayout.SOUTH);
         frame.add(SelectPanel, BorderLayout.NORTH);
         frame.add(gamePanel, BorderLayout.CENTER);
-        frame.setVisible(true);
         frame.setSize(1080, 720);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

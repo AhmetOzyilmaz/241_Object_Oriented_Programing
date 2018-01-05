@@ -2,11 +2,10 @@ import java.util.Random;
 
 class ConnectFour
 {
-    final private  int USER1PLAYERID = 1;
-    final private  int USER2PLAYERID = 2;
-    final private  int COMPUTERPLAYERID = 3;
-    final private  int TWO_PLAYER = 1;
-    final private  int ONE_PLAYER_VERSUS_COMPUTER = 2;
+    final private  int USER1PLAYERID = 0;
+    final private  int USER2PLAYERID = 1;
+    final private  int COMPUTERPLAYERID = 2;
+
     final private  char USER1 = 'X';
     final private  char USER2 = 'O';
     final private  char EMTHY = '.';
@@ -90,69 +89,22 @@ class ConnectFour
      *	Input		   : no parameter
      *	Return Value   : no return value
      */
-    int  PlayMove() {
-    SmallCell MaxEnem = new SmallCell(0,0,"00000000");
+    int  ComputerMove() {
+        int row = 0, column = 0;
+        SmallCell MaxEnem = new SmallCell(0,0,"00000000");
 
-    int  control = 0, MaxControl = 0, index = 0;
-	 int rowSize = getGameSizeRow();  int columnSize = getGameSizeColumn();
-    Boolean flag = true, isPlayeable = true;
-    char pos;
-    String controller = "00000000";
-    for (int column = columnSize - 1; column >= 0; --column) {
-        if (GetGameBoard(rowSize - 1, column).GetCellValue() == USER2) {
-            flag = false;
-            break;
-        }
-    }
-    if (flag) {//First Move in game
-        pos = MoveComputer();
-        int column = (int)(pos - 'A');
-        for (int row = rowSize - 1; row >= 0; --row) {
-            if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
-                SetGameBoard(row, column, 'O');
-                System.out.println("Movement For Computer " + "Position is row ->  " + row + "\tColumn is " + column );
+        int  control = 0, MaxControl = 0, index = 0,rowSize = getGameSizeRow();  int columnSize = getGameSizeColumn();
+        Boolean flag = true, isPlayeable = true;
+        String controller;
+        for ( column = columnSize - 1; column >= 0; --column) {
+            if (GetGameBoard(rowSize - 1, column).GetCellValue() == USER2) {
+                flag = false;
                 break;
             }
         }
-    }
-    else {
-        for (int row = 0; row < rowSize; ++row) {
-            for (int column = 0; column < columnSize; ++column) {
-                for (int i = 3; i >= 2; --i) {
-                    controller = "";
-                    for (int direction = 1; direction <= 8; ++direction)//8 is number of direction
-                        controller += PartnerCheck(direction, row, column, 'X', 'O', i, false);
-                    control = MyStringCompare(controller);
-                    if (control > MaxControl) {
-                        MaxControl = control;
-                        MaxEnem.posX = row;
-                        MaxEnem.posY = column;
-                        MaxEnem.CellCounter = controller;
-                        setCurrentElementCounter(i);
-                        break;
-                    }
-                }
-            }
-        }
-        int row = 0, column = 0;
-        System.out.println(MaxControl + " MaxEnem.posX " + MaxEnem.posX + " MaxEnem.posY " + MaxEnem.posY + " MaxEnem.CellCounter\t" + MaxEnem.CellCounter );
-        if (MaxEnem.posX - 1 >= 0)
-            if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY).GetCellValue() == USER1  &  isPlayeable)
-                isPlayeable = PlayIsPlayeable(1, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY);
-        if (MaxEnem.posX - 1 >= 0 &  MaxEnem.posY - 1 >= 0)
-            if (GetGameBoard(MaxEnem.posX - 1, MaxEnem.posY - 1).GetCellValue() == USER1   & isPlayeable)
-                isPlayeable = PlayIsPlayeable(2, isPlayeable, MaxEnem, MaxEnem.posX - 1, MaxEnem.posY - 1);
-        if (MaxEnem.posY - 1 >= 0)
-            if (GetGameBoard(MaxEnem.posX, MaxEnem.posY - 1).GetCellValue() == USER1 & isPlayeable)
-                isPlayeable = PlayIsPlayeable(3, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY - 1);
-        if (MaxEnem.posY + 1 < columnSize)
-            if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &  isPlayeable)
-                isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
+
         if (true == isPlayeable) {
-             column = 0;
-
             Random r=new Random(); //random sınıfı
-
             while (true) {
                 column = r.nextInt(100000) % columnSize;
                 if (column < 0)
@@ -161,39 +113,22 @@ class ConnectFour
                     if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
                         SetGameBoard(row, column, USER2);
                         System.out.println("Movement For Computer " + "Position is row ->  " + row + "\tColumn is " + column );
-                        isPlayeable = false;
-                        break;
+                        return column;
                     }
                 }
-                if (isPlayeable == false)
-                    break;
+
             }
         }
-
+        PrintGameBoard();
+        return 0;
     }
-    return 0;
-}
 
     void NewGame() {
     InitialBoard(gameSizeRow, gameSizeColumn);
     PrintGameBoard();
     SetWhoIsWillPlay(USER1PLAYERID);
 }
-    /*
-     *	Desciription : This function computer automatic playin move
-     *	Input		   : no parameter
-     *	Return Value   : returnin if u find placable positon or returning '.' for error
-     */
-    char MoveComputer() {
-        char pos;
-        Random r=new Random(); //random sınıfı
-        while (true) {
 
-        pos = (char) ('A' + r.nextInt(100000) % getGameSizeColumn());
-        if (IsPositionPlayable(COMPUTERPLAYERID, pos))
-            return pos;
-        }
-    }
     /*
      *	Desciription : returning isPlaceable
      *	Input		   : no input parameter
@@ -406,7 +341,7 @@ class ConnectFour
      */
     Boolean IsPositionPlayable( int player_id,  int pos) {
         for (int i = getGameSizeRow() - 1; i >= 0; --i) {
-            if (GetGameBoard(i, pos ).GetCellValue() == EMTHY)
+            if (gameCells[i][pos].GetCellValue() == EMTHY)
                 return true;
         }
         return false;
@@ -417,9 +352,9 @@ class ConnectFour
      *					   char current move to make a move
      *	Return Value   : No return value
      */
-    void PlayMove( int player_id,  int CurrentMove) {
+    void PlayerMove( int player_id,  int CurrentMove) {
 	    int rowSize = getGameSizeRow();
-        char CurrentComparor = 'T';
+        char CurrentComparor = 'X';
         if (player_id == USER1PLAYERID)
             CurrentComparor = USER1;
         else if (player_id == USER2PLAYERID)
@@ -429,7 +364,6 @@ class ConnectFour
                 int column = CurrentMove ;
                 for (int i = rowSize - 1; i >= 0; --i) {
                     if (gameCells[i][column].GetCellValue() == EMTHY) {
-                        System.out.println("11111");
                         SetGameBoard(new Cell(column,i,CurrentComparor));
                         break;
                     }

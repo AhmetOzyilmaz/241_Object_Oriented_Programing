@@ -11,16 +11,12 @@ public class Main {
     final static String[] sizeOption = {"5 X 5","6 X 6","7 X 7","8 X 8","9 X 9","10 X 10","11 X 11"};
 
     private JFrame frame = new JFrame("connect four");
-
     private JLabel[][] slots;
     private JButton[] buttons;
-
     private int xsize = 8;//
     private int ysize = 7;
 
-
     public Main() {
-
 
         final JPanel SelectPanel = new JPanel();
         final JPanel gamePanel = new JPanel();
@@ -34,10 +30,8 @@ public class Main {
 
         JComboBox gOptions = new JComboBox(gameMode);
         JComboBox size = new JComboBox(sizeOption);
-
         SelectPanel.add(pVSc);
         SelectPanel.add(size);
-
         SelectPanel.add(pVSp);
         SelectPanel.add(gOptions);
         start.setBackground(Color.yellow);
@@ -67,36 +61,37 @@ public class Main {
                         public void actionPerformed(ActionEvent e) {
                             System.out.println("gOptions.getSelectedIndex()" +gOptions.getSelectedIndex());
                             int playerId = 0;
-                            String print;
-                            if(true == flag[0]){
+                            String print = "X";
+
+                            if(true == flag[0] &&  gOptions.getSelectedIndex() == 0){
                                 flag[0] = false;
                                 print="O";
                                 playerId = 1;
                             }
-                            else{
+                            else if (false == flag[0]){
                                 flag[0] = true;
                                 print="X";
                                 playerId = 0;
                             }
-                            if(false == control[0]){
-
+                            if(false == control[0] && playerId != 2){
                                 for(int j = ysize-1; j >=0 ; --j) {
-
                                     if (slots[b][j].getText() == "") {
                                         slots[b][j].setText(print + j);
-                                        control[0] = game.Play(b,playerId,0);
+                                        control[0] = game.Play(b,playerId);
+                                        System.out.println("game.getComputerMove()-->" + game.getComputerMove());
+                                        System.out.println("game.getComputerMove()-->" + b);
+                                        System.out.println("game.getComputerMove()-->" +game.getComputerMove());
+
+                                        for(int i =  xsize-1; i >=0; -- i ){
+                                            System.out.println("True");
+                                            if (gOptions.getSelectedIndex()== 1 && slots[game.getComputerMove()][i].getText() == "") {
+                                                System.out.println("false");
+                                                slots[game.getComputerMove()][i].setText("O" + j);
+                                                break;
+                                            }
+                                        }
                                         break;
-
                                     }
-                                }
-                            }
-                            int ForComputerMove = 0;
-                            if(false == control[0]){
-                                //player second
-                                System.out.println("Second Move-> ");
-
-                                if(gOptions.getSelectedIndex()==1){
-                                    System.out.println("player vs computer-> ");
                                 }
                             }
                             if(control[0] == true){
@@ -109,7 +104,6 @@ public class Main {
                         }
 
                     });
-
                     gamePanel.add(buttons[i]);
                 }
                 for (int column = 0; column < ysize; column++) {

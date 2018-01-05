@@ -51,14 +51,13 @@ public class Main {
                 xsize = (size.getSelectedIndex() + 5 );
                 ysize = (size.getSelectedIndex() + 5 ) ;
 
-                Game game= new Game(xsize,ysize, gOptions.getSelectedIndex() + 1);
-
+                Game game= new Game(xsize,ysize, gOptions.getSelectedIndex() );
                 gamePanel.setBackground(Color.red);
-
                 gamePanel.setLayout(new GridLayout(xsize+1, ysize+1));
                 slots = new JLabel[xsize][ysize];
                 buttons = new JButton[xsize];
                 final boolean[] flag = {false};
+                final boolean[] control = {false};
 
                 for (int i = 0; i < xsize; i++) {
                     final int b= i;
@@ -66,44 +65,41 @@ public class Main {
                     buttons[i].setActionCommand("" + i);
                     buttons[i].addActionListener( new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            boolean control= false;
-                            String print = "";
-                            int CurrentPlayerID = 0;
-                            //Player vs Player
-                            if(gOptions.getSelectedIndex() == 0){
-                                if(true == flag[0])
-                                    CurrentPlayerID = 2;
-                                else
-                                    CurrentPlayerID = 1;
-                            }
-                            else{//else Playet vs computer
-                                if(true == flag[0])
-                                    CurrentPlayerID = 3;
-                                else
-                                    CurrentPlayerID = 1;
-                            }
+                            System.out.println("gOptions.getSelectedIndex()" +gOptions.getSelectedIndex());
+                            int playerId = 0;
+                            String print;
                             if(true == flag[0]){
-                                print = "O ";
                                 flag[0] = false;
+                                print="O";
+                                playerId = 1;
                             }
                             else{
-                                print = "X ";
                                 flag[0] = true;
+                                print="X";
+                                playerId = 0;
                             }
-                            boolean endOfGame =false;
-                            for(int j = ysize-1; j >=0 ; --j){
-                                if( slots[b][j].getText() == ""){
-                                    slots[b][j].setText(print+j);
-                                    if(flag[0]){
-                                        control= game.Play(b,CurrentPlayerID);
+                            if(false == control[0]){
+
+                                for(int j = ysize-1; j >=0 ; --j) {
+
+                                    if (slots[b][j].getText() == "") {
+                                        slots[b][j].setText(print + j);
+                                        control[0] = game.Play(b,playerId,0);
+                                        break;
+
                                     }
-                                    else{
-                                        control = game.Play(b,CurrentPlayerID);
-                                    }
-                                    break;
                                 }
                             }
-                            if(control == true){
+                            int ForComputerMove = 0;
+                            if(false == control[0]){
+                                //player second
+                                System.out.println("Second Move-> ");
+
+                                if(gOptions.getSelectedIndex()==1){
+                                    System.out.println("player vs computer-> ");
+                                }
+                            }
+                            if(control[0] == true){
                                 System.out.println("GAME IS ENDED");
                                 start.setVisible(true);
                                 SelectPanel.setVisible(true);

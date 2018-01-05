@@ -2,11 +2,10 @@ import java.util.Random;
 
 class ConnectFour
 {
-    final private  int USER1PLAYERID = 1;
-    final private  int USER2PLAYERID = 2;
-    final private  int COMPUTERPLAYERID = 3;
-    final private  int TWO_PLAYER = 1;
-    final private  int ONE_PLAYER_VERSUS_COMPUTER = 2;
+    final private  int USER1PLAYERID = 0;
+    final private  int USER2PLAYERID = 1;
+    final private  int COMPUTERPLAYERID = 2;
+
     final private  char USER1 = 'X';
     final private  char USER2 = 'O';
     final private  char EMTHY = '.';
@@ -96,8 +95,7 @@ class ConnectFour
     int  control = 0, MaxControl = 0, index = 0;
 	 int rowSize = getGameSizeRow();  int columnSize = getGameSizeColumn();
     Boolean flag = true, isPlayeable = true;
-    char pos;
-    String controller = "00000000";
+    String controller;
     for (int column = columnSize - 1; column >= 0; --column) {
         if (GetGameBoard(rowSize - 1, column).GetCellValue() == USER2) {
             flag = false;
@@ -105,13 +103,12 @@ class ConnectFour
         }
     }
     if (flag) {//First Move in game
-        pos = MoveComputer();
-        int column = (int)(pos - 'A');
+        int column = MoveComputer();
         for (int row = rowSize - 1; row >= 0; --row) {
             if (GetGameBoard(row, column).GetCellValue() == EMTHY) {
                 SetGameBoard(row, column, 'O');
                 System.out.println("Movement For Computer " + "Position is row ->  " + row + "\tColumn is " + column );
-                break;
+                return column;
             }
         }
     }
@@ -149,7 +146,7 @@ class ConnectFour
             if (GetGameBoard(MaxEnem.posX, MaxEnem.posY + 1).GetCellValue() == USER1 &  isPlayeable)
                 isPlayeable = PlayIsPlayeable(4, isPlayeable, MaxEnem, MaxEnem.posX, MaxEnem.posY + 1);
         if (true == isPlayeable) {
-             column = 0;
+            column = 0;
 
             Random r=new Random(); //random sınıfı
 
@@ -162,7 +159,7 @@ class ConnectFour
                         SetGameBoard(row, column, USER2);
                         System.out.println("Movement For Computer " + "Position is row ->  " + row + "\tColumn is " + column );
                         isPlayeable = false;
-                        break;
+                        return column;
                     }
                 }
                 if (isPlayeable == false)
@@ -171,7 +168,9 @@ class ConnectFour
         }
 
     }
-    return 0;
+        PrintGameBoard();
+
+        return 0;
 }
 
     void NewGame() {
@@ -184,14 +183,13 @@ class ConnectFour
      *	Input		   : no parameter
      *	Return Value   : returnin if u find placable positon or returning '.' for error
      */
-    char MoveComputer() {
-        char pos;
+    int MoveComputer() {
+        int pos;
         Random r=new Random(); //random sınıfı
         while (true) {
-
-        pos = (char) ('A' + r.nextInt(100000) % getGameSizeColumn());
-        if (IsPositionPlayable(COMPUTERPLAYERID, pos))
-            return pos;
+            pos = r.nextInt(100000) % getGameSizeColumn();
+            if (IsPositionPlayable(COMPUTERPLAYERID, pos))
+                return pos;
         }
     }
     /*
@@ -406,7 +404,7 @@ class ConnectFour
      */
     Boolean IsPositionPlayable( int player_id,  int pos) {
         for (int i = getGameSizeRow() - 1; i >= 0; --i) {
-            if (GetGameBoard(i, pos ).GetCellValue() == EMTHY)
+            if (gameCells[i][pos].GetCellValue() == EMTHY)
                 return true;
         }
         return false;
@@ -419,7 +417,7 @@ class ConnectFour
      */
     void PlayMove( int player_id,  int CurrentMove) {
 	    int rowSize = getGameSizeRow();
-        char CurrentComparor = 'T';
+        char CurrentComparor = 'X';
         if (player_id == USER1PLAYERID)
             CurrentComparor = USER1;
         else if (player_id == USER2PLAYERID)

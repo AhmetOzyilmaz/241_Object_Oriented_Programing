@@ -1,7 +1,5 @@
 import java.util.Random;
 
-import java.util.Vector;
-
 class ConnectFour
 {
     final private  int USER1PLAYERID = 1;
@@ -12,8 +10,9 @@ class ConnectFour
     final private  char USER1 = 'X';
     final private  char USER2 = 'O';
     final private  char EMTHY = '.';
-    
-    private Vector< Vector<Cell> > gameCells;
+
+
+    private  Cell[][] gameCells ;
     private int gameSizeRow = 4; //default size
     private int gameSizeColumn = 4; //default size
     private int GameMode = 1; //default game mode
@@ -21,35 +20,6 @@ class ConnectFour
     private int CurrentElementCounter = 0;// 4 l� yapmaya ne kadar yak�n oldu�unu tutan bir  de�i�ken
     private Boolean isEnded = false;
 
-    class Cell
-    {
-        private int PosColumn = 0;
-        private int  PosRow = 0;
-        private char CellValue = '.';
-
-        public Cell(int PosC, int PosR, char val)
-        {
-            PosColumn = PosC;
-            PosRow= PosR;
-            CellValue = val;
-        }
-        public  Cell( Cell cell){
-            PosColumn = cell.PosColumn ;
-            PosRow  = cell.PosRow;
-            CellValue = cell.CellValue; }
-
-        public Cell() {
-
-        }
-
-        void SetPosRow( int row) { PosRow = row; }
-          void SetPosColumn( int col) { PosColumn = col; }
-          int GetPosRow() { return PosRow; }
-          int GetPosColumn() { return PosColumn; }
-          void SetCellValue( char col) { CellValue = col; }
-          char GetCellValue() { return CellValue; }
-
-    };
 
     public ConnectFour(int row,int column,int mode){
         gameSizeRow = row;
@@ -58,8 +28,6 @@ class ConnectFour
         InitialBoard(gameSizeRow, gameSizeColumn);
         PrintGameBoard();
     }
-
-
     void SetWhoIsWillPlay( int who) { WhoIsWillPlay = who; }
     int GetWhoIsWillPlay() { return WhoIsWillPlay; }
 
@@ -77,18 +45,12 @@ class ConnectFour
     void SetGameMode( int mode) { GameMode = mode; }
     int GetGameMode() { return GameMode; }
 
-       Vector <Vector<Cell>> GetGameBoard() { return gameCells;}
-
-      Cell GetGameBoard( int row,  int column) { return gameCells.get(row).get(column); }
-      void SetGameBoard( int row,  int column, char value) { gameCells.get(row).get(column).SetCellValue(value);	 }
+      Cell GetGameBoard( int row,  int column) { return gameCells[row][column]; }
+      void SetGameBoard( int row,  int column, char value) { gameCells[row][column].SetCellValue(value);	 }
 
     void SetGameBoard(Cell c) {
-        int row = c.GetPosRow();
-        int column = c.GetPosColumn();
-        gameCells.get(row).set(column, c);
+        gameCells[c.GetPosRow()][c.GetPosColumn()].SetCellValue(c.GetCellValue());
     }
-
-
     /*
      *	Desciription : This function playing game respectively until one of the player win or moveable
      *					position when end
@@ -97,9 +59,9 @@ class ConnectFour
      */
     Boolean GameManager() {
     int control = 0, check ;
-    if (GetWhoIsWillPlay() == 1) {
+   /* if (GetWhoIsWillPlay() == 1) {
         //Player1
-        control = AllMoveOperation(USER1PLAYERID);
+        //control = AllMoveOperation(USER1PLAYERID);
         if (control != 2  &  control != -1)
             SetWhoIsWillPlay(2);
     }
@@ -107,9 +69,9 @@ class ConnectFour
         //System.out.println("GetGameMode\t" + GetGameMode());
         //System.out.println("GetWhoIsWillPlay()\t" + GetWhoIsWillPlay() );
         if (ONE_PLAYER_VERSUS_COMPUTER == GetGameMode())
-            control = AllMoveOperation(COMPUTERPLAYERID);
+            //control = AllMoveOperation(COMPUTERPLAYERID);
         else if (TWO_PLAYER == GetGameMode())
-            control = AllMoveOperation(USER2PLAYERID);
+            //control = AllMoveOperation(USER2PLAYERID);
         if (control != 2 &  control != -1)
             SetWhoIsWillPlay(1);
     }
@@ -118,36 +80,11 @@ class ConnectFour
         setGameisEnded(true);
         return true;
     }
-    PrintGameBoard();
+    PrintGameBoard();*/
     return false;
 }
-    /*
-     *	Desciription : This function managing all player move operation
-     *	Input		   : Interger for which player playing
-     *	Return Value   : if return integer if return 2 is load or save operation if return -1 wrong input if zero moving true
-     */
-    int AllMoveOperation( int PlayerID) {
-    Boolean flag = false;
-    int move = TakeMove(PlayerID);
 
 
-     if(PlayerID != 3 ){
-         return PlayMove(move, PlayerID);
-     }
-        else if (PlayerID == 3) {
-            return PlayMove();
-        }
-    return -1;
-}
-    /*
-     *	Desciription : This function taking move
-     *	Input		   : no input
-     *	Return Value   : returing legal move if return '-' move is not legal taking new move
-     */
-    int TakeMove( int PlayerID) {
-
-        return 0;
-    }
     /*
      *	Desciription : This function it dont take parameter playing for computer is taking parameter will play for user
      *	Input		   : no parameter
@@ -236,24 +173,8 @@ class ConnectFour
     }
     return 0;
 }
-    int PlayMove( int move,  int PlayerID) {
-    Boolean flag = false;
-
-    System.out.println("MoveInputCheck is correct\n");
-        //if flag true this can true input i will checking position is playable
-        if (IsPositionPlayable(PlayerID, move) ) {// play move
-            MovePlayer(PlayerID, move);
-            return 0;
-        }
-        else {
-            System.out.println(" <--->ILLEGAL<---> Position Cannot play enter another move " );
-            return -1;
-        }
-    }
-
 
     void NewGame() {
-    playGame();
     InitialBoard(gameSizeRow, gameSizeColumn);
     PrintGameBoard();
     SetWhoIsWillPlay(USER1PLAYERID);
@@ -264,7 +185,7 @@ class ConnectFour
      *	Return Value   : returnin if u find placable positon or returning '.' for error
      */
     char MoveComputer() {
-    char pos;
+        char pos;
         Random r=new Random(); //random sınıfı
         while (true) {
 
@@ -327,26 +248,25 @@ class ConnectFour
         System.out.println("Game is draw play new game" );
         return -1;
     }
-    if (IsGameOverOneSide(USER1, USER2)) {
+    if (true == IsGameOverOneSide(USER1, USER2)) {
         System.out.println("<---------------->USER1 WON<---------------->" );
         return -1;
     }
-    if (IsGameOverOneSide(USER2, USER1)) {
+    if (true == IsGameOverOneSide(USER2, USER1)) {
         System.out.println("<---------------->USER2 WON<----------------> " );
         return -1;
     }
-    System.out.println("Game is not ended " );
     return 0;
 }
     Boolean AnyMoveMore() {
-    int row = getGameSizeRow();
-    int column = getGameSizeColumn();
-    for (int i = row - 1; i >= 0; --i) {
-        for (int j = column - 1; j >= 0; --j) {
-            if (GetGameBoard(i, j).GetCellValue() == EMTHY)
-                return true;
+        int row = getGameSizeRow();
+        int column = getGameSizeColumn();
+        for (int i = row - 1; i >= 0; --i) {
+            for (int j = column - 1; j >= 0; --j) {
+                if (GetGameBoard(i, j).GetCellValue() == EMTHY)
+                    return true;
+            }
         }
-    }
     return false;
 }
     /*
@@ -443,161 +363,114 @@ class ConnectFour
      *	Return Value : return interger if 1 user one won if  2 user2 won  if -1 game is not ender
      */
     Boolean IsGameOverOneSide( char User,  char other) {
-    int row = getGameSizeRow();
-    int column = getGameSizeColumn();
-    String controller = "";
-    for (int i = row - 1; i >= 0; --i) {
-        for (int j = column - 1; j >= 0; --j) {
-            controller = "";
-            for (int direction = 1; direction <= 8; direction++)//8 is number of direction
-                controller += PartnerCheck(direction, i, j, User, other, 4, true);
-            if (controller != "00000000")
-                return true;
+        int row = getGameSizeRow();
+        int column = getGameSizeColumn();
+        String controller = "";
+        String EndControl = new String("00000000");
+        for (int i = row - 1; i >= 0; --i) {
+            for (int j = column - 1; j >= 0; --j) {
+                controller = "";
+                for (int direction = 1; direction <= 8; direction++)//8 is number of direction
+                    controller += PartnerCheck(direction, i, j, User, other, 4, true);
+                if (!controller.equals(EndControl))
+                    return true;
+            }
         }
+
+        return false;
     }
-    return false;
-}
     /*
      *	Desciription : This function returnin number of '1' in your String
      *	Input		   :  String s1
      *	Return Value   : intger counter of "1"
      */
     int MyStringCompare( String s1) {
-    int counter = 0;
-    for (int i = 0; i < s1.length(); i++) {
-        if (s1.charAt(i) == '1')
-            ++counter;
+        int counter = 0;
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) == '1')
+                ++counter;
+        }
+        return counter;
     }
-    return counter;
-}
     int CheckCounter( int CurComp,  int OtherComp, int count,  int i,  int j) {
-    if (GetGameBoard(i, j).GetCellValue() == CurComp)
-        ++count;
-    if (GetGameBoard(i, j).GetCellValue() == OtherComp)
-        count = 0;
-    return count;
-}
+        if (GetGameBoard(i, j).GetCellValue() == CurComp)
+            ++count;
+        if (GetGameBoard(i, j).GetCellValue() == OtherComp)
+            count = 0;
+        return count;
+    }
     /*
      *	Desciription : This function checking move legal ol illegal
      *	Input		   : position
      *	Return Value : if return true position is legal if false its illegal
      */
     Boolean IsPositionPlayable( int player_id,  int pos) {
-    for (int i = getGameSizeRow() - 1; i >= 0; --i) {
-        if (GetGameBoard(i, pos ).GetCellValue() == EMTHY)
-            return true;
-    }
-    return false;
-}
-
-    /*	Desciription : Printing screen current status of game board
-     *	Input		 : no input parameter
-     *	Return Value : no return value
-     */
-    void PrintGameBoard() {
-    char a = 'A', b = 'A';
-    int row = getGameSizeRow();
-    int column = getGameSizeColumn();
-    //System.out.println("GameBoard row -> " + row );
-    //System.out.println("GameBoard column -> " + column );
-    while (a < b + column) {
-        System.out.println("  " + a + " ");
-        a++;
-    }
-    System.out.println("\n");
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < column; j++)
-            System.out.println("  " + GetGameBoard(i, j).GetCellValue() + " ");
-        System.out.println("\n");
-    }
-}
-    /*
-     *	Desciription : This function initial board
-     *	Input		   : no input parameter
-     *	Return Value : no return value
-     */
-    void InitialBoard( int row,  int column) {
-    Cell c = new Cell(0,0,'.');//no parameter contructor
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < column; ++j) {
-            c.SetPosRow(i);
-            c.SetPosColumn(j);
-            gameCells.get(i).set(j, c);
+        for (int i = getGameSizeRow() - 1; i >= 0; --i) {
+            if (GetGameBoard(i, pos ).GetCellValue() == EMTHY)
+                return true;
         }
+        return false;
     }
-    }
-
-    /*
-     *	Desciription : This function checking game board size and game mode
-     *					Cheking interger or not and for size 6x6, 8x8, 10x10, 20x20
-     *					Cheking game mode  should be 1 or 2
-     *	Input		 : no input parameter
-     *	Return Value : no return value */
-    void playGame() {/*
-    int row = 0, column = 0;
-    while (true) {
-        System.out.println("Enter Game Row Size  \n" + "Game board can be any size \n";
-        cin >> row;
-        System.out.println("Enter Game Column Size  \n" + "Game board can be any size \n";
-        cin >> column;
-        if (cin.fail()) {
-            cin.clear(); //This corrects the stream.
-            cin.ignore(); //This skips the left over stream data.
-            System.out.println(" <--->ILLEGAL<---> Wrong input enter integer \n";
-        }
-        else {
-            setGameSizeColumn(column);
-            setGameSizeRow(row);
-            break;
-        }
-    }
-    int mode = 0;
-    while (1) {
-        System.out.println("Enter Game mode \n" + "Game mode  1 : two player game \n 2: User versus computer game \n";
-        cin >> mode;
-        if (cin.fail()) {
-            cin.clear(); //This corrects the stream.
-            cin.ignore(); //This skips the left over stream data.
-            System.out.println(" <--->ILLEGAL<---> Wrong input enter integer \n";
-        }
-        else {
-            if (mode == 1 || mode == 2) {
-                SetGameMode(mode);
-                break;
-            }
-            else
-                System.out.println("<--->ILLEGAL<---> Wrong Game Mode \n");
-        }
-    }*/
-}
-
     /*
      *	Desciription : This function taking one move without computer and make a move
      *	Input		   : int curren player id
      *					   char current move to make a move
      *	Return Value   : No return value
      */
-    void MovePlayer( int player_id,  int CurrentMove) {
-	 int rowSize = getGameSizeRow();
-    char CurrentComparor = '\0';
-    if (player_id == USER1PLAYERID) {
-        CurrentComparor = USER1;
-    }
-    else if (player_id == USER2PLAYERID) {
-        CurrentComparor = USER2;
-    }
-    if (player_id != COMPUTERPLAYERID) {
-        if (CurrentMove >= 0  & CurrentMove <=  getGameSizeColumn()-1) {
-            int column = (int )(CurrentMove - 'A');
-            for (int i = rowSize - 1; i >= 0; --i) {
-                if (GetGameBoard(i, column).GetCellValue() == EMTHY) {
-                    Cell temp= new Cell(column,i, CurrentComparor);
-                    SetGameBoard(temp);
-                    break;
+    void PlayMove( int player_id,  int CurrentMove) {
+	    int rowSize = getGameSizeRow();
+        char CurrentComparor = 'T';
+        if (player_id == USER1PLAYERID)
+            CurrentComparor = USER1;
+        else if (player_id == USER2PLAYERID)
+            CurrentComparor = USER2;
+        if (player_id != COMPUTERPLAYERID) {
+            if (CurrentMove >= 0  & CurrentMove <=  getGameSizeColumn()-1) {
+                int column = CurrentMove ;
+                for (int i = rowSize - 1; i >= 0; --i) {
+                    if (gameCells[i][column].GetCellValue() == EMTHY) {
+                        System.out.println("11111");
+                        SetGameBoard(new Cell(column,i,CurrentComparor));
+                        break;
+                    }
                 }
             }
         }
     }
-}
+    /*	Desciription : Printing screen current status of game board
+     *	Input		 : no input parameter
+     *	Return Value : no return value
+     */
+    void PrintGameBoard() {
+        char a = 'A', b = 'A';
+        int row = getGameSizeRow();
+        int column = getGameSizeColumn();
+        //System.out.println("GameBoard row -> " + row );
+        //System.out.println("GameBoard column -> " + column );
+        while (a < b + column) {
+            System.out.print("  " + a + " ");
+            a++;
+        }
+        System.out.print("\n");
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++)
+                System.out.print("  " + gameCells[i][j].GetCellValue() + " ");
+            System.out.print("\n");
+        }
+    }
+    /*
+     *	Desciription : This function initial board
+     *	Input		   : no input parameter
+     *	Return Value : no return value
+     */
+    void InitialBoard( int row,  int column) {
+        gameCells = new Cell[row][column];
+        for (int i = 0; i <row ; i++) {
+            for (int j = 0; j <column ; j++) {
+                gameCells[i][j] =new Cell(i,j,EMTHY);
+            }
+        }
+    }
+
 };
 

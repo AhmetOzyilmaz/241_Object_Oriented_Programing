@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Game {
     private Integer height = 8;//default;
     private Integer width = 8;//default;
@@ -14,29 +16,41 @@ public class Game {
         game = new ConnectFour(height,width,mode);
     }
     //if game is ended return true else return false
-    public boolean Play(int move,int PlayerID){
+    public boolean Play(int move,int PlayerID,int ForComputerMove){
 
+        System.out.println(PlayerID);
         if(game.getGameisEnded() == true){
             System.out.println("GAME IS ENDED");
             return true;
 
         }
-        //if(PlayerID)
+
+        if(mode == 0){
+
+            game.PlayMove(PlayerID ,move);
+        }else if(mode == 1)
+        {
+
+
+        }
+        game.PrintGameBoard();
+
+        int check = game.IsGameOver();
+        if (check == -1) {
+            game.setGameisEnded(true);
+            return true;
+        }
+    /*    //if(PlayerID)
         if(PlayerID == 3){
             //Play computer
-            game.PlayMove();
+            ForComputerMove = game.PlayMove();
         }
         else
             game.PlayMove(PlayerID ,move);
         game.PrintGameBoard();
 
-        int check = game.IsGameOver();
-        System.out.println("GAME CHECK" + check);
-        if (check == -1) {
-            game.setGameisEnded(true);
-            return true;
-        }
 
+*/
         return false;
     }
 

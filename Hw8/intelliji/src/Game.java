@@ -12,11 +12,9 @@ public class Game {
         height = _h;
         width  = _w;
         mode = _m;
-
         game = new ConnectFour(height,width,mode);
     }
     public int getComputerMove(){return ComputerMove;}
-    //if game is ended return true else return false
     public boolean Play(int move,int PlayerID){
 
         System.out.println(PlayerID);
@@ -31,7 +29,6 @@ public class Game {
         {
             game.PlayerMove(PlayerID ,move);
             ComputerMove = game.ComputerMove();
-
         }
         int check = game.IsGameOver();
         if (check == -1) {
@@ -39,10 +36,6 @@ public class Game {
             return true;
         }
         game.PrintGameBoard();
-
         return false;
     }
-
-
-
 }
